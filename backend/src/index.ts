@@ -5,6 +5,12 @@ import cors from 'cors'
 import healthRouter from './routes/health'
 import authRouter from './routes/auth'
 import invitesRouter from './routes/invites'
+import addressesRouter from './routes/addresses'
+import { offersRouter } from './routes/offers'
+import { offersMutateRouter } from './routes/offersMutate'
+import { transactionsRouter } from './routes/transactions'
+import { transactionActionsRouter } from './routes/transactionActions'
+import kudosRouter from './routes/kudos'
 import { errorHandler } from './middleware/errorHandler'
 
 const app = express()
@@ -16,6 +22,12 @@ app.use(express.json({ limit: '3mb' }))
 app.use('/api/v1', healthRouter)
 app.use('/api/v1', authRouter)
 app.use('/api/v1', invitesRouter)
+app.use('/api/v1', addressesRouter)
+app.use('/api/v1', offersRouter)
+app.use('/api/v1', offersMutateRouter)
+app.use('/api/v1', transactionsRouter)
+app.use('/api/v1', transactionActionsRouter)
+app.use('/api/v1', kudosRouter)
 
 if (process.env.NODE_ENV === 'production') {
   const staticDir = path.resolve(__dirname, '../../frontend/dist')
