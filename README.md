@@ -78,18 +78,20 @@ curl http://localhost:3001/api/v1/health
 
 ## Deploy to Scalingo
 
+Region: `osc-fr1`, app name: `uslehne`, git remote: `scalingo`
+
 ```bash
 # Backend
-git subtree push --prefix backend scalingo-api main
+git subtree push --prefix backend scalingo main
 
 # Frontend
-git subtree push --prefix frontend scalingo-web main
+git subtree push --prefix frontend scalingo main
 ```
 
-First deploy only — run migrations on the server:
+First deploy only — run DB migrations on the server:
 
 ```bash
-scalingo --app uslehne-api run npm run db:migrate
+scalingo --region osc-fr1 --app uslehne run -- npm --prefix backend run db:migrate
 ```
 
 ---
