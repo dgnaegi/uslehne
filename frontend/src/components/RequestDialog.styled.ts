@@ -26,3 +26,10 @@ export const DialogTitle = styled.h2`
   font-weight: 800;
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `
+
+export const ButtonRow = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.sm};
+  margin-top: ${({ theme }) => theme.spacing.md};
+  flex-wrap: wrap;
+`
