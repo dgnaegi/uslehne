@@ -19,7 +19,7 @@ import {
 export function OfferDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation(['offers', 'common'])
-  const { user } = useAuth()
+  const { user, openAuthModal } = useAuth()
   const navigate = useNavigate()
   const [offer, setOffer] = useState<Offer | null>(null)
   const [showDialog, setShowDialog] = useState(false)
@@ -38,10 +38,7 @@ export function OfferDetailPage() {
   const isOwner = user?.id === offer.ownerId
 
   function handleRequest() {
-    if (!user) {
-      navigate(`/login?redirect=/offers/${offer!.id}`)
-      return
-    }
+    if (!user) { openAuthModal(); return }
     setShowDialog(true)
   }
 
@@ -66,9 +63,7 @@ export function OfferDetailPage() {
         <h1>{offer.title}</h1>
         <p>{offer.description}</p>
         <MetaRow>
-          <span>
-            📍 {offer.address.street}, {offer.address.zip} {offer.address.city}
-          </span>
+          <span>📍 {offer.address.street}, {offer.address.zip} {offer.address.city}</span>
           <span>{t('offers:postedBy', { username: offer.owner.username })}</span>
         </MetaRow>
         <MetaRow>

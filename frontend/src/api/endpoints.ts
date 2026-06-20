@@ -2,13 +2,10 @@ import { api } from './client'
 import type { AuthResponse, User, Address, Offer, Transaction, Invite, LedgerEntry } from './types'
 
 export const authApi = {
-  register: (body: {
-    username: string
-    email: string
-    password: string
-    inviteCode: string
-    address: { street: string; zip: string; city: string; label?: string }
-  }) => api.post<AuthResponse>('/auth/register', body),
+  checkEmail: (email: string) => api.post<{ exists: boolean }>('/auth/check-email', { email }),
+
+  register: (body: { username: string; email: string; password: string; inviteCode: string }) =>
+    api.post<AuthResponse>('/auth/register', body),
 
   login: (body: { login: string; password: string }) => api.post<AuthResponse>('/auth/login', body),
 

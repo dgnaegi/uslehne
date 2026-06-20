@@ -4,7 +4,7 @@ import { useAuth } from '../auth/AuthContext'
 import { Nav, Logo, NavLinks, KudoBadge, NavButton } from './Header.styled'
 
 export function Header() {
-  const { user, logout } = useAuth()
+  const { user, logout, openAuthModal } = useAuth()
   const { t } = useTranslation('common')
   const navigate = useNavigate()
 
@@ -33,10 +33,7 @@ export function Header() {
             <NavButton onClick={handleLogout}>{t('nav.logout')}</NavButton>
           </>
         ) : (
-          <>
-            <Link to="/login">{t('nav.login')}</Link>
-            <Link to="/register">{t('nav.register')}</Link>
-          </>
+          <NavButton onClick={openAuthModal}>{t('nav.login')}</NavButton>
         )}
       </NavLinks>
     </Nav>

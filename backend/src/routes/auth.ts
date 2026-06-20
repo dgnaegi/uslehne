@@ -11,12 +11,6 @@ import { ADMIN_USERNAMES } from '../config/admins'
 
 const router = Router()
 
-const ALLOWED_CITIES = ['zürich', 'zurich']
-
-function isZurich(city: string): boolean {
-  return ALLOWED_CITIES.includes(city.trim().toLowerCase())
-}
-
 const registerSchema = z.object({
   username: z
     .string()
@@ -26,12 +20,6 @@ const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   inviteCode: z.string().min(1),
-  address: z.object({
-    street: z.string().min(1),
-    zip: z.string().min(1),
-    city: z.string().min(1),
-    label: z.string().optional(),
-  }),
 })
 
 const loginSchema = z.object({
@@ -39,18 +27,23 @@ const loginSchema = z.object({
   password: z.string().min(1),
 })
 
+router.post('/auth/check-email', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.body as { email?: string }
+    if (!email) { res.json({ exists: false }); return }
+    const user = await db.user.findUnique({ where: { email } })
+    res.json({ exists: Boolean(user) })
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post(
   '/auth/register',
   validate(registerSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { username, email, password, inviteCode, address } = req.body as z.infer<
-        typeof registerSchema
-      >
-
-      if (!isZurich(address.city)) {
-        throw new AppError(ErrorCode.ADDRESS_CITY_NOT_ALLOWED, 422)
-      }
+      const { username, email, password, inviteCode } = req.body as z.infer<typeof registerSchema>
 
       const invite = await db.invite.findUnique({ where: { code: inviteCode } })
       if (!invite) throw new AppError(ErrorCode.INVITE_NOT_FOUND, 404)
@@ -61,8 +54,7 @@ router.post(
         db.user.findUnique({ where: { username } }),
       ])
       if (existingEmail) throw new AppError(ErrorCode.CONFLICT, 409, 'E-Mail bereits vergeben.')
-      if (existingUsername)
-        throw new AppError(ErrorCode.CONFLICT, 409, 'Benutzername bereits vergeben.')
+      if (existingUsername) throw new AppError(ErrorCode.CONFLICT, 409, 'Benutzername bereits vergeben.')
 
       const passwordHash = await hashPassword(password)
 
@@ -76,42 +68,20 @@ router.post(
             role: ADMIN_USERNAMES.includes(username) ? 'ADMIN' : 'USER',
           },
         })
-
-        await tx.address.create({
-          data: {
-            userId: newUser.id,
-            street: address.street,
-            zip: address.zip,
-            city: address.city.trim(),
-            label: address.label,
-          },
-        })
-
         await tx.invite.update({
           where: { id: invite.id },
           data: { usedById: newUser.id, usedAt: new Date() },
         })
-
         await tx.kudoLedger.create({
-          data: {
-            userId: newUser.id,
-            delta: invite.kudos,
-            reason: 'INVITE_BONUS',
-          },
+          data: { userId: newUser.id, delta: invite.kudos, reason: 'INVITE_BONUS' },
         })
-
         return newUser
       })
 
       const token = signToken({ sub: user.id, role: user.role })
       res.status(201).json({
         token,
-        user: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          kudosBalance: user.kudosBalance,
-        },
+        user: { id: user.id, username: user.username, email: user.email, kudosBalance: user.kudosBalance },
       })
     } catch (err) {
       next(err)
@@ -125,27 +95,16 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { login, password } = req.body as z.infer<typeof loginSchema>
-
       const user = await db.user.findFirst({
-        where: {
-          OR: [{ email: login }, { username: login }],
-        },
+        where: { OR: [{ email: login }, { username: login }] },
       })
-
       if (!user) throw new AppError(ErrorCode.INVALID_CREDENTIALS, 401)
-
       const valid = await verifyPassword(password, user.passwordHash)
       if (!valid) throw new AppError(ErrorCode.INVALID_CREDENTIALS, 401)
-
       const token = signToken({ sub: user.id, role: user.role })
       res.json({
         token,
-        user: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          kudosBalance: user.kudosBalance,
-        },
+        user: { id: user.id, username: user.username, email: user.email, kudosBalance: user.kudosBalance },
       })
     } catch (err) {
       next(err)
@@ -157,14 +116,7 @@ router.get('/auth/me', requireAuth, async (req: Request, res: Response, next: Ne
   try {
     const user = await db.user.findUniqueOrThrow({
       where: { id: req.user!.id },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        role: true,
-        kudosBalance: true,
-        createdAt: true,
-      },
+      select: { id: true, username: true, email: true, role: true, kudosBalance: true, createdAt: true },
     })
     res.json({ user })
   } catch (err) {

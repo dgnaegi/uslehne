@@ -9,6 +9,9 @@ interface AuthContextValue {
   logout: () => void
   refreshUser: () => Promise<void>
   isLoading: boolean
+  isAuthModalOpen: boolean
+  openAuthModal: () => void
+  closeAuthModal: () => void
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -17,6 +20,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'))
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   useEffect(() => {
     if (!token) {
@@ -55,7 +59,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, refreshUser, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        login,
+        logout,
+        refreshUser,
+        isLoading,
+        isAuthModalOpen,
+        openAuthModal: () => setIsAuthModalOpen(true),
+        closeAuthModal: () => setIsAuthModalOpen(false),
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
