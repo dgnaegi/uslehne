@@ -17,6 +17,8 @@
   "requestButtonGuest": "Anmelden um anzufragen",
   "archiveButton": "Archivieren",
   "editButton": "Bearbeiten",
+  "deleteButton": "Löschen",
+  "deleteConfirm": "Angebot wirklich dauerhaft löschen?",
   "kudosCost": "Kostet {{count}} Kudo",
   "kudosEarn": "Du erhältst {{count}} Kudo",
   "postedBy": "von {{username}}",

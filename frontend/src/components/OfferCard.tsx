@@ -24,7 +24,7 @@ export function OfferCard({ offer }: Props) {
         <TypeBadge $type={offer.type}>{t(`offerType.${offer.type}`)}</TypeBadge>
         <Title>{offer.title}</Title>
         <Meta>
-          <Location>📍 {offer.address.city}</Location>
+          <Location>📍 {offer.address.zip}</Location>
           <span>@{offer.owner.username}</span>
         </Meta>
       </Body>

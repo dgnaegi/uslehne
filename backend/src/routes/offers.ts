@@ -26,6 +26,8 @@ export const patchOfferSchema = z.object({
 
 export const offerPublicSelect = {
   id: true,
+  ownerId: true,
+  addressId: true,
   title: true,
   description: true,
   type: true,
@@ -34,7 +36,7 @@ export const offerPublicSelect = {
   createdAt: true,
   updatedAt: true,
   owner: { select: { username: true } },
-  address: { select: { street: true, zip: true, city: true } },
+  address: { select: { zip: true } },
 }
 
 router.get('/offers', async (req: Request, res: Response, next: NextFunction) => {

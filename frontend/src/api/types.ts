@@ -45,7 +45,7 @@ export interface Offer {
   status: OfferStatus
   imageRef: string
   addressId: string
-  address: { street: string; zip: string; city: string }
+  address: { zip: string }
   createdAt: string
   updatedAt: string
 }

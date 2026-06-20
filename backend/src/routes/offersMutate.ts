@@ -52,7 +52,10 @@ router.delete(
       })
       if (blocking) throw new AppError(ErrorCode.OFFER_NOT_AVAILABLE, 409)
 
-      await db.offer.update({ where: { id: req.params.id }, data: { status: 'ARCHIVED' } })
+      await db.$transaction(async (tx) => {
+        await tx.transaction.deleteMany({ where: { offerId: req.params.id } })
+        await tx.offer.delete({ where: { id: req.params.id } })
+      })
       res.status(204).end()
     } catch (err) {
       next(err)

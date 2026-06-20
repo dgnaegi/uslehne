@@ -44,6 +44,13 @@ export function OfferDetailPage() {
 
   async function handleArchive() {
     if (!id) return
+    await offerApi.update(id, { status: 'ARCHIVED' })
+    navigate('/my-offers')
+  }
+
+  async function handleDelete() {
+    if (!id) return
+    if (!window.confirm(t('offers:deleteConfirm'))) return
     await offerApi.delete(id)
     navigate('/my-offers')
   }
@@ -63,7 +70,7 @@ export function OfferDetailPage() {
         <h1>{offer.title}</h1>
         <p>{offer.description}</p>
         <MetaRow>
-          <span>📍 {offer.address.street}, {offer.address.zip} {offer.address.city}</span>
+          <span>📍 {offer.address.zip}</span>
           <span>{t('offers:postedBy', { username: offer.owner.username })}</span>
         </MetaRow>
         <MetaRow>
@@ -84,8 +91,11 @@ export function OfferDetailPage() {
               <Button $variant="secondary" onClick={() => navigate(`/offers/${offer.id}/edit`)}>
                 {t('offers:editButton')}
               </Button>
-              <Button $variant="danger" onClick={handleArchive}>
+              <Button $variant="secondary" onClick={handleArchive}>
                 {t('offers:archiveButton')}
+              </Button>
+              <Button $variant="danger" onClick={handleDelete}>
+                {t('offers:deleteButton')}
               </Button>
             </>
           )}
