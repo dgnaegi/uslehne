@@ -290,43 +290,45 @@ export interface ImageStorage {
 
 ## 10. API-Endpunkte (`/api/v1`)
 
+Spalte **Auth**: `–` = öffentlich (kein Login nötig), `✓` = Login nötig (sonst 401).
+
 **Auth**
-| Methode | Pfad | Beschreibung |
-|---|---|---|
-| POST | `/auth/register` | username, email, password, inviteCode, address{street,zip,city} |
-| POST | `/auth/login` | email/username + password → JWT |
-| GET  | `/auth/me` | aktueller User inkl. `kudosBalance` |
+| Methode | Pfad | Auth | Beschreibung |
+|---|---|:--:|---|
+| POST | `/auth/register` | – | username, email, password, inviteCode, address{street,zip,city} |
+| POST | `/auth/login` | – | email/username + password → JWT |
+| GET  | `/auth/me` | ✓ | aktueller User inkl. `kudosBalance` |
 
 **Addresses**
-| GET | `/addresses` | eigene Adressen |
-| POST | `/addresses` | neue Adresse (Zürich-Validierung) |
-| DELETE | `/addresses/:id` | (nur wenn keine aktive Offer daran hängt) |
+| GET | `/addresses` | ✓ | eigene Adressen |
+| POST | `/addresses` | ✓ | neue Adresse (Zürich-Validierung) |
+| DELETE | `/addresses/:id` | ✓ | (nur wenn keine aktive Offer daran hängt) |
 
 **Offers**
-| GET | `/offers` | verfügbare Angebote (Query: `?type=LEND|GIVE`) |
-| GET | `/offers/mine` | eigene Angebote |
-| GET | `/offers/:id` | Detail |
-| POST | `/offers` | erstellen (image base64, title, description, type, addressId) |
-| PATCH | `/offers/:id` | bearbeiten (nur Owner) |
-| DELETE | `/offers/:id` | archivieren/löschen (nur Owner, nicht während aktiver Ausleihe) |
+| GET | `/offers` | – | verfügbare Angebote (Query: `?type=LEND|GIVE`) — **öffentlich browsebar** |
+| GET | `/offers/:id` | – | Detail — **öffentlich** |
+| GET | `/offers/mine` | ✓ | eigene Angebote |
+| POST | `/offers` | ✓ | erstellen (image base64, title, description, type, addressId) |
+| PATCH | `/offers/:id` | ✓ | bearbeiten (nur Owner) |
+| DELETE | `/offers/:id` | ✓ | archivieren/löschen (nur Owner, nicht während aktiver Ausleihe) |
 
-**Transactions**
-| POST | `/offers/:id/request` | Anfrage stellen — **Pflicht:** `contactType`+`contactValue`, optional `message` |
-| GET | `/transactions` | `?role=incoming` (als Anbieter) \| `outgoing` (als Interessent) |
-| POST | `/transactions/:id/accept` | Anbieter bestätigt → Kudo-Buchung |
-| POST | `/transactions/:id/decline` | Anbieter lehnt ab |
-| POST | `/transactions/:id/cancel` | Interessent zieht Anfrage zurück (nur PENDING) |
-| POST | `/transactions/:id/return` | Rückgabe bei LEND bestätigen → Offer wieder verfügbar |
+**Transactions** (alle Auth-pflichtig)
+| POST | `/offers/:id/request` | ✓ | Anfrage/Mieten — **Pflicht:** `contactType`+`contactValue`, optional `message` |
+| GET | `/transactions` | ✓ | `?role=incoming` (als Anbieter) \| `outgoing` (als Interessent) |
+| POST | `/transactions/:id/accept` | ✓ | Anbieter bestätigt → Kudo-Buchung |
+| POST | `/transactions/:id/decline` | ✓ | Anbieter lehnt ab |
+| POST | `/transactions/:id/cancel` | ✓ | Interessent zieht Anfrage zurück (nur PENDING) |
+| POST | `/transactions/:id/return` | ✓ | Rückgabe bei LEND bestätigen → Offer wieder verfügbar |
 
 **Invites**
-| GET | `/invites` | eigene Invites + Status |
-| POST | `/invites` | Link erstellen (Limit 3 für USER) |
-| GET | `/invites/:code` | public: Gültigkeit prüfen |
+| GET | `/invites` | ✓ | eigene Invites + Status |
+| POST | `/invites` | ✓ | Link erstellen (Limit 3 für USER) |
+| GET | `/invites/:code` | – | Gültigkeit prüfen (für Registrierung) |
 
 **Kudos**
-| GET | `/kudos/ledger` | eigene Kudo-Historie (paginiert) |
+| GET | `/kudos/ledger` | ✓ | eigene Kudo-Historie (paginiert) |
 
-Bestehende `GET /health` bleibt.
+Bestehende `GET /health` (–) bleibt.
 
 ---
 
@@ -349,8 +351,14 @@ Bestehende `GET /health` bleibt.
 
 ## 12. Frontend-Struktur
 
-Routing mit `react-router-dom`. App hinter Auth; `/login` & `/register` öffentlich.
-Header zeigt **Kudo-Saldo** des eingeloggten Users.
+Routing mit `react-router-dom`. **Browsen ist öffentlich** — kein globaler Auth-Guard.
+- **Öffentlich:** Landing, `/offers` (Liste), `/offers/:id` (Detail), `/login`, `/register`.
+- **Auth-geschützt (Route-Guard):** Angebot erstellen/bearbeiten, eigene Angebote,
+  Transaktionen, Invites, Profil/Ledger.
+- **Aktions-Gate:** Der „Anfragen/Mieten"-Button ist für Gäste sichtbar; Klick ohne Login
+  leitet auf `/login?redirect=/offers/:id` und kehrt nach Login zur Offer zurück.
+
+Header zeigt für eingeloggte User den **Kudo-Saldo**, für Gäste **Login/Registrieren**.
 
 ```
 src/
