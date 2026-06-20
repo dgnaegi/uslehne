@@ -9,7 +9,9 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: ${({ theme }) => theme.font};
-    background: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.background};
+    background-image: radial-gradient(circle, #1a1a1a18 1px, transparent 1px);
+    background-size: 20px 20px;
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;

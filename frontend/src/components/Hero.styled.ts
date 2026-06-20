@@ -1,26 +1,32 @@
 import styled from 'styled-components'
 
 export const Section = styled.section`
-  background: ${({ theme }) => theme.colors.primary};
-  color: white;
-  padding: ${({ theme }) => `${theme.spacing.xxl} ${theme.spacing.xl}`};
-  text-align: center;
+  background: ${({ theme }) => theme.colors.pastelBlue};
+  border-bottom: ${({ theme }) => theme.border};
+  padding: ${({ theme }) => `${theme.spacing.xl} ${theme.spacing.xl}`};
+  display: flex;
+  justify-content: center;
 `
 
-export const Title = styled.h1`
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+export const SearchBar = styled.input`
+  width: 100%;
+  max-width: 560px;
+  padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing.lg}`};
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: ${({ theme }) => theme.font};
+  border: ${({ theme }) => theme.border};
+  border-radius: ${({ theme }) => theme.radius};
+  background: ${({ theme }) => theme.colors.surface};
+  box-shadow: ${({ theme }) => theme.shadow};
+  outline: none;
 
-  span {
-    color: ${({ theme }) => theme.colors.accent};
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textMuted};
+    font-weight: 400;
   }
-`
 
-export const Subtitle = styled.p`
-  font-size: 1.1rem;
-  opacity: 0.7;
-  max-width: 500px;
-  margin: 0 auto;
+  &:focus {
+    box-shadow: ${({ theme }) => theme.shadowMd};
+  }
 `

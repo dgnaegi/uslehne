@@ -7,8 +7,9 @@ export const Section = styled.section`
 `
 
 export const SectionTitle = styled.h2`
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-family: ${({ theme }) => theme.fontComic};
+  font-size: 2rem;
+  letter-spacing: 0.06em;
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `
 
@@ -20,22 +21,23 @@ export const Filters = styled.div`
 `
 
 export const FilterButton = styled.button<{ $active: boolean }>`
-  border: 1px solid ${({ theme, $active }) =>
-    $active ? theme.colors.accent : theme.colors.border};
+  border: ${({ theme }) => theme.border};
   background: ${({ theme, $active }) =>
     $active ? theme.colors.accent : theme.colors.surface};
-  color: ${({ theme, $active }) =>
-    $active ? '#fff' : theme.colors.text};
-  border-radius: 999px;
+  color: ${({ theme }) => theme.colors.primary};
+  border-radius: ${({ theme }) => theme.radius};
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  transition: all 0.15s;
+  box-shadow: ${({ theme, $active }) => ($active ? theme.shadow : 'none')};
+  transition: all 0.1s;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.accent};
-    color: ${({ theme, $active }) => ($active ? '#fff' : theme.colors.accent)};
+    background: ${({ theme }) => theme.colors.accent};
+    box-shadow: ${({ theme }) => theme.shadow};
   }
 `
 
@@ -47,5 +49,5 @@ export const Grid = styled.div`
 
 export const Empty = styled.p`
   color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.95rem;
+  font-weight: 600;
 `

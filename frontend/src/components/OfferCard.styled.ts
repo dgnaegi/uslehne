@@ -2,20 +2,22 @@ import styled from 'styled-components'
 
 export const Card = styled.article`
   background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  border: ${({ theme }) => theme.border};
   border-radius: ${({ theme }) => theme.radius};
   overflow: hidden;
-  transition: box-shadow 0.15s, transform 0.15s;
+  box-shadow: ${({ theme }) => theme.shadow};
+  transition: transform 0.1s, box-shadow 0.1s;
   cursor: pointer;
 
   &:hover {
+    transform: translate(-2px, -2px);
     box-shadow: ${({ theme }) => theme.shadowMd};
-    transform: translateY(-2px);
   }
 `
 
-export const ImageArea = styled.div`
-  background: ${({ theme }) => theme.colors.background};
+export const ImageArea = styled.div<{ $color: string }>`
+  background: ${({ $color }) => $color};
+  border-bottom: ${({ theme }) => theme.border};
   height: ${({ theme }) => theme.spacing.xxl};
   display: flex;
   align-items: center;
@@ -32,7 +34,7 @@ export const Body = styled.div`
 
 export const Title = styled.h3`
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
 `
 
@@ -45,20 +47,18 @@ export const Meta = styled.div`
 
 export const Location = styled.span`
   font-size: 0.8rem;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.textMuted};
 `
 
-export const Badge = styled.span<{ $type: 'category' | 'type' }>`
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+export const Badge = styled.span<{ $type: 'category' | 'status' }>`
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: ${({ theme }) => `2px ${theme.spacing.sm}`};
-  border-radius: 999px;
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  border-radius: ${({ theme }) => theme.radius};
   background: ${({ theme, $type }) =>
-    $type === 'category'
-      ? `${theme.colors.accent}18`
-      : `${theme.colors.primary}10`};
-  color: ${({ theme, $type }) =>
-    $type === 'category' ? theme.colors.accent : theme.colors.textMuted};
+    $type === 'category' ? theme.colors.accent : theme.colors.surface};
 `

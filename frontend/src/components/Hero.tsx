@@ -1,12 +1,9 @@
-import { Section, Title, Subtitle } from './Hero.styled'
+import { Section, SearchBar } from './Hero.styled'
 
 export function Hero() {
   return (
     <Section>
-      <Title>
-        will<span>kommen</span>
-      </Title>
-      <Subtitle>uslehne.ch — einfach, schön, funktional.</Subtitle>
+      <SearchBar placeholder="Was suchst du? z.B. Bohrmaschine, Kinderwagen…" />
     </Section>
   )
 }
