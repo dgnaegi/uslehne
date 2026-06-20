@@ -3,8 +3,7 @@ import { theme } from './theme'
 import { GlobalStyle } from './GlobalStyle'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
-import { HealthCheck } from './components/HealthCheck'
-import { ItemList } from './components/ItemList'
+import { OfferGrid } from './components/OfferGrid'
 
 function App() {
   return (
@@ -12,8 +11,7 @@ function App() {
       <GlobalStyle />
       <Header />
       <Hero />
-      <HealthCheck />
-      <ItemList />
+      <OfferGrid />
     </ThemeProvider>
   )
 }
