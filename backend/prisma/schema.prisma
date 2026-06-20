@@ -7,10 +7,127 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Item {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OfferType {
+  LEND
+  GIVE
+}
+
+enum OfferStatus {
+  AVAILABLE
+  RESERVED
+  LENT
+  GIVEN
+  ARCHIVED
+}
+
+enum TransactionStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  CANCELLED
+  RETURNED
+  COMPLETED
+}
+
+enum LedgerReason {
+  INVITE_BONUS
+  LEND_EARN
+  BORROW_SPEND
+  GIVE_EARN
+  RECEIVE_SPEND
+  ADMIN_ADJUST
+}
+
+enum ContactType {
+  PHONE
+  EMAIL
+}
+
+model User {
+  id             String       @id @default(cuid())
+  username       String       @unique
+  email          String       @unique
+  passwordHash   String
+  role           Role         @default(USER)
+  kudosBalance   Int          @default(0)
+  addresses      Address[]
+  offers         Offer[]
+  invitesCreated Invite[]     @relation("InvitesCreated")
+  inviteUsed     Invite?      @relation("InviteUsed")
+  requests       Transaction[] @relation("Requester")
+  ledger         KudoLedger[]
+  createdAt      DateTime     @default(now())
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  label     String?
+  street    String
+  zip       String
+  city      String
+  offers    Offer[]
+  createdAt DateTime @default(now())
+}
+
+model Offer {
+  id           String        @id @default(cuid())
+  owner        User          @relation(fields: [ownerId], references: [id])
+  ownerId      String
+  title        String
+  description  String
+  type         OfferType
+  status       OfferStatus   @default(AVAILABLE)
+  imageRef     String
+  address      Address       @relation(fields: [addressId], references: [id])
+  addressId    String
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Transaction {
+  id           String            @id @default(cuid())
+  offer        Offer             @relation(fields: [offerId], references: [id])
+  offerId      String
+  requester    User              @relation("Requester", fields: [requesterId], references: [id])
+  requesterId  String
+  ownerId      String
+  type         OfferType
+  kudos        Int
+  status       TransactionStatus @default(PENDING)
+  message      String?
+  contactType  ContactType
+  contactValue String
+  createdAt    DateTime          @default(now())
+  decidedAt    DateTime?
+  returnedAt   DateTime?
+}
+
+model Invite {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  createdBy   User      @relation("InvitesCreated", fields: [createdById], references: [id])
+  createdById String
+  kudos       Int       @default(20)
+  usedBy      User?     @relation("InviteUsed", fields: [usedById], references: [id])
+  usedById    String?   @unique
+  usedAt      DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+model KudoLedger {
+  id            String       @id @default(cuid())
+  user          User         @relation(fields: [userId], references: [id])
+  userId        String
+  delta         Int
+  reason        LedgerReason
+  transactionId String?
+  createdAt     DateTime     @default(now())
 }
