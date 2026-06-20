@@ -11,6 +11,9 @@ import { ADMIN_USERNAMES } from '../config/admins'
 
 const router = Router()
 
+const OPEN_INVITE_CODE = 'Free4All'
+const OPEN_INVITE_KUDOS = 20
+
 const registerSchema = z.object({
   username: z
     .string()
@@ -45,9 +48,17 @@ router.post(
     try {
       const { username, email, password, inviteCode } = req.body as z.infer<typeof registerSchema>
 
-      const invite = await db.invite.findUnique({ where: { code: inviteCode } })
-      if (!invite) throw new AppError(ErrorCode.INVITE_NOT_FOUND, 404)
-      if (invite.usedById !== null) throw new AppError(ErrorCode.INVITE_ALREADY_USED, 409)
+      const isOpen = inviteCode === MASTER_INVITE_CODE
+      let kudosAmount = MASTER_INVITE_KUDOS
+      let inviteId: string | null = null
+
+      if (!isOpen) {
+        const invite = await db.invite.findUnique({ where: { code: inviteCode } })
+        if (!invite) throw new AppError(ErrorCode.INVITE_NOT_FOUND, 404)
+        if (invite.usedById !== null) throw new AppError(ErrorCode.INVITE_ALREADY_USED, 409)
+        kudosAmount = invite.kudos
+        inviteId = invite.id
+      }
 
       const [existingEmail, existingUsername] = await Promise.all([
         db.user.findUnique({ where: { email } }),
@@ -64,16 +75,18 @@ router.post(
             username,
             email,
             passwordHash,
-            kudosBalance: invite.kudos,
+            kudosBalance: kudosAmount,
             role: ADMIN_USERNAMES.includes(username) ? 'ADMIN' : 'USER',
           },
         })
-        await tx.invite.update({
-          where: { id: invite.id },
-          data: { usedById: newUser.id, usedAt: new Date() },
-        })
+        if (inviteId) {
+          await tx.invite.update({
+            where: { id: inviteId },
+            data: { usedById: newUser.id, usedAt: new Date() },
+          })
+        }
         await tx.kudoLedger.create({
-          data: { userId: newUser.id, delta: invite.kudos, reason: 'INVITE_BONUS' },
+          data: { userId: newUser.id, delta: kudosAmount, reason: 'INVITE_BONUS' },
         })
         return newUser
       })
