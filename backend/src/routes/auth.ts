@@ -48,8 +48,8 @@ router.post(
     try {
       const { username, email, password, inviteCode } = req.body as z.infer<typeof registerSchema>
 
-      const isOpen = inviteCode === MASTER_INVITE_CODE
-      let kudosAmount = MASTER_INVITE_KUDOS
+      const isOpen = inviteCode === OPEN_INVITE_CODE
+      let kudosAmount = OPEN_INVITE_KUDOS
       let inviteId: string | null = null
 
       if (!isOpen) {
