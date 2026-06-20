@@ -7,6 +7,7 @@ import { signToken } from '../auth/jwt'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
+import { ADMIN_USERNAMES } from '../config/admins'
 
 const router = Router()
 
@@ -72,6 +73,7 @@ router.post(
             email,
             passwordHash,
             kudosBalance: invite.kudos,
+            role: ADMIN_USERNAMES.includes(username) ? 'ADMIN' : 'USER',
           },
         })
 

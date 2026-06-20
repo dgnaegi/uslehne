@@ -1,9 +1,11 @@
-import { Section, SearchBar } from './Hero.styled'
+import { useTranslation } from 'react-i18next'
+import { HeroSection, Tagline } from './Hero.styled'
 
 export function Hero() {
+  const { t } = useTranslation('common')
   return (
-    <Section>
-      <SearchBar placeholder="Was suchst du? z.B. Bohrmaschine, Kinderwagen…" />
-    </Section>
+    <HeroSection>
+      <Tagline>{t('tagline')}</Tagline>
+    </HeroSection>
   )
 }

@@ -28,8 +28,35 @@ export const NavLinks = styled.nav`
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  align-items: center;
 
   a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+`
+
+export const KudoBadge = styled.span`
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.accent};
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
+  border-radius: ${({ theme }) => theme.radius};
+  letter-spacing: 0.04em;
+`
+
+export const NavButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+  &:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
   }

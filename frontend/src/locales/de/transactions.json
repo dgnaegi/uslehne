@@ -1,0 +1,35 @@
+{
+  "title": "Anfragen",
+  "incoming": "Eingehend",
+  "outgoing": "Ausgehend",
+  "noIncoming": "Keine eingehenden Anfragen.",
+  "noOutgoing": "Keine ausgehenden Anfragen.",
+  "contactLabel": "Kontakt",
+  "messageLabel": "Nachricht",
+  "acceptButton": "Bestätigen",
+  "declineButton": "Ablehnen",
+  "cancelButton": "Zurückziehen",
+  "returnButton": "Rückgabe bestätigen",
+  "offerLabel": "Angebot",
+  "requesterLabel": "Anfragend",
+  "requestDialog": {
+    "title": "Anfrage stellen",
+    "contactType": "Kontaktart",
+    "contactValue": "Kontaktangabe",
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "message": "Nachricht (optional)",
+    "submit": "Anfrage senden",
+    "phonePlaceholder": "+41 79 123 45 67",
+    "emailPlaceholder": "deine@email.ch",
+    "success": "Anfrage gesendet!"
+  },
+  "status": {
+    "PENDING": "Ausstehend",
+    "ACCEPTED": "Bestätigt",
+    "DECLINED": "Abgelehnt",
+    "CANCELLED": "Zurückgezogen",
+    "COMPLETED": "Abgeschlossen",
+    "RETURNED": "Zurückgegeben"
+  }
+}

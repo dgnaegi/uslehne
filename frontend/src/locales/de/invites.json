@@ -1,0 +1,11 @@
+{
+  "title": "Einladungen",
+  "createInvite": "Einladungslink erstellen",
+  "noInvites": "Noch keine Einladungslinks.",
+  "limitReached": "Maximum von 3 Links erreicht.",
+  "copyLink": "Link kopieren",
+  "copied": "Kopiert!",
+  "used": "Eingelöst",
+  "unused": "Offen",
+  "kudosNote": "Der Eingeladene erhält {{kudos}} Kudos."
+}

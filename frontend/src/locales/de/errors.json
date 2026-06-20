@@ -1,0 +1,19 @@
+{
+  "VALIDATION_ERROR": "Ungültige Eingabe.",
+  "UNAUTHORIZED": "Bitte melde dich an.",
+  "FORBIDDEN": "Keine Berechtigung.",
+  "NOT_FOUND": "Nicht gefunden.",
+  "CONFLICT": "Bereits vorhanden.",
+  "INSUFFICIENT_KUDOS": "Nicht genügend Kudos.",
+  "INVITE_NOT_FOUND": "Einladungscode nicht gefunden.",
+  "INVITE_ALREADY_USED": "Einladungscode bereits verwendet.",
+  "INVITE_LIMIT_REACHED": "Maximale Anzahl an Einladungen erreicht.",
+  "ADDRESS_CITY_NOT_ALLOWED": "Nur Zürich ist aktuell erlaubt.",
+  "CONTACT_REQUIRED": "Kontaktangabe ist Pflicht.",
+  "CONTACT_INVALID": "Ungültige Kontaktangabe.",
+  "INVALID_CREDENTIALS": "E-Mail oder Passwort falsch.",
+  "INVALID_TRANSACTION_STATUS": "Diese Aktion ist im aktuellen Status nicht möglich.",
+  "OFFER_NOT_AVAILABLE": "Das Angebot ist nicht mehr verfügbar.",
+  "ADDRESS_IN_USE": "Die Adresse wird noch von einem Angebot verwendet.",
+  "GENERIC": "Ein Fehler ist aufgetreten."
+}

@@ -1,0 +1,37 @@
+{
+  "appName": "uslehne",
+  "tagline": "Teilen statt besitzen.",
+  "currency": "Kudo",
+  "currencyPlural": "Kudos",
+  "nav": {
+    "offers": "Angebote",
+    "myOffers": "Meine Angebote",
+    "transactions": "Anfragen",
+    "invites": "Einladungen",
+    "profile": "Profil",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden"
+  },
+  "actions": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "back": "Zurück",
+    "confirm": "Bestätigen",
+    "loading": "Wird geladen…"
+  },
+  "status": {
+    "AVAILABLE": "Verfügbar",
+    "RESERVED": "Reserviert",
+    "LENT": "Verliehen",
+    "GIVEN": "Verschenkt",
+    "ARCHIVED": "Archiviert"
+  },
+  "offerType": {
+    "LEND": "Verleihen",
+    "GIVE": "Verschenken"
+  }
+}

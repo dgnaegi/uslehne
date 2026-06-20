@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import type { OfferType } from '../api/types'
 
 export const Card = styled.article`
   background: ${({ theme }) => theme.colors.surface};
@@ -6,8 +7,13 @@ export const Card = styled.article`
   border-radius: ${({ theme }) => theme.radius};
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadow};
-  transition: transform 0.1s, box-shadow 0.1s;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 
   &:hover {
     transform: translate(-2px, -2px);
@@ -22,7 +28,14 @@ export const ImageArea = styled.div<{ $color: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   font-size: 2.5rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `
 
 export const Body = styled.div`
@@ -43,6 +56,9 @@ export const Meta = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: ${({ theme }) => theme.spacing.xs};
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-weight: 600;
 `
 
 export const Location = styled.span`
@@ -51,7 +67,7 @@ export const Location = styled.span`
   color: ${({ theme }) => theme.colors.textMuted};
 `
 
-export const Badge = styled.span<{ $type: 'category' | 'status' }>`
+export const TypeBadge = styled.span<{ $type: OfferType }>`
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -60,5 +76,6 @@ export const Badge = styled.span<{ $type: 'category' | 'status' }>`
   border: 2px solid ${({ theme }) => theme.colors.primary};
   border-radius: ${({ theme }) => theme.radius};
   background: ${({ theme, $type }) =>
-    $type === 'category' ? theme.colors.accent : theme.colors.surface};
+    $type === 'GIVE' ? theme.colors.pastelMint : theme.colors.accent};
+  align-self: flex-start;
 `
