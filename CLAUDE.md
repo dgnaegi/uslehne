@@ -41,19 +41,25 @@ uslehne/
 ├── frontend/
 │   ├── src/
 │   │   ├── main.tsx
-│   │   ├── App.tsx          # ThemeProvider root
-│   │   ├── GlobalStyle.ts   # Global CSS reset
-│   │   ├── theme.ts         # Design tokens
+│   │   ├── App.tsx              # ThemeProvider root
+│   │   ├── GlobalStyle.ts       # Global CSS reset
+│   │   ├── theme.ts             # Design tokens
+│   │   ├── styled.d.ts          # DefaultTheme augmentation
 │   │   └── components/
-│   │       ├── Header.tsx
+│   │       ├── Header.tsx       # Component logic only
+│   │       ├── Header.styled.ts # Styled components for Header
 │   │       ├── Hero.tsx
-│   │       └── ItemList.tsx # Fetches /api/v1/items
+│   │       ├── Hero.styled.ts
+│   │       ├── ItemList.tsx     # Fetches /api/v1/items
+│   │       └── ItemList.styled.ts
 │   ├── index.html
+│   ├── eslint.config.js
 │   ├── vite.config.ts       # Proxies /api → backend in dev
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── tsconfig.node.json
 ├── .gitignore
+├── .prettierrc              # Shared Prettier config
 ├── CLAUDE.md
 ├── LICENSE                  # WTFPL
 └── README.md
@@ -128,8 +134,25 @@ git subtree push --prefix frontend scalingo-frontend main
 
 ## Conventions
 
+### General
 - API routes prefixed `/api/v1/`
 - Strict TypeScript throughout (no `any`)
-- styled-components with typed theme via `ThemeProvider`
 - Prisma migrations committed in `prisma/migrations/`
 - Commits: conventional commits (`feat:`, `fix:`, `chore:`)
+
+### File size & structure
+- **Max 150 lines per file** — if a file grows beyond this, split it
+- **One component per file** — no multiple exported components in one `.tsx`
+- **Styling in a separate file** — every component `Foo.tsx` has a sibling `Foo.styled.ts` that contains all its styled-components; never define styled components inside a component file
+
+### Linting & formatting
+- ESLint + Prettier are configured in both `frontend/` and `backend/`
+- Run `npm run lint` to check, `npm run lint:fix` to auto-fix, `npm run format` to format
+- Prettier config lives at the repo root (`.prettierrc`) and applies to both apps
+- **Never commit code that fails lint or has unformatted files** — run format + lint before committing
+
+### Styled-components
+- All theme tokens live in `frontend/src/theme.ts`
+- Full TypeScript support via `frontend/src/styled.d.ts` — `DefaultTheme` extends `Theme`
+- Global reset in `frontend/src/GlobalStyle.ts`
+- Never use inline `style={{}}` for anything covered by the theme

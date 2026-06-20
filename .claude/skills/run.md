@@ -2,21 +2,39 @@
 
 Start the local development environment for uslehne.
 
+## Prerequisites
+
+- PostgreSQL running locally
+- `backend/.env` exists with a valid `DATABASE_URL`
+
 ## Steps
 
-1. Start the backend:
+1. **Database migrations** (first time or after schema changes):
+   ```bash
+   cd backend && npx prisma migrate dev
+   ```
+
+2. **Start backend:**
    ```bash
    cd backend && npm install && npm run dev
    ```
-   Runs on `http://localhost:3001`
+   Runs on `http://localhost:3001` with file watching via tsx.
 
-2. Start the frontend (separate terminal):
+3. **Start frontend** (separate terminal):
    ```bash
    cd frontend && npm install && npm run dev
    ```
-   Runs on `http://localhost:5173`
+   Runs on `http://localhost:5173`, proxies `/api` → `:3001`.
 
 ## Health check
 
-- Backend: `curl http://localhost:3001/api/v1/health`
-- Frontend: open browser at `http://localhost:5173`
+```bash
+curl http://localhost:3001/api/v1/health
+# → {"status":"ok","db":"connected","timestamp":"..."}
+```
+
+## Seed demo data
+
+```bash
+cd backend && npm run db:seed
+```
