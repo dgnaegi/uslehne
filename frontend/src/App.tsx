@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate, useSearchParams } from 'react-router-dom'
+import { Routes, Route, Navigate, useSearchParams, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 import { useAuth } from './auth/AuthContext'
 import { Header } from './components/Header'
 import { AuthModal } from './components/AuthModal'
@@ -14,7 +15,15 @@ import { ProfilePage } from './routes/ProfilePage'
 function RegisterRedirect() {
   const [params] = useSearchParams()
   const invite = params.get('invite')
-  return <Navigate to={invite ? `/offers?invite=${invite}` : '/offers'} replace />
+  const navigate = useNavigate()
+  const { openAuthModal } = useAuth()
+
+  useEffect(() => {
+    openAuthModal()
+    navigate(invite ? `/offers?invite=${invite}` : '/offers', { replace: true })
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  return null
 }
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
