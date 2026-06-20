@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import path from 'path'
 import express from 'express'
 import cors from 'cors'
 import healthRouter from './routes/health'
@@ -13,6 +14,14 @@ app.use(express.json())
 
 app.use('/api/v1', healthRouter)
 app.use('/api/v1', itemsRouter)
+
+if (process.env.NODE_ENV === 'production') {
+  const staticDir = path.resolve(__dirname, '../../frontend/dist')
+  app.use(express.static(staticDir))
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(staticDir, 'index.html'))
+  })
+}
 
 app.use(errorHandler)
 

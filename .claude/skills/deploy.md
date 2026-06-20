@@ -1,42 +1,40 @@
 # Skill: deploy
 
-Deploy uslehne to Scalingo.
+Deploy uslehne to Scalingo with a standard `git push`.
 
-## Prerequisites
+## How it works
 
-- [Scalingo CLI](https://doc.scalingo.com/platform/cli/start) installed
-- Logged in: `scalingo login`
-- Git remotes configured (see CLAUDE.md)
+One Scalingo app runs both the React frontend and the Node.js API:
 
-## Deploy backend
+1. Scalingo detects Node.js via the root `package.json`
+2. Runs `npm install` → triggers `postinstall` → installs `backend/` and `frontend/` deps
+3. Runs `npm run build` → builds the React app (`frontend/dist/`) then compiles TypeScript (`backend/dist/`)
+4. Starts with `node backend/dist/index.js` via `Procfile`
+5. In production, Express serves `frontend/dist/` as static files on `*` routes
 
-```bash
-git subtree push --prefix backend scalingo-backend main
-```
-
-Or from inside the `backend/` directory:
-```bash
-git push scalingo-backend main
-```
-
-## Deploy frontend
-
-Build and push:
-```bash
-cd frontend && npm run build
-git subtree push --prefix frontend scalingo-frontend main
-```
-
-## Check status
+## Deploy
 
 ```bash
-scalingo --app uslehne-api ps
-scalingo --app uslehne-web ps
+git push scalingo main
 ```
 
-## View logs
+## First deploy only — run DB migrations
 
 ```bash
-scalingo --app uslehne-api logs --lines 100
-scalingo --app uslehne-web logs --lines 100
+scalingo --app uslehne run npm run db:migrate --prefix backend
 ```
+
+## Useful Scalingo CLI commands
+
+```bash
+scalingo --app uslehne logs --lines 100   # view logs
+scalingo --app uslehne ps                 # check running processes
+scalingo --app uslehne run bash           # open a shell on the dyno
+```
+
+## Environment variables to set on Scalingo
+
+| Variable       | Value                                    |
+|----------------|------------------------------------------|
+| `NODE_ENV`     | `production`                             |
+| `DATABASE_URL` | Set automatically by PostgreSQL addon    |
