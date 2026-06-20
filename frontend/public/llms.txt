@@ -1,0 +1,30 @@
+# uslehne
+
+> Schweizer Plattform zum Teilen und Ausleihen von Alltagsgegenständen
+
+uslehne.ch ist eine deutschsprachige Community-Plattform in der Schweiz,
+auf der Nutzer Gegenstände wie Werkzeug, Kinderwagen, Spielzeug oder
+Haushaltsgeräte kostenlos teilen oder ausleihen können — temporär oder permanent.
+
+## Kernfunktionen
+
+- Gegenstände inserieren (Titel, Beschreibung, Kategorie)
+- Gegenstände suchen und anfragen
+- Kostenlos, ohne Vermittlungsgebühr
+
+## Beispielkategorien
+
+Werkzeug (Bohrmaschinen, Sägen, Leitern), Babysachen (Kinderwagen, Wippen, Hochstühle),
+Haushalt, Sport, Elektronik, Garten
+
+## Zielgruppe
+
+Deutschsprachige Nutzer in der Schweiz
+
+## Sprache
+
+Deutsch (Schweiz, de-CH)
+
+## Kontakt
+
+https://uslehne.ch
