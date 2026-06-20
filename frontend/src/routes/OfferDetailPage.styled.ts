@@ -21,8 +21,8 @@ export const BackLink = styled.button`
 
 export const ImageBlock = styled.div`
   overflow: hidden;
-  height: 60vh;
-  min-height: 320px;
+  aspect-ratio: 16 / 9;
+  max-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -115,7 +115,7 @@ model Invite {
   code        String    @unique
   createdBy   User      @relation("InvitesCreated", fields: [createdById], references: [id])
   createdById String
-  kudos       Int       @default(20)
+  kudos       Int       @default(10)
   usedBy      User?     @relation("InviteUsed", fields: [usedById], references: [id])
   usedById    String?   @unique
   usedAt      DateTime?

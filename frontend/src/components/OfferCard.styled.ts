@@ -7,7 +7,7 @@ export const Card = styled.article`
   border-radius: ${({ theme }) => theme.radius};
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadow};
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 9;
   cursor: pointer;
   text-decoration: none;
   display: block;
