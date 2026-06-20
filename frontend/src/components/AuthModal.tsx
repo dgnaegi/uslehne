@@ -43,8 +43,8 @@ export function AuthModal() {
     try {
       const { exists } = await authApi.checkEmail(email)
       setStep(exists ? 'login' : 'register')
-    } catch {
-      setError('Fehler beim Prüfen.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Fehler beim Prüfen.')
     } finally {
       setLoading(false)
     }
