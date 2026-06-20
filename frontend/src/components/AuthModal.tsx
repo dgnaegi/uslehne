@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { authApi } from '../api/endpoints'
+import { authApi, inviteApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
 import { FormGroup, Label, Input, Button, ErrorMsg } from './Layout.styled'
 import {
@@ -26,6 +26,7 @@ export function AuthModal() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [inviteCode, setInviteCode] = useState(urlParams.get('invite') ?? '')
+  const [inviteKudos, setInviteKudos] = useState<number | null>(null)
   const [showPw, setShowPw] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -52,6 +53,10 @@ export function AuthModal() {
     setLoading(true)
     try {
       const { exists } = await authApi.checkEmail(email)
+      if (!exists && inviteCode) {
+        const { kudos } = await inviteApi.check(inviteCode)
+        setInviteKudos(kudos)
+      }
       setStep(exists ? 'login' : 'register')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Fehler beim Prüfen.')
@@ -189,6 +194,11 @@ export function AuthModal() {
                     required
                   />
                 </FormGroup>
+              )}
+              {inviteKudos !== null && (
+                <p style={{ fontWeight: 600, marginBottom: '8px' }}>
+                  {t('inviteBonus', { kudos: inviteKudos })}
+                </p>
               )}
               {error && <ErrorMsg>{error}</ErrorMsg>}
               <Button type="submit" disabled={loading}>

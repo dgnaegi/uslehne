@@ -48,7 +48,7 @@ router.post(
 
       const code = randomBytes(8).toString('hex')
       const invite = await db.invite.create({
-        data: { code, createdById: userId, kudos: 20 },
+        data: { code, createdById: userId, kudos: 10 },
         select: { id: true, code: true, kudos: true, createdAt: true },
       })
       res.status(201).json({ invite })
@@ -62,10 +62,10 @@ router.get('/invites/:code', async (req: Request, res: Response, next: NextFunct
   try {
     const invite = await db.invite.findUnique({
       where: { code: req.params.code },
-      select: { id: true, usedById: true },
+      select: { id: true, kudos: true, usedById: true },
     })
     const valid = !!invite && invite.usedById === null
-    res.json({ valid })
+    res.json({ valid, kudos: invite?.kudos ?? null })
   } catch (err) {
     next(err)
   }

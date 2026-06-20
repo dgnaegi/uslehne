@@ -54,7 +54,7 @@ export const transactionApi = {
 export const inviteApi = {
   list: () => api.get<{ invites: Invite[] }>('/invites'),
   create: () => api.post<{ invite: Invite }>('/invites', {}),
-  check: (code: string) => api.get<{ valid: boolean }>(`/invites/${code}`),
+  check: (code: string) => api.get<{ valid: boolean; kudos: number | null }>(`/invites/${code}`),
 }
 
 export const kudosApi = {
