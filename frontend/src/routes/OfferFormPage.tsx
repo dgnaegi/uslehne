@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import type { Address } from '../api/types'
 import { offerApi, addressApi } from '../api/endpoints'
 import { resizeImage } from '../utils/imageResize'
+import { AddressInlineCreate } from '../components/AddressInlineCreate'
 import {
   PageWrapper,
   PageTitle,
@@ -36,6 +37,7 @@ export function OfferFormPage() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
     setError,
   } = useForm<FormValues>()
@@ -44,12 +46,7 @@ export function OfferFormPage() {
     addressApi.list().then(({ addresses: a }) => setAddresses(a))
     if (isEdit && id) {
       offerApi.get(id).then(({ offer }) => {
-        reset({
-          title: offer.title,
-          description: offer.description,
-          type: offer.type,
-          addressId: offer.addressId,
-        })
+        reset({ title: offer.title, description: offer.description, type: offer.type, addressId: offer.addressId })
         setImageDataUrl(offer.imageRef)
       })
     }
@@ -58,8 +55,7 @@ export function OfferFormPage() {
   async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
-    const resized = await resizeImage(file)
-    setImageDataUrl(resized)
+    setImageDataUrl(await resizeImage(file))
   }
 
   async function onSubmit(values: FormValues) {
@@ -67,18 +63,16 @@ export function OfferFormPage() {
       if (isEdit && id) {
         await offerApi.update(id, { ...values, image: imageDataUrl || undefined })
       } else {
-        if (!imageDataUrl) {
-          setError('root', { message: 'Bitte Bild auswählen.' })
-          return
-        }
+        if (!imageDataUrl) { setError('root', { message: 'Bitte Bild auswählen.' }); return }
         await offerApi.create({ ...values, image: imageDataUrl })
       }
       navigate('/my-offers')
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : t('errors:GENERIC', { ns: 'errors' })
-      setError('root', { message: msg })
+      setError('root', { message: err instanceof Error ? err.message : t('errors:GENERIC', { ns: 'errors' }) })
     }
   }
+
+  const hasAddresses = addresses.length > 0
 
   return (
     <PageWrapper>
@@ -104,15 +98,21 @@ export function OfferFormPage() {
         </FormGroup>
         <FormGroup>
           <Label>{t('offers:address')}</Label>
-          {addresses.length === 0 ? (
-            <ErrorMsg>{t('offers:noAddresses')}</ErrorMsg>
+          {!hasAddresses && !isEdit ? (
+            <AddressInlineCreate
+              onCreated={(newId) => {
+                addressApi.list().then(({ addresses: a }) => {
+                  setAddresses(a)
+                  setValue('addressId', newId)
+                })
+              }}
+            />
           ) : (
             <Select {...register('addressId', { required: true })}>
               <option value="">{t('offers:selectAddress')}</option>
               {addresses.map((a) => (
                 <option key={a.id} value={a.id}>
-                  {a.label ? `${a.label} — ` : ''}
-                  {a.street}, {a.city}
+                  {a.label ? `${a.label} — ` : ''}{a.street}, {a.city}
                 </option>
               ))}
             </Select>
@@ -121,22 +121,13 @@ export function OfferFormPage() {
         <FormGroup>
           <Label>{t('offers:image')}</Label>
           {imageDataUrl && <ImagePreview src={imageDataUrl} alt="Vorschau" />}
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={handleImageChange}
-          />
+          <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleImageChange} />
         </FormGroup>
         {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
-        <Button type="submit" disabled={isSubmitting || addresses.length === 0}>
+        <Button type="submit" disabled={isSubmitting || (!hasAddresses && !isEdit)}>
           {t('common:actions.save')}
         </Button>
-        <Button
-          $variant="secondary"
-          type="button"
-          onClick={() => navigate(-1)}
-          style={{ marginLeft: '8px' }}
-        >
+        <Button $variant="secondary" type="button" onClick={() => navigate(-1)} style={{ marginLeft: '8px' }}>
           {t('common:actions.cancel')}
         </Button>
       </form>
