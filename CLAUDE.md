@@ -127,10 +127,11 @@ git subtree push --prefix frontend scalingo-frontend main
 
 ## Skills
 
-| Skill     | Description                        |
-|-----------|------------------------------------|
-| `run`     | Start the dev environment locally  |
-| `deploy`  | Deploy to Scalingo                 |
+| Skill           | Description                                              |
+|-----------------|----------------------------------------------------------|
+| `run`           | Start the dev environment locally                        |
+| `deploy`        | Deploy to Scalingo                                       |
+| `design-review` | Full design audit — spacing, a11y, responsive, 2026 best practices |
 
 ## Conventions
 
