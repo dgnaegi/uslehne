@@ -5,6 +5,10 @@ export const PageWrapper = styled.main`
   max-width: ${({ theme }) => theme.maxWidth};
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
+
+  @media (max-width: 600px) {
+    padding: ${({ theme }) => theme.spacing.md};
+  }
 `
 
 export const PageTitle = styled.h1`
@@ -24,7 +28,7 @@ export const Button = styled.button<{ $variant?: 'primary' | 'secondary' | 'dang
   letter-spacing: 0.05em;
   background: ${({ theme, $variant }) =>
     $variant === 'danger'
-      ? '#ff4444'
+      ? theme.colors.danger
       : $variant === 'secondary'
         ? theme.colors.surface
         : theme.colors.accent};
@@ -39,6 +43,10 @@ export const Button = styled.button<{ $variant?: 'primary' | 'secondary' | 'dang
     transform: translate(-2px, -2px);
     box-shadow: ${({ theme }) => theme.shadowMd};
   }
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -52,7 +60,7 @@ export const Input = styled.input`
   border-radius: ${({ theme }) => theme.radius};
   font-size: 1rem;
   background: ${({ theme }) => theme.colors.surface};
-  &:focus {
+  &:focus-visible {
     outline: none;
     box-shadow: ${({ theme }) => theme.shadow};
   }
@@ -67,7 +75,7 @@ export const Textarea = styled.textarea`
   background: ${({ theme }) => theme.colors.surface};
   resize: vertical;
   min-height: 100px;
-  &:focus {
+  &:focus-visible {
     outline: none;
     box-shadow: ${({ theme }) => theme.shadow};
   }
@@ -81,6 +89,10 @@ export const Select = styled.select`
   font-size: 1rem;
   background: ${({ theme }) => theme.colors.surface};
   cursor: pointer;
+  &:focus-visible {
+    outline: none;
+    box-shadow: ${({ theme }) => theme.shadow};
+  }
 `
 
 export const FormGroup = styled.div`
@@ -96,7 +108,7 @@ export const Label = styled.label`
 `
 
 export const ErrorMsg = styled.p`
-  color: #cc0000;
+  color: ${({ theme }) => theme.colors.error};
   font-size: 0.85rem;
   font-weight: 600;
 `
