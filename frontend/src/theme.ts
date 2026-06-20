@@ -4,7 +4,7 @@ const px = (n: number): string => `${n * BASE}px`
 export const theme = {
   colors: {
     primary:    '#1a1a2e',
-    accent:     '#e94560',
+    accent:     '#16a34a',
     background: '#f4f4f8',
     surface:    '#ffffff',
     text:       '#1a1a2e',
