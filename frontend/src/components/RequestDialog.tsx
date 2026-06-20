@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { transactionApi } from '../api/endpoints'
 import { FormGroup, Label, Input, Textarea, Button, ErrorMsg, Select } from './Layout.styled'
-import { Overlay, DialogBox, DialogTitle } from './RequestDialog.styled'
+import { Overlay, DialogBox, DialogTitle, ButtonRow } from './RequestDialog.styled'
 
 interface Props {
   offerId: string
@@ -26,6 +26,14 @@ export function RequestDialog({ offerId, onClose }: Props) {
     setError,
   } = useForm<FormValues>({ defaultValues: { contactType: 'PHONE' } })
 
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [onClose])
+
   async function onSubmit(values: FormValues) {
     try {
       await transactionApi.request(offerId, values)
@@ -38,14 +46,19 @@ export function RequestDialog({ offerId, onClose }: Props) {
 
   return (
     <Overlay onClick={onClose}>
-      <DialogBox onClick={(e) => e.stopPropagation()}>
-        <DialogTitle>{t('transactions:requestDialog.title')}</DialogTitle>
+      <DialogBox
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="request-dialog-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <DialogTitle id="request-dialog-title">{t('transactions:requestDialog.title')}</DialogTitle>
         {success ? (
           <>
             <p>{t('transactions:requestDialog.success')}</p>
-            <Button onClick={onClose} style={{ marginTop: '16px' }}>
-              OK
-            </Button>
+            <ButtonRow>
+              <Button onClick={onClose}>OK</Button>
+            </ButtonRow>
           </>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -69,17 +82,14 @@ export function RequestDialog({ offerId, onClose }: Props) {
               <Textarea {...register('message')} />
             </FormGroup>
             {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
-            <Button type="submit" disabled={isSubmitting}>
-              {t('transactions:requestDialog.submit')}
-            </Button>
-            <Button
-              $variant="secondary"
-              type="button"
-              onClick={onClose}
-              style={{ marginLeft: '8px' }}
-            >
-              {t('common:actions.cancel')}
-            </Button>
+            <ButtonRow>
+              <Button type="submit" disabled={isSubmitting}>
+                {t('transactions:requestDialog.submit')}
+              </Button>
+              <Button $variant="secondary" type="button" onClick={onClose}>
+                {t('common:actions.cancel')}
+              </Button>
+            </ButtonRow>
           </form>
         )}
       </DialogBox>

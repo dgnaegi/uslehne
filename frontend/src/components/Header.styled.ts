@@ -11,6 +11,10 @@ export const Nav = styled.header`
   position: sticky;
   top: 0;
   z-index: 100;
+
+  @media (max-width: 600px) {
+    padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+  }
 `
 
 export const Logo = styled.span`
@@ -32,7 +36,13 @@ export const NavLinks = styled.nav`
 
   a:hover {
     text-decoration: underline;
-    text-underline-offset: 4px;
+    text-underline-offset: ${({ theme }) => theme.spacing.xs};
+  }
+
+  a:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+    border-radius: ${({ theme }) => theme.radius};
   }
 `
 
@@ -58,6 +68,11 @@ export const NavButton = styled.button`
   padding: 0;
   &:hover {
     text-decoration: underline;
-    text-underline-offset: 4px;
+    text-underline-offset: ${({ theme }) => theme.spacing.xs};
+  }
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+    border-radius: ${({ theme }) => theme.radius};
   }
 `

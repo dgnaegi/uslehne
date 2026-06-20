@@ -13,10 +13,17 @@ export function AddressInlineCreate({ onCreated }: Props) {
   const [error, setError] = useState('')
 
   async function handleSave() {
-    if (!street.trim() || !zip.trim()) { setError('Bitte alle Felder ausfüllen.'); return }
+    if (!street.trim() || !zip.trim()) {
+      setError('Bitte alle Felder ausfüllen.')
+      return
+    }
     setSaving(true)
     try {
-      const { address } = await addressApi.create({ street: street.trim(), zip: zip.trim(), city: 'Zürich' })
+      const { address } = await addressApi.create({
+        street: street.trim(),
+        zip: zip.trim(),
+        city: 'Zürich',
+      })
       onCreated(address.id)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Fehler beim Speichern.')

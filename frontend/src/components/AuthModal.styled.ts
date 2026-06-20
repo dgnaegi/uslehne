@@ -8,6 +8,7 @@ export const Overlay = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: ${({ theme }) => theme.spacing.md};
 `
 
 export const ModalBox = styled.div`
@@ -19,7 +20,6 @@ export const ModalBox = styled.div`
   padding: ${({ theme }) => theme.spacing.xl};
   width: 100%;
   max-width: 420px;
-  margin: ${({ theme }) => theme.spacing.md};
 `
 
 export const ModalTitle = styled.h2`
@@ -37,8 +37,17 @@ export const CloseBtn = styled.button`
   font-size: 1.2rem;
   cursor: pointer;
   line-height: 1;
-  padding: 4px;
+  padding: ${({ theme }) => theme.spacing.xs};
   color: ${({ theme }) => theme.colors.primary};
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
 `
 
 export const EmailDisplay = styled.p`
@@ -51,6 +60,10 @@ export const PasswordWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+
+  input {
+    padding-right: 2.5rem;
+  }
 `
 
 export const EyeBtn = styled.button`
@@ -63,9 +76,14 @@ export const EyeBtn = styled.button`
   cursor: pointer;
   font-size: 1.1rem;
   line-height: 1;
-  padding: 0;
+  padding: ${({ theme }) => theme.spacing.xs};
   display: flex;
   align-items: center;
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+    border-radius: ${({ theme }) => theme.radius};
+  }
 `
 
 export const BackBtn = styled.button`
@@ -79,4 +97,8 @@ export const BackBtn = styled.button`
   text-decoration: underline;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.primary};
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
 `

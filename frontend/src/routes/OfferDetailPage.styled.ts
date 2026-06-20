@@ -20,20 +20,24 @@ export const BackLink = styled.button`
 `
 
 export const ImageBlock = styled.div`
-  border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
   overflow: hidden;
-  max-height: 400px;
+  height: 60vh;
+  min-height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: ${({ theme }) => theme.colors.pastelYellow};
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-  font-size: 4rem;
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
+  font-size: 6rem;
+  /* break out of the DetailWrapper padding to span full viewport width */
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
 
   img {
     width: 100%;
-    max-height: 400px;
+    height: 100%;
     object-fit: cover;
   }
 `

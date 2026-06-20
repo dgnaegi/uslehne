@@ -38,7 +38,10 @@ export function OfferDetailPage() {
   const isOwner = user?.id === offer.ownerId
 
   function handleRequest() {
-    if (!user) { openAuthModal(); return }
+    if (!user) {
+      openAuthModal()
+      return
+    }
     setShowDialog(true)
   }
 

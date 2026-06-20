@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { authApi } from '../api/endpoints'
@@ -30,6 +30,14 @@ export function AuthModal() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const publicSignup = import.meta.env.VITE_PUBLIC_SIGNUP === 'true'
+
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') closeAuthModal()
+    }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [closeAuthModal])
 
   function goBack() {
     setStep('email')
@@ -91,13 +99,12 @@ export function AuthModal() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={{ paddingRight: '2.5rem', width: '100%' }}
           autoComplete={step === 'login' ? 'current-password' : 'new-password'}
         />
         <EyeBtn
           type="button"
           onClick={() => setShowPw((p) => !p)}
-          title={showPw ? t('hidePassword') : t('showPassword')}
+          aria-label={showPw ? t('hidePassword') : t('showPassword')}
         >
           {showPw ? '🙈' : '👁️'}
         </EyeBtn>
@@ -107,12 +114,19 @@ export function AuthModal() {
 
   return (
     <Overlay onClick={closeAuthModal}>
-      <ModalBox onClick={(e) => e.stopPropagation()}>
-        <CloseBtn onClick={closeAuthModal} aria-label="Schliessen">✕</CloseBtn>
+      <ModalBox
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-modal-title"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <CloseBtn onClick={closeAuthModal} aria-label="Schliessen">
+          ✕
+        </CloseBtn>
 
         {step === 'email' && (
           <>
-            <ModalTitle>Anmelden</ModalTitle>
+            <ModalTitle id="auth-modal-title">Anmelden</ModalTitle>
             <form onSubmit={handleEmailSubmit}>
               <FormGroup>
                 <Label>{t('email')}</Label>
@@ -126,19 +140,23 @@ export function AuthModal() {
                 />
               </FormGroup>
               {error && <ErrorMsg>{error}</ErrorMsg>}
-              <Button type="submit" disabled={loading}>{t('continueButton')}</Button>
+              <Button type="submit" disabled={loading}>
+                {t('continueButton')}
+              </Button>
             </form>
           </>
         )}
 
         {step === 'login' && (
           <>
-            <ModalTitle>{t('loginStep')}</ModalTitle>
+            <ModalTitle id="auth-modal-title">{t('loginStep')}</ModalTitle>
             <EmailDisplay>{email}</EmailDisplay>
             <form onSubmit={handleLogin}>
               {pwField}
               {error && <ErrorMsg>{error}</ErrorMsg>}
-              <Button type="submit" disabled={loading}>{t('loginButton')}</Button>
+              <Button type="submit" disabled={loading}>
+                {t('loginButton')}
+              </Button>
             </form>
             <BackBtn onClick={goBack}>{t('backButton')}</BackBtn>
           </>
@@ -146,7 +164,7 @@ export function AuthModal() {
 
         {step === 'register' && (
           <>
-            <ModalTitle>{t('registerStep')}</ModalTitle>
+            <ModalTitle id="auth-modal-title">{t('registerStep')}</ModalTitle>
             <EmailDisplay>{email}</EmailDisplay>
             <form onSubmit={handleRegister}>
               <FormGroup>
@@ -173,7 +191,9 @@ export function AuthModal() {
                 </FormGroup>
               )}
               {error && <ErrorMsg>{error}</ErrorMsg>}
-              <Button type="submit" disabled={loading}>{t('registerButton')}</Button>
+              <Button type="submit" disabled={loading}>
+                {t('registerButton')}
+              </Button>
             </form>
             <BackBtn onClick={goBack}>{t('backButton')}</BackBtn>
           </>

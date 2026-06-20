@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { Invite } from '../api/types'
 import { inviteApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
-import { PageWrapper, PageTitle, Button } from '../components/Layout.styled'
+import { PageWrapper, PageTitle, Button, ErrorMsg } from '../components/Layout.styled'
 import { InviteCard, InviteCode, InviteStatus, InviteActions, TopBar } from './InvitesPage.styled'
 
 const getInviteBase = () => `${window.location.origin}/register?invite=`
@@ -48,7 +48,7 @@ export function InvitesPage() {
           {atLimit ? t('invites:limitReached') : t('invites:createInvite')}
         </Button>
       </TopBar>
-      {error && <p style={{ color: '#cc0000', fontWeight: 600 }}>{error}</p>}
+      {error && <ErrorMsg>{error}</ErrorMsg>}
       {loading ? (
         <p>{t('common:actions.loading')}</p>
       ) : invites.length === 0 ? (

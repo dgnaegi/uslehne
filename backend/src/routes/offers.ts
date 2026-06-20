@@ -36,7 +36,7 @@ export const offerPublicSelect = {
   createdAt: true,
   updatedAt: true,
   owner: { select: { username: true } },
-  address: { select: { zip: true } },
+  address: { select: { zip: true, city: true } },
 }
 
 router.get('/offers', async (req: Request, res: Response, next: NextFunction) => {

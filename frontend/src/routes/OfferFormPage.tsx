@@ -46,7 +46,12 @@ export function OfferFormPage() {
     addressApi.list().then(({ addresses: a }) => setAddresses(a))
     if (isEdit && id) {
       offerApi.get(id).then(({ offer }) => {
-        reset({ title: offer.title, description: offer.description, type: offer.type, addressId: offer.addressId })
+        reset({
+          title: offer.title,
+          description: offer.description,
+          type: offer.type,
+          addressId: offer.addressId,
+        })
         setImageDataUrl(offer.imageRef)
       })
     }
@@ -63,12 +68,17 @@ export function OfferFormPage() {
       if (isEdit && id) {
         await offerApi.update(id, { ...values, image: imageDataUrl || undefined })
       } else {
-        if (!imageDataUrl) { setError('root', { message: 'Bitte Bild auswählen.' }); return }
+        if (!imageDataUrl) {
+          setError('root', { message: 'Bitte Bild auswählen.' })
+          return
+        }
         await offerApi.create({ ...values, image: imageDataUrl })
       }
       navigate('/my-offers')
     } catch (err: unknown) {
-      setError('root', { message: err instanceof Error ? err.message : t('errors:GENERIC', { ns: 'errors' }) })
+      setError('root', {
+        message: err instanceof Error ? err.message : t('errors:GENERIC', { ns: 'errors' }),
+      })
     }
   }
 
@@ -112,7 +122,8 @@ export function OfferFormPage() {
               <option value="">{t('offers:selectAddress')}</option>
               {addresses.map((a) => (
                 <option key={a.id} value={a.id}>
-                  {a.label ? `${a.label} — ` : ''}{a.street}, {a.city}
+                  {a.label ? `${a.label} — ` : ''}
+                  {a.street}, {a.city}
                 </option>
               ))}
             </Select>
@@ -121,13 +132,22 @@ export function OfferFormPage() {
         <FormGroup>
           <Label>{t('offers:image')}</Label>
           {imageDataUrl && <ImagePreview src={imageDataUrl} alt="Vorschau" />}
-          <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleImageChange} />
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={handleImageChange}
+          />
         </FormGroup>
         {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
         <Button type="submit" disabled={isSubmitting || (!hasAddresses && !isEdit)}>
           {t('common:actions.save')}
         </Button>
-        <Button $variant="secondary" type="button" onClick={() => navigate(-1)} style={{ marginLeft: '8px' }}>
+        <Button
+          $variant="secondary"
+          type="button"
+          onClick={() => navigate(-1)}
+          style={{ marginLeft: '8px' }}
+        >
           {t('common:actions.cancel')}
         </Button>
       </form>
