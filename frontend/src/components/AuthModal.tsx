@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { authApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
@@ -19,11 +20,12 @@ type Step = 'email' | 'login' | 'register'
 export function AuthModal() {
   const { t } = useTranslation('auth')
   const { login, closeAuthModal } = useAuth()
+  const [urlParams] = useSearchParams()
   const [step, setStep] = useState<Step>('email')
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [inviteCode, setInviteCode] = useState('')
+  const [inviteCode, setInviteCode] = useState(urlParams.get('invite') ?? '')
   const [showPw, setShowPw] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)

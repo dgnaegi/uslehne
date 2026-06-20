@@ -6,7 +6,7 @@ import { useAuth } from '../auth/AuthContext'
 import { PageWrapper, PageTitle, Button } from '../components/Layout.styled'
 import { InviteCard, InviteCode, InviteStatus, InviteActions, TopBar } from './InvitesPage.styled'
 
-const getInviteBase = () => `${window.location.origin}/register?invite=`
+const getInviteBase = () => `${window.location.origin}/offers?invite=`
 
 export function InvitesPage() {
   const { t } = useTranslation(['invites', 'common'])

@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from './auth/AuthContext'
 import { Header } from './components/Header'
 import { AuthModal } from './components/AuthModal'
@@ -10,6 +10,12 @@ import { MyOffersPage } from './routes/MyOffersPage'
 import { TransactionsPage } from './routes/TransactionsPage'
 import { InvitesPage } from './routes/InvitesPage'
 import { ProfilePage } from './routes/ProfilePage'
+
+function RegisterRedirect() {
+  const [params] = useSearchParams()
+  const invite = params.get('invite')
+  return <Navigate to={invite ? `/offers?invite=${invite}` : '/offers'} replace />
+}
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading, openAuthModal } = useAuth()
@@ -87,7 +93,7 @@ function App() {
           }
         />
         <Route path="/login" element={<Navigate to="/offers" replace />} />
-        <Route path="/register" element={<Navigate to="/offers" replace />} />
+        <Route path="/register" element={<RegisterRedirect />} />
       </Routes>
     </>
   )
