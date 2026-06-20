@@ -17,6 +17,9 @@ export const theme = {
     pastelMint: '#B8F0D4',
     pastelPurple: '#D4B8F9',
     pastelOrange: '#FFD4A8',
+    danger: '#d32f2f',
+    error: '#c62828',
+    success: '#2e7d32',
   },
   spacing: {
     xs: px(1), // 4px
