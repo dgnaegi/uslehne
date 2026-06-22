@@ -11,6 +11,7 @@ import { ADMIN_USERNAMES } from '../config/admins'
 
 const router = Router()
 
+const SUPER_INVITE_CODE = 'Free4All'
 
 const registerSchema = z.object({
   username: z
@@ -46,9 +47,17 @@ router.post(
     try {
       const { username, email, password, inviteCode } = req.body as z.infer<typeof registerSchema>
 
-      const invite = await db.invite.findUnique({ where: { code: inviteCode } })
-      if (!invite) throw new AppError(ErrorCode.INVITE_NOT_FOUND, 404)
-      if (invite.usedById !== null) throw new AppError(ErrorCode.INVITE_ALREADY_USED, 409)
+      const isSuper = inviteCode === SUPER_INVITE_CODE
+      let inviteId: string | null = null
+      let inviteKudos = 10
+
+      if (!isSuper) {
+        const invite = await db.invite.findUnique({ where: { code: inviteCode } })
+        if (!invite) throw new AppError(ErrorCode.INVITE_NOT_FOUND, 404)
+        if (invite.usedById !== null) throw new AppError(ErrorCode.INVITE_ALREADY_USED, 409)
+        inviteId = invite.id
+        inviteKudos = invite.kudos
+      }
 
       const [existingEmail, existingUsername] = await Promise.all([
         db.user.findUnique({ where: { email } }),
@@ -65,16 +74,18 @@ router.post(
             username,
             email,
             passwordHash,
-            kudosBalance: invite.kudos,
+            kudosBalance: inviteKudos,
             role: ADMIN_USERNAMES.includes(username) ? 'ADMIN' : 'USER',
           },
         })
-        await tx.invite.update({
-          where: { id: invite.id },
-          data: { usedById: newUser.id, usedAt: new Date() },
-        })
+        if (inviteId) {
+          await tx.invite.update({
+            where: { id: inviteId },
+            data: { usedById: newUser.id, usedAt: new Date() },
+          })
+        }
         await tx.kudoLedger.create({
-          data: { userId: newUser.id, delta: invite.kudos, reason: 'INVITE_BONUS' },
+          data: { userId: newUser.id, delta: inviteKudos, reason: 'INVITE_BONUS' },
         })
         return newUser
       })

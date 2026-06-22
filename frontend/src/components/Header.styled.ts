@@ -25,35 +25,29 @@ export const Logo = styled.span`
   line-height: 1;
 `
 
-export const NavLinks = styled.nav`
+export const DesktopNav = styled.nav`
   display: flex;
   gap: ${({ theme }) => theme.spacing.lg};
+  align-items: center;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+`
+
+export const NavLink = styled.span`
   font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 
-  a:hover {
+  &:hover {
     text-decoration: underline;
-    text-underline-offset: ${({ theme }) => theme.spacing.xs};
+    text-underline-offset: 4px;
   }
-
-  a:focus-visible {
-    outline: 3px solid ${({ theme }) => theme.colors.primary};
-    outline-offset: 2px;
-    border-radius: ${({ theme }) => theme.radius};
-  }
-`
-
-export const KudoBadge = styled.span`
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.accent};
-  font-weight: 700;
-  font-size: 0.8rem;
-  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
-  border-radius: ${({ theme }) => theme.radius};
-  letter-spacing: 0.04em;
 `
 
 export const NavButton = styled.button`
@@ -66,13 +60,121 @@ export const NavButton = styled.button`
   cursor: pointer;
   color: inherit;
   padding: 0;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+
   &:hover {
     text-decoration: underline;
-    text-underline-offset: ${({ theme }) => theme.spacing.xs};
+    text-underline-offset: 4px;
   }
-  &:focus-visible {
-    outline: 3px solid ${({ theme }) => theme.colors.primary};
-    outline-offset: 2px;
-    border-radius: ${({ theme }) => theme.radius};
+`
+
+export const KudoBadge = styled.span`
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.accent};
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: ${({ theme }) => `2px ${theme.spacing.sm}`};
+  border-radius: ${({ theme }) => theme.radius};
+`
+
+export const KontoWrapper = styled.div`
+  position: relative;
+`
+
+export const DropdownMenu = styled.div`
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: ${({ theme }) => theme.colors.surface};
+  border: ${({ theme }) => theme.border};
+  border-radius: ${({ theme }) => theme.radius};
+  box-shadow: ${({ theme }) => theme.shadowMd};
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  a, button {
+    display: block;
+    padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: ${({ theme }) => theme.colors.text};
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.accent};
+    }
+
+    & + * {
+      border-top: ${({ theme }) => theme.border};
+    }
+  }
+`
+
+export const HamburgerBtn = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: inherit;
+  line-height: 1;
+  padding: 0;
+
+  @media (max-width: 600px) {
+    display: block;
+  }
+`
+
+export const MobileMenu = styled.div`
+  display: none;
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: ${({ theme }) => theme.colors.surface};
+    border-bottom: ${({ theme }) => theme.border};
+    box-shadow: ${({ theme }) => theme.shadowMd};
+    z-index: 99;
+
+    a, button {
+      display: flex;
+      align-items: center;
+      gap: ${({ theme }) => theme.spacing.sm};
+      padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing.xl}`};
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: ${({ theme }) => theme.colors.text};
+      background: none;
+      border: none;
+      border-bottom: 2px solid ${({ theme }) => theme.colors.border};
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background: ${({ theme }) => theme.colors.accent};
+      }
+    }
   }
 `
