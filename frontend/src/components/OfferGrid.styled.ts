@@ -12,6 +12,14 @@ export const Grid = styled.div`
   @media (min-width: 900px) {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  & > *:nth-child(1) { animation-delay: 0ms; }
+  & > *:nth-child(2) { animation-delay: 50ms; }
+  & > *:nth-child(3) { animation-delay: 100ms; }
+  & > *:nth-child(4) { animation-delay: 150ms; }
+  & > *:nth-child(5) { animation-delay: 200ms; }
+  & > *:nth-child(6) { animation-delay: 250ms; }
+  & > *:nth-child(n + 7) { animation-delay: 300ms; }
 `
 
 export const Empty = styled.p`

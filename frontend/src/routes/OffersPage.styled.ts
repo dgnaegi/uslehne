@@ -18,12 +18,16 @@ export const FilterButton = styled.button<{ $active: boolean }>`
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    transform 0.1s ease;
   &:hover {
     background: ${({ theme, $active }) =>
       $active ? theme.colors.primary : theme.colors.background};
   }
   &:active {
-    transform: translateY(1px);
+    transform: translateY(2px);
   }
   &:focus-visible {
     outline: 3px solid ${({ theme }) => theme.colors.primary};

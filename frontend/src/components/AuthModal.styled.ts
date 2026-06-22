@@ -1,4 +1,14 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const overlayIn = keyframes`
+  from { opacity: 0; }
+  to   { opacity: 1; }
+`
+
+const boxIn = keyframes`
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+`
 
 export const Overlay = styled.div`
   position: fixed;
@@ -9,6 +19,7 @@ export const Overlay = styled.div`
   justify-content: center;
   z-index: 1000;
   padding: ${({ theme }) => theme.spacing.md};
+  animation: ${overlayIn} 0.18s ease both;
 `
 
 export const ModalBox = styled.div`
@@ -20,6 +31,7 @@ export const ModalBox = styled.div`
   padding: ${({ theme }) => theme.spacing.xl};
   width: 100%;
   max-width: 420px;
+  animation: ${boxIn} 0.22s ease both;
 `
 
 export const ModalTitle = styled.h2`

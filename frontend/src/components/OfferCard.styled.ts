@@ -1,5 +1,10 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import type { OfferType } from '../api/types'
+
+const fadeInUp = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+`
 
 export const Card = styled.article`
   position: relative;
@@ -11,13 +16,19 @@ export const Card = styled.article`
   cursor: pointer;
   text-decoration: none;
   display: block;
+  animation: ${fadeInUp} 0.25s ease both;
   transition:
-    transform 0.1s,
-    box-shadow 0.1s;
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
 
   &:hover {
     transform: translate(-2px, -2px);
     box-shadow: ${({ theme }) => theme.shadowMd};
+  }
+
+  &:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px ${({ theme }) => theme.colors.primary};
   }
 
   &:focus-visible {
