@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
 import {
   Nav,
+  LogoGroup,
   Logo,
+  LogoClaim,
   DesktopNav,
   NavLink,
   NavButton,
@@ -46,9 +48,12 @@ export function Header() {
 
   return (
     <Nav style={{ position: 'relative' }}>
-      <Logo as={Link} to="/offers">
-        us<span>lehne</span>
-      </Logo>
+      <LogoGroup>
+        <Logo as={Link} to="/offers">
+          us<span>lehne</span>
+        </Logo>
+        <LogoClaim>Unkommerziell jetzt &amp; für immer</LogoClaim>
+      </LogoGroup>
 
       <DesktopNav>
         {user ? (

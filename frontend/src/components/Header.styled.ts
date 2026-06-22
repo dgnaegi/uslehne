@@ -17,11 +17,26 @@ export const Nav = styled.header`
   }
 `
 
+export const LogoGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`
+
 export const Logo = styled.span`
   font-family: ${({ theme }) => theme.fontComic};
   font-size: 2rem;
   letter-spacing: 0.08em;
   text-transform: lowercase;
+  line-height: 1;
+`
+
+export const LogoClaim = styled.span`
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textMuted};
   line-height: 1;
 `
 
