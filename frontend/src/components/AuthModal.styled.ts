@@ -17,7 +17,7 @@ export const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: ${({ theme }) => theme.zIndex.modal};
   padding: ${({ theme }) => theme.spacing.md};
   animation: ${overlayIn} 0.18s ease both;
 `
@@ -74,7 +74,7 @@ export const PasswordWrapper = styled.div`
   align-items: center;
 
   input {
-    padding-right: 2.5rem;
+    padding-right: ${({ theme }) => theme.spacing.xxl};
   }
 `
 
@@ -96,6 +96,12 @@ export const EyeBtn = styled.button`
     outline-offset: 2px;
     border-radius: ${({ theme }) => theme.radius};
   }
+`
+
+export const InviteBonus = styled.p`
+  font-weight: 600;
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
+  color: ${({ theme }) => theme.colors.success};
 `
 
 export const BackBtn = styled.button`

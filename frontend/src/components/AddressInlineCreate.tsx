@@ -51,9 +51,11 @@ export function AddressInlineCreate({ onCreated }: Props) {
         />
       </FormGroup>
       {error && <ErrorMsg>{error}</ErrorMsg>}
-      <Button type="button" onClick={handleSave} disabled={saving} style={{ marginBottom: '16px' }}>
-        {saving ? '…' : 'Adresse speichern'}
-      </Button>
+      <FormGroup>
+        <Button type="button" onClick={handleSave} disabled={saving}>
+          {saving ? '…' : 'Adresse speichern'}
+        </Button>
+      </FormGroup>
     </>
   )
 }

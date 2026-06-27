@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Offer } from '../api/types'
 import { offerApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
 import { Button } from '../components/Layout.styled'
 import { RequestDialog } from '../components/RequestDialog'
+import { ImageLightbox } from '../components/ImageLightbox'
 import {
   DetailWrapper,
   ImageBlock,
@@ -23,6 +24,7 @@ export function OfferDetailPage() {
   const navigate = useNavigate()
   const [offer, setOffer] = useState<Offer | null>(null)
   const [showDialog, setShowDialog] = useState(false)
+  const [showLightbox, setShowLightbox] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -32,7 +34,7 @@ export function OfferDetailPage() {
       .catch(() => navigate('/offers'))
   }, [id, navigate])
 
-  if (!offer) return <p style={{ padding: '32px' }}>{t('common:actions.loading')}</p>
+  if (!offer) return null
 
   const kudos = offer.type === 'LEND' ? 1 : 5
   const isOwner = user?.id === offer.ownerId
@@ -65,7 +67,11 @@ export function OfferDetailPage() {
         {offer.imageRef.startsWith('data:image/svg') ? (
           <span>📦</span>
         ) : (
-          <img src={offer.imageRef} alt={offer.title} />
+          <img
+            src={offer.imageRef}
+            alt={offer.title}
+            onClick={() => setShowLightbox(true)}
+          />
         )}
       </ImageBlock>
       <InfoBlock>
@@ -74,7 +80,7 @@ export function OfferDetailPage() {
         <p>{offer.description}</p>
         <MetaRow>
           <span>📍 {offer.address.zip}</span>
-          <span>{t('offers:postedBy', { username: offer.owner.username })}</span>
+          <Link to={`/users/${offer.ownerId}`}>@{offer.owner.username}</Link>
         </MetaRow>
         <MetaRow>
           <span>
@@ -109,6 +115,13 @@ export function OfferDetailPage() {
           offerId={offer.id}
           offerType={offer.type}
           onClose={() => setShowDialog(false)}
+        />
+      )}
+      {showLightbox && !offer.imageRef.startsWith('data:image/svg') && (
+        <ImageLightbox
+          src={offer.imageRef}
+          alt={offer.title}
+          onClose={() => setShowLightbox(false)}
         />
       )}
     </DetailWrapper>

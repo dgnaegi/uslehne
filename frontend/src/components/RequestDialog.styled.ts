@@ -17,7 +17,7 @@ export const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 200;
+  z-index: ${({ theme }) => theme.zIndex.overlay};
   padding: ${({ theme }) => theme.spacing.md};
   animation: ${overlayIn} 0.18s ease both;
 `

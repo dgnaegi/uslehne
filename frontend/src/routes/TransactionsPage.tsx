@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Transaction } from '../api/types'
 import { transactionApi } from '../api/endpoints'
 import { PageWrapper, PageTitle, Button, ErrorMsg } from '../components/Layout.styled'
+import { StarRating } from '../components/StarRating'
 import {
   TabBar,
   Tab,
@@ -11,7 +13,10 @@ import {
   TxMeta,
   TxContact,
   TxActions,
+  RateRow,
 } from './TransactionsPage.styled'
+
+const RATEABLE = new Set<Transaction['status']>(['ACCEPTED', 'RETURNED', 'COMPLETED'])
 
 export function TransactionsPage() {
   const { t } = useTranslation(['transactions', 'common'])
@@ -19,6 +24,7 @@ export function TransactionsPage() {
   const [txs, setTxs] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [actionError, setActionError] = useState('')
+  const [pendingRatings, setPendingRatings] = useState<Record<string, number>>({})
 
   const load = useCallback(() => {
     setLoading(true)
@@ -39,6 +45,24 @@ export function TransactionsPage() {
     } catch (err: unknown) {
       setActionError(err instanceof Error ? err.message : 'Fehler')
     }
+  }
+
+  async function submitRating(txId: string) {
+    const stars = pendingRatings[txId]
+    if (!stars) return
+    await doAction(() => transactionApi.rate(txId, stars).then(() => undefined))
+    setPendingRatings((prev) => {
+      const next = { ...prev }
+      delete next[txId]
+      return next
+    })
+  }
+
+  const CONTACT_ICON: Record<string, string> = {
+    EMAIL: '✉️',
+    SMS: '💬',
+    WHATSAPP: '📱',
+    SIGNAL: '🔒',
   }
 
   return (
@@ -66,19 +90,49 @@ export function TransactionsPage() {
               <span>
                 {tx.kudos} {t('common:currencyPlural', { ns: 'common' })}
               </span>
-              {tab === 'incoming' && tx.requester && <span>@{tx.requester.username}</span>}
-              {tab === 'outgoing' && tx.owner && <span>@{tx.owner.username}</span>}
+              {tab === 'incoming' && tx.requester && (
+                <Link to={`/users/${tx.requesterId}`}>@{tx.requester.username}</Link>
+              )}
+              {tab === 'outgoing' && tx.owner && (
+                <Link to={`/users/${tx.ownerId}`}>@{tx.owner.username}</Link>
+              )}
             </TxMeta>
             {tab === 'incoming' && tx.contactType && (
               <TxContact>
-                {t('transactions:contactLabel')}: {tx.contactType === 'EMAIL' ? '✉️' : '📞'}{' '}
-                {tx.contactValue}
+                {t('transactions:contactLabel')}:{' '}
+                {CONTACT_ICON[tx.contactType] ?? '📞'} {tx.contactValue}
               </TxContact>
             )}
             {tx.message && (
               <TxContact>
                 {t('transactions:messageLabel')}: {tx.message}
               </TxContact>
+            )}
+            {/* Rating row — owner rates requester on accepted/completed incoming requests */}
+            {tab === 'incoming' && RATEABLE.has(tx.status) && (
+              <RateRow>
+                {tx.rating ? (
+                  <>
+                    <span>Bewertet:</span>
+                    <StarRating value={tx.rating.stars} readOnly />
+                  </>
+                ) : (
+                  <>
+                    <span>Bewerten:</span>
+                    <StarRating
+                      value={pendingRatings[tx.id] ?? null}
+                      onChange={(stars) =>
+                        setPendingRatings((prev) => ({ ...prev, [tx.id]: stars }))
+                      }
+                    />
+                    {pendingRatings[tx.id] && (
+                      <Button onClick={() => submitRating(tx.id)}>
+                        Speichern
+                      </Button>
+                    )}
+                  </>
+                )}
+              </RateRow>
             )}
             <TxActions>
               {tab === 'incoming' && tx.status === 'PENDING' && (

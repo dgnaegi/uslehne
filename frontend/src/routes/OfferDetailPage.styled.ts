@@ -5,11 +5,11 @@ export const DetailWrapper = styled.main`
   max-width: 860px;
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
-  padding-top: calc(56px + ${({ theme }) => theme.spacing.lg});
+  padding-top: calc(${({ theme }) => theme.headerHeight} + ${({ theme }) => theme.spacing.lg});
 
-  @media (max-width: 600px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     padding: ${({ theme }) => theme.spacing.md};
-    padding-top: calc(56px + ${({ theme }) => theme.spacing.md});
+    padding-top: calc(${({ theme }) => theme.headerHeight} + ${({ theme }) => theme.spacing.md});
   }
 `
 
@@ -59,6 +59,7 @@ export const ImageBlock = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    cursor: zoom-in;
   }
 `
 

@@ -1,5 +1,15 @@
 import { api } from './client'
-import type { AuthResponse, User, Address, Offer, Transaction, Invite, LedgerEntry } from './types'
+import type {
+  AuthResponse,
+  User,
+  UserProfile,
+  Address,
+  Offer,
+  Transaction,
+  Invite,
+  LedgerEntry,
+  Rating,
+} from './types'
 
 export const authApi = {
   checkEmail: (email: string) => api.post<{ exists: boolean }>('/auth/check-email', { email }),
@@ -56,6 +66,12 @@ export const transactionApi = {
   decline: (id: string) => api.post<void>(`/transactions/${id}/decline`, {}),
   cancel: (id: string) => api.post<void>(`/transactions/${id}/cancel`, {}),
   return: (id: string) => api.post<void>(`/transactions/${id}/return`, {}),
+  rate: (id: string, stars: number) =>
+    api.post<{ rating: Rating }>(`/transactions/${id}/rate`, { stars }),
+}
+
+export const userApi = {
+  getProfile: (id: string) => api.get<{ user: UserProfile }>(`/users/${id}`),
 }
 
 export const inviteApi = {

@@ -12,6 +12,7 @@ import {
   EmailDisplay,
   PasswordWrapper,
   EyeBtn,
+  InviteBonus,
   BackBtn,
 } from './AuthModal.styled'
 
@@ -131,7 +132,7 @@ export function AuthModal() {
 
         {step === 'email' && (
           <>
-            <ModalTitle id="auth-modal-title">Anmelden</ModalTitle>
+            <ModalTitle id="auth-modal-title">Anmelden / Registrieren</ModalTitle>
             <form onSubmit={handleEmailSubmit}>
               <FormGroup>
                 <Label>{t('email')}</Label>
@@ -196,9 +197,7 @@ export function AuthModal() {
                 </FormGroup>
               )}
               {inviteKudos !== null && (
-                <p style={{ fontWeight: 600, marginBottom: '8px' }}>
-                  {t('inviteBonus', { kudos: inviteKudos })}
-                </p>
+                <InviteBonus>{t('inviteBonus', { kudos: inviteKudos })}</InviteBonus>
               )}
               {error && <ErrorMsg>{error}</ErrorMsg>}
               <Button type="submit" disabled={loading}>

@@ -108,8 +108,8 @@ Each app is a separate Scalingo application. Backend requires the **PostgreSQL**
 # Deploy backend (run from repo root)
 git subtree push --prefix backend scalingo-backend main
 
-# On first deploy, run migrations via Scalingo CLI:
-scalingo --app uslehne-api run npm run db:migrate
+# Run migrations (after every deploy that adds a migration):
+scalingo --region osc-fr1 --app uslehne run npm run db:migrate
 
 # Deploy frontend
 git subtree push --prefix frontend scalingo-frontend main
@@ -117,13 +117,32 @@ git subtree push --prefix frontend scalingo-frontend main
 
 ## API Routes
 
-| Method | Path                | Description         |
-|--------|---------------------|---------------------|
-| GET    | /api/v1/health      | Health + DB check   |
-| GET    | /api/v1/items       | List all items      |
-| GET    | /api/v1/items/:id   | Get item by id      |
-| POST   | /api/v1/items       | Create item         |
-| DELETE | /api/v1/items/:id   | Delete item         |
+| Method | Path                           | Description                        |
+|--------|--------------------------------|------------------------------------|
+| GET    | /api/v1/health                 | Health + DB check                  |
+| GET    | /api/v1/offers                 | List offers (cursor, limit, zip)   |
+| GET    | /api/v1/offers/:id             | Get offer by id                    |
+| POST   | /api/v1/offers                 | Create offer                       |
+| PATCH  | /api/v1/offers/:id             | Update offer                       |
+| DELETE | /api/v1/offers/:id             | Delete offer                       |
+| POST   | /api/v1/offers/:id/request     | Request an offer                   |
+| GET    | /api/v1/transactions           | List transactions (role=incoming/outgoing) |
+| POST   | /api/v1/transactions/:id/accept  | Accept request                   |
+| POST   | /api/v1/transactions/:id/decline | Decline request                  |
+| POST   | /api/v1/transactions/:id/cancel  | Cancel request                   |
+| POST   | /api/v1/transactions/:id/return  | Mark as returned                 |
+| POST   | /api/v1/transactions/:id/rate    | Rate requester (1–5 stars)       |
+| GET    | /api/v1/users/:id              | Public user profile                |
+| GET    | /api/v1/kudos/ledger           | Karma history (own)                |
+| GET    | /api/v1/invites                | List own invites                   |
+| POST   | /api/v1/invites                | Create invite                      |
+| GET    | /api/v1/invites/:code          | Check invite code                  |
+| GET    | /api/v1/addresses              | List own addresses                 |
+| POST   | /api/v1/addresses              | Create address                     |
+| DELETE | /api/v1/addresses/:id          | Delete address                     |
+| POST   | /api/v1/auth/register          | Register with invite               |
+| POST   | /api/v1/auth/login             | Login                              |
+| GET    | /api/v1/auth/me                | Current user                       |
 
 ## Skills
 

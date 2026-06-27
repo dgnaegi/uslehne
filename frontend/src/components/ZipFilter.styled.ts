@@ -2,14 +2,14 @@ import styled from 'styled-components'
 
 export const FilterBar = styled.div`
   position: fixed;
-  top: 56px;
+  top: ${({ theme }) => theme.headerHeight};
   left: 0;
   right: 0;
-  z-index: 90;
+  z-index: ${({ theme }) => theme.zIndex.filterBar};
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};
-  padding: 6px ${({ theme }) => theme.spacing.md};
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
   background: rgba(253, 250, 240, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -24,8 +24,8 @@ export const FilterBar = styled.div`
 export const Chip = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
+  gap: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.accent};
   border-radius: 999px;
@@ -51,7 +51,7 @@ export const ChipRemove = styled.button`
 `
 
 export const ZipInput = styled.input`
-  height: 28px;
+  height: ${({ theme }) => theme.spacing.xl};
   padding: 0 ${({ theme }) => theme.spacing.sm};
   border: 2px solid ${({ theme }) => theme.colors.primary};
   border-radius: 999px;
@@ -67,7 +67,7 @@ export const AddButton = styled.button`
   background: none;
   border: 2px solid rgba(26, 26, 26, 0.3);
   border-radius: 999px;
-  padding: 3px 12px;
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;

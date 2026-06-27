@@ -51,6 +51,22 @@ export const TxContact = styled.p`
   margin-bottom: ${({ theme }) => theme.spacing.xs};
 `
 
+export const RateRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+  margin-top: ${({ theme }) => theme.spacing.sm};
+  flex-wrap: wrap;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textMuted};
+
+  button {
+    font-size: 0.82rem;
+    padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
+  }
+`
+
 export const TxActions = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.sm};

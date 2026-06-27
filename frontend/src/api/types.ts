@@ -50,20 +50,26 @@ export interface Offer {
   updatedAt: string
 }
 
+export interface Rating {
+  id: string
+  stars: number
+}
+
 export interface Transaction {
   id: string
   offerId: string
   offer: { title: string; type: OfferType }
   requesterId: string
-  requester?: { username: string }
+  requester?: { id: string; username: string }
   ownerId: string
-  owner?: { username: string }
+  owner?: { id: string; username: string }
   type: OfferType
   kudos: number
   status: TransactionStatus
   message?: string
   contactType?: ContactType
   contactValue?: string
+  rating?: Rating
   createdAt: string
   decidedAt?: string
 }
@@ -83,6 +89,23 @@ export interface LedgerEntry {
   reason: LedgerReason
   transactionId?: string
   createdAt: string
+}
+
+export interface UserProfile {
+  id: string
+  username: string
+  kudosBalance: number
+  createdAt: string
+  avgStars: number | null
+  ratingCount: number
+  offersGiven: number
+  offersTaken: number
+  kudoHistory: Array<{
+    id: string
+    delta: number
+    reason: LedgerReason
+    createdAt: string
+  }>
 }
 
 export interface AuthResponse {

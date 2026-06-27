@@ -1,12 +1,13 @@
 import styled from 'styled-components'
+import { media } from '../theme'
 
 export const Nav = styled.header`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  height: 56px;
+  z-index: ${({ theme }) => theme.zIndex.header};
+  height: ${({ theme }) => theme.headerHeight};
   padding: 0 ${({ theme }) => theme.spacing.md};
   display: flex;
   align-items: center;
@@ -19,7 +20,7 @@ export const Nav = styled.header`
 export const LogoGroup = styled.div`
   display: none;
 
-  @media (min-width: 600px) {
+  ${media.sm} {
     display: flex;
     flex-direction: column;
     gap: 1px;
@@ -50,7 +51,7 @@ export const BackHome = styled.span`
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing.xs};
   white-space: nowrap;
   letter-spacing: 0.02em;
 
@@ -68,7 +69,7 @@ export const SearchWrapper = styled.div`
 
 export const SearchInput = styled.input`
   width: 100%;
-  height: 34px;
+  height: ${({ theme }) => theme.spacing.xl};
   padding: 0 ${({ theme }) => theme.spacing.md};
   border: 2px solid rgba(26, 26, 26, 0.18);
   border-radius: 999px;
@@ -93,7 +94,7 @@ export const SearchInput = styled.input`
 export const DesktopNav = styled.nav`
   display: none;
 
-  @media (min-width: 600px) {
+  ${media.sm} {
     display: flex;
     gap: ${({ theme }) => theme.spacing.lg};
     align-items: center;
@@ -151,7 +152,7 @@ export const KontoWrapper = styled.div`
 
 export const DropdownMenu = styled.div`
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + ${({ theme }) => theme.spacing.sm});
   right: 0;
   background: ${({ theme }) => theme.colors.surface};
   border: ${({ theme }) => theme.border};
@@ -218,7 +219,7 @@ export const HamburgerBtn = styled.button`
   align-items: center;
   justify-content: center;
 
-  @media (min-width: 600px) {
+  ${media.sm} {
     display: none;
   }
 `
@@ -228,9 +229,9 @@ export const MobileMenu = styled.div`
   top: 100%;
   left: 0;
   right: 0;
-  height: calc(100dvh - 56px);
+  height: calc(100dvh - ${({ theme }) => theme.headerHeight});
   background: ${({ theme }) => theme.colors.surface};
-  z-index: 99;
+  z-index: ${({ theme }) => theme.zIndex.mobileMenu};
   display: flex;
   flex-direction: column;
   overflow-y: auto;

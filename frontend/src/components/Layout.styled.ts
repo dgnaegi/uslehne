@@ -1,15 +1,16 @@
 import styled from 'styled-components'
 import type { OfferType } from '../api/types'
+import { media } from '../theme'
 
 export const PageWrapper = styled.main`
   max-width: ${({ theme }) => theme.maxWidth};
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
-  padding-top: calc(56px + ${({ theme }) => theme.spacing.lg});
+  padding-top: calc(${({ theme }) => theme.headerHeight} + ${({ theme }) => theme.spacing.lg});
 
-  @media (max-width: 600px) {
+  ${media.maxSm} {
     padding: ${({ theme }) => theme.spacing.md};
-    padding-top: calc(56px + ${({ theme }) => theme.spacing.md});
+    padding-top: calc(${({ theme }) => theme.headerHeight} + ${({ theme }) => theme.spacing.md});
   }
 `
 
@@ -41,14 +42,17 @@ export const Button = styled.button<{ $variant?: 'primary' | 'secondary' | 'dang
     box-shadow 0.1s;
   text-decoration: none;
   display: inline-block;
+
   &:hover:not(:disabled) {
     transform: translate(-2px, -2px);
     box-shadow: ${({ theme }) => theme.shadowMd};
   }
+
   &:focus-visible {
     outline: 3px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -62,6 +66,7 @@ export const Input = styled.input`
   border-radius: ${({ theme }) => theme.radius};
   font-size: 1rem;
   background: ${({ theme }) => theme.colors.surface};
+
   &:focus-visible {
     outline: none;
     box-shadow: ${({ theme }) => theme.shadow};
@@ -77,6 +82,7 @@ export const Textarea = styled.textarea`
   background: ${({ theme }) => theme.colors.surface};
   resize: vertical;
   min-height: 100px;
+
   &:focus-visible {
     outline: none;
     box-shadow: ${({ theme }) => theme.shadow};
@@ -91,6 +97,7 @@ export const Select = styled.select`
   font-size: 1rem;
   background: ${({ theme }) => theme.colors.surface};
   cursor: pointer;
+
   &:focus-visible {
     outline: none;
     box-shadow: ${({ theme }) => theme.shadow};
@@ -102,6 +109,24 @@ export const FormGroup = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xs};
   margin-bottom: ${({ theme }) => theme.spacing.md};
+`
+
+// Row of action buttons with consistent spacing
+export const FormActions = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.sm};
+  flex-wrap: wrap;
+  margin-top: ${({ theme }) => theme.spacing.xs};
+`
+
+// Centered container for auth-prompt / empty-state screens
+export const AuthPrompt = styled.div`
+  text-align: center;
+  padding-top: ${({ theme }) => theme.spacing.xxl};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.md};
 `
 
 export const Label = styled.label`

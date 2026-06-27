@@ -10,6 +10,7 @@ import {
   PageWrapper,
   PageTitle,
   FormGroup,
+  FormActions,
   Label,
   Input,
   Textarea,
@@ -139,17 +140,14 @@ export function OfferFormPage() {
           />
         </FormGroup>
         {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
-        <Button type="submit" disabled={isSubmitting || (!hasAddresses && !isEdit)}>
-          {t('common:actions.save')}
-        </Button>
-        <Button
-          $variant="secondary"
-          type="button"
-          onClick={() => navigate(-1)}
-          style={{ marginLeft: '8px' }}
-        >
-          {t('common:actions.cancel')}
-        </Button>
+        <FormActions>
+          <Button type="submit" disabled={isSubmitting || (!hasAddresses && !isEdit)}>
+            {t('common:actions.save')}
+          </Button>
+          <Button $variant="secondary" type="button" onClick={() => navigate(-1)}>
+            {t('common:actions.cancel')}
+          </Button>
+        </FormActions>
       </form>
     </PageWrapper>
   )

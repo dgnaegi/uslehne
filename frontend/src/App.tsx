@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useAuth } from './auth/AuthContext'
 import { Header } from './components/Header'
 import { AuthModal } from './components/AuthModal'
-import { PageWrapper, Button } from './components/Layout.styled'
+import { AuthPrompt, Button } from './components/Layout.styled'
 import { OffersPage } from './routes/OffersPage'
 import { OfferDetailPage } from './routes/OfferDetailPage'
 import { OfferFormPage } from './routes/OfferFormPage'
@@ -11,6 +11,7 @@ import { MyOffersPage } from './routes/MyOffersPage'
 import { TransactionsPage } from './routes/TransactionsPage'
 import { InvitesPage } from './routes/InvitesPage'
 import { ProfilePage } from './routes/ProfilePage'
+import { UserProfilePage } from './routes/UserProfilePage'
 
 function RegisterRedirect() {
   const [params] = useSearchParams()
@@ -31,12 +32,10 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
   if (isLoading) return null
   if (!user) {
     return (
-      <PageWrapper style={{ textAlign: 'center', paddingTop: '64px' }}>
+      <AuthPrompt>
         <p>Bitte melde dich an.</p>
-        <Button onClick={openAuthModal} style={{ marginTop: '16px' }}>
-          Anmelden
-        </Button>
-      </PageWrapper>
+        <Button onClick={openAuthModal}>Anmelden</Button>
+      </AuthPrompt>
     )
   }
   return <>{children}</>
@@ -98,6 +97,14 @@ function App() {
           element={
             <PrivateRoute>
               <ProfilePage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users/:id"
+          element={
+            <PrivateRoute>
+              <UserProfilePage />
             </PrivateRoute>
           }
         />
