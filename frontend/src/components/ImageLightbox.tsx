@@ -147,7 +147,7 @@ export function ImageLightbox({ src, alt, onClose }: Props) {
         src={src}
         alt={alt}
         $scale={scaleRef.current}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => { if (scaleRef.current > 1) e.stopPropagation() }}
         draggable={false}
       />
     </Backdrop>

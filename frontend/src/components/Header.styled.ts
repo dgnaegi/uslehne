@@ -191,7 +191,7 @@ export const DropdownMenu = styled.div`
 export const GuestAuthBtn = styled.button`
   background: none;
   border: none;
-  font-size: 0.82rem;
+  font-size: 0.7rem;
   font-weight: 700;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.primary};

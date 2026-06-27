@@ -1,5 +1,13 @@
 import { useState, useRef } from 'react'
-import { FilterBar, Chip, ChipRemove, ZipInput, AddButton } from './ZipFilter.styled'
+import {
+  FilterBar,
+  Tagline,
+  ChipsRow,
+  Chip,
+  ChipRemove,
+  ZipInput,
+  AddButton,
+} from './ZipFilter.styled'
 
 interface Props {
   zips: string[]
@@ -28,25 +36,28 @@ export function ZipFilter({ zips, onZipsChange }: Props) {
 
   return (
     <FilterBar>
-      {zips.map((zip) => (
-        <Chip key={zip}>
-          {zip}
-          <ChipRemove onClick={() => onZipsChange(zips.filter((z) => z !== zip))}>✕</ChipRemove>
-        </Chip>
-      ))}
-      {showInput ? (
-        <ZipInput
-          ref={inputRef}
-          value={inputVal}
-          onChange={(e) => setInputVal(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onBlur={commit}
-          placeholder="PLZ…"
-          autoFocus
-        />
-      ) : (
-        <AddButton onClick={() => setShowInput(true)}>＋ PLZ</AddButton>
-      )}
+      <Tagline>uslehne.ch — unkommerziell jetzt &amp; für immer</Tagline>
+      <ChipsRow>
+        {zips.map((zip) => (
+          <Chip key={zip}>
+            {zip}
+            <ChipRemove onClick={() => onZipsChange(zips.filter((z) => z !== zip))}>✕</ChipRemove>
+          </Chip>
+        ))}
+        {showInput ? (
+          <ZipInput
+            ref={inputRef}
+            value={inputVal}
+            onChange={(e) => setInputVal(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={commit}
+            placeholder="PLZ…"
+            autoFocus
+          />
+        ) : (
+          <AddButton onClick={() => setShowInput(true)}>＋ PLZ</AddButton>
+        )}
+      </ChipsRow>
     </FilterBar>
   )
 }

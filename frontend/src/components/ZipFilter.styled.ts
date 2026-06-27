@@ -7,12 +7,31 @@ export const FilterBar = styled.div`
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.filterBar};
   display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
+  flex-direction: column;
   background: rgba(253, 250, 240, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+`
+
+export const Tagline = styled.div`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.accent};
+  text-align: center;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px ${({ theme }) => theme.spacing.md};
+  color: ${({ theme }) => theme.colors.primary};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+export const ChipsRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
   overflow-x: auto;
   scrollbar-width: none;
 
