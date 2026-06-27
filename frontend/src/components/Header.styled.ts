@@ -169,6 +169,24 @@ export const DropdownMenu = styled.div`
   }
 `
 
+export const GuestAuthBtn = styled.button`
+  background: none;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.primary};
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+`
+
 export const HamburgerBtn = styled.button`
   background: none;
   border: none;

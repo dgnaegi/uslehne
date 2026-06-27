@@ -15,6 +15,7 @@ import {
   KudoBadge,
   KontoWrapper,
   DropdownMenu,
+  GuestAuthBtn,
   HamburgerBtn,
   MobileMenu,
 } from './Header.styled'
@@ -44,10 +45,6 @@ export function Header() {
     setKontoOpen(false)
   }
 
-  function closeMobile() {
-    setMobileOpen(false)
-  }
-
   return (
     <Nav>
       <LogoGroup>
@@ -61,9 +58,9 @@ export function Header() {
         <SearchInput type="search" placeholder="Suchen…" readOnly />
       </SearchWrapper>
 
-      <DesktopNav>
-        {user ? (
-          <>
+      {user ? (
+        <>
+          <DesktopNav>
             <NavLink as={Link} to="/transactions">
               {t('nav.transactions')}
             </NavLink>
@@ -87,45 +84,37 @@ export function Header() {
                 </DropdownMenu>
               )}
             </KontoWrapper>
-          </>
-        ) : (
-          <NavButton onClick={openAuthModal}>{t('nav.login')}</NavButton>
-        )}
-      </DesktopNav>
+          </DesktopNav>
 
-      <HamburgerBtn onClick={() => setMobileOpen((o) => !o)} aria-label="Menü öffnen">
-        {mobileOpen ? '✕' : '☰'}
-      </HamburgerBtn>
+          <HamburgerBtn
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-label="Menü öffnen"
+          >
+            {mobileOpen ? '✕' : '☰'}
+          </HamburgerBtn>
 
-      {mobileOpen && (
-        <MobileMenu>
-          {user ? (
-            <>
-              <Link to="/transactions" onClick={closeMobile}>
+          {mobileOpen && (
+            <MobileMenu>
+              <Link to="/transactions" onClick={() => setMobileOpen(false)}>
                 🤝 {t('nav.transactions')}
               </Link>
-              <Link to="/my-offers" onClick={closeMobile}>
+              <Link to="/my-offers" onClick={() => setMobileOpen(false)}>
                 📦 {t('nav.myOffers')}
               </Link>
-              <Link to="/invites" onClick={closeMobile}>
+              <Link to="/invites" onClick={() => setMobileOpen(false)}>
                 🔗 {t('nav.invites')}
               </Link>
-              <Link to="/profile" onClick={closeMobile}>
+              <Link to="/profile" onClick={() => setMobileOpen(false)}>
                 💰 {user.kudosBalance} Kudos
               </Link>
               <button onClick={handleLogout}>🚪 {t('nav.logout')}</button>
-            </>
-          ) : (
-            <button
-              onClick={() => {
-                openAuthModal()
-                closeMobile()
-              }}
-            >
-              {t('nav.login')}
-            </button>
+            </MobileMenu>
           )}
-        </MobileMenu>
+        </>
+      ) : (
+        <GuestAuthBtn onClick={openAuthModal}>
+          {t('nav.register')} / {t('nav.login')}
+        </GuestAuthBtn>
       )}
     </Nav>
   )
