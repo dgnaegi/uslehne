@@ -8,7 +8,7 @@ import { AppError, ErrorCode } from '../errors'
 const router = Router()
 
 const requestSchema = z.object({
-  contactType: z.enum(['PHONE', 'EMAIL']),
+  contactType: z.enum(['SMS', 'WHATSAPP', 'SIGNAL', 'EMAIL']),
   contactValue: z.string().min(1),
   message: z.string().optional(),
 })
@@ -32,7 +32,7 @@ router.post(
       if (body.contactType === 'EMAIL' && !EMAIL_RE.test(body.contactValue)) {
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
-      if (body.contactType === 'PHONE' && !PHONE_RE.test(body.contactValue)) {
+      if (['SMS', 'WHATSAPP', 'SIGNAL'].includes(body.contactType) && !PHONE_RE.test(body.contactValue)) {
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
 
@@ -82,10 +82,12 @@ router.get(
             message: true,
             contactType: true,
             contactValue: true,
+            requesterId: true,
             createdAt: true,
             decidedAt: true,
             offer: { select: { title: true } },
-            requester: { select: { username: true } },
+            requester: { select: { id: true, username: true } },
+            rating: { select: { id: true, stars: true } },
           },
         })
         return res.json({ transactions: rows })
@@ -112,11 +114,12 @@ router.get(
         where: { id: { in: ownerIds } },
         select: { id: true, username: true },
       })
-      const ownerMap = new Map(owners.map((o) => [o.id, o.username]))
+      const ownerMap = new Map(owners.map((o) => [o.id, { id: o.id, username: o.username }]))
 
       const transactions = rows.map(({ ownerId, ...r }) => ({
         ...r,
-        owner: { username: ownerMap.get(ownerId) ?? null },
+        ownerId,
+        owner: ownerMap.get(ownerId) ?? null,
       }))
       res.json({ transactions })
     } catch (err) {

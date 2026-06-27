@@ -11,6 +11,7 @@ import { offersMutateRouter } from './routes/offersMutate'
 import { transactionsRouter } from './routes/transactions'
 import { transactionActionsRouter } from './routes/transactionActions'
 import kudosRouter from './routes/kudos'
+import { usersRouter } from './routes/users'
 import { errorHandler } from './middleware/errorHandler'
 
 const app = express()
@@ -28,6 +29,7 @@ app.use('/api/v1', offersMutateRouter)
 app.use('/api/v1', transactionsRouter)
 app.use('/api/v1', transactionActionsRouter)
 app.use('/api/v1', kudosRouter)
+app.use('/api/v1', usersRouter)
 
 if (process.env.NODE_ENV === 'production') {
   const staticDir = path.resolve(__dirname, '../../frontend/dist')

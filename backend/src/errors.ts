@@ -15,6 +15,7 @@ export const ErrorCode = {
   INVALID_TRANSACTION_STATUS: 'INVALID_TRANSACTION_STATUS',
   OFFER_NOT_AVAILABLE: 'OFFER_NOT_AVAILABLE',
   ADDRESS_IN_USE: 'ADDRESS_IN_USE',
+  ALREADY_RATED: 'ALREADY_RATED',
 } as const
 
 export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode]
@@ -36,6 +37,7 @@ const defaultMessages: Record<ErrorCode, string> = {
   INVALID_TRANSACTION_STATUS: 'Diese Aktion ist im aktuellen Status nicht möglich.',
   OFFER_NOT_AVAILABLE: 'Das Angebot ist nicht mehr verfügbar.',
   ADDRESS_IN_USE: 'Die Adresse wird noch von einem Angebot verwendet.',
+  ALREADY_RATED: 'Diese Anfrage wurde bereits bewertet.',
 }
 
 export class AppError extends Error {

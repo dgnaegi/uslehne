@@ -1,7 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import { Prisma, LedgerReason, OfferStatus } from '@prisma/client'
+import { z } from 'zod'
 import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
+import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
 
 const router = Router()
@@ -131,6 +133,41 @@ router.post(
       })
       await db.offer.update({ where: { id: tx.offerId }, data: { status: 'AVAILABLE' } })
       res.json({ ok: true })
+    } catch (err) {
+      next(err)
+    }
+  },
+)
+
+const rateSchema = z.object({ stars: z.number().int().min(1).max(5) })
+
+router.post(
+  '/transactions/:id/rate',
+  requireAuth,
+  validate(rateSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const tx = await db.transaction.findUnique({
+        where: { id: req.params.id },
+        include: { rating: true },
+      })
+      if (!tx) throw new AppError(ErrorCode.NOT_FOUND, 404)
+      if (tx.ownerId !== req.user!.id) throw new AppError(ErrorCode.FORBIDDEN, 403)
+      if (!['ACCEPTED', 'RETURNED', 'COMPLETED'].includes(tx.status)) {
+        throw new AppError(ErrorCode.INVALID_TRANSACTION_STATUS, 409)
+      }
+      if (tx.rating) throw new AppError(ErrorCode.ALREADY_RATED, 409)
+
+      const { stars } = req.body as z.infer<typeof rateSchema>
+      const rating = await db.rating.create({
+        data: {
+          stars,
+          raterId: req.user!.id,
+          ratedId: tx.requesterId,
+          transactionId: tx.id,
+        },
+      })
+      res.status(201).json({ rating })
     } catch (err) {
       next(err)
     }
