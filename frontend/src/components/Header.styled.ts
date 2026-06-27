@@ -188,11 +188,11 @@ export const HamburgerBtn = styled.button`
 `
 
 export const MobileMenu = styled.div`
-  position: fixed;
-  top: 56px;
+  position: absolute;
+  top: 100%;
   left: 0;
   right: 0;
-  bottom: 0;
+  height: calc(100dvh - 56px);
   background: ${({ theme }) => theme.colors.surface};
   z-index: 99;
   display: flex;
