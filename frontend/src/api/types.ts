@@ -8,7 +8,7 @@ export type TransactionStatus =
   | 'CANCELLED'
   | 'RETURNED'
   | 'COMPLETED'
-export type ContactType = 'PHONE' | 'EMAIL'
+export type ContactType = 'SMS' | 'WHATSAPP' | 'SIGNAL' | 'EMAIL'
 export type LedgerReason =
   | 'INVITE_BONUS'
   | 'LEND_EARN'

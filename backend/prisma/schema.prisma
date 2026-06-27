@@ -44,7 +44,9 @@ enum LedgerReason {
 }
 
 enum ContactType {
-  PHONE
+  SMS
+  WHATSAPP
+  SIGNAL
   EMAIL
 }
 

@@ -104,7 +104,13 @@ export function OfferDetailPage() {
           )}
         </ActionRow>
       </InfoBlock>
-      {showDialog && <RequestDialog offerId={offer.id} onClose={() => setShowDialog(false)} />}
+      {showDialog && (
+        <RequestDialog
+          offerId={offer.id}
+          offerType={offer.type}
+          onClose={() => setShowDialog(false)}
+        />
+      )}
     </DetailWrapper>
   )
 }

@@ -1,0 +1,4 @@
+-- AlterEnum
+ALTER TYPE "ContactType" ADD VALUE 'SMS';
+ALTER TYPE "ContactType" ADD VALUE 'WHATSAPP';
+ALTER TYPE "ContactType" ADD VALUE 'SIGNAL';

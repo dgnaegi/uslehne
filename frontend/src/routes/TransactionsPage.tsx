@@ -71,7 +71,7 @@ export function TransactionsPage() {
             </TxMeta>
             {tab === 'incoming' && tx.contactType && (
               <TxContact>
-                {t('transactions:contactLabel')}: {tx.contactType === 'PHONE' ? '📞' : '✉️'}{' '}
+                {t('transactions:contactLabel')}: {tx.contactType === 'EMAIL' ? '✉️' : '📞'}{' '}
                 {tx.contactValue}
               </TxContact>
             )}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
 import {
@@ -7,6 +7,7 @@ import {
   LogoGroup,
   Logo,
   LogoClaim,
+  BackHome,
   SearchWrapper,
   SearchInput,
   DesktopNav,
@@ -24,6 +25,8 @@ export function Header() {
   const { user, logout, openAuthModal } = useAuth()
   const { t } = useTranslation('common')
   const navigate = useNavigate()
+  const location = useLocation()
+  const isOnFeed = location.pathname === '/offers'
   const [mobileOpen, setMobileOpen] = useState(false)
   const [kontoOpen, setKontoOpen] = useState(false)
   const kontoRef = useRef<HTMLDivElement>(null)
@@ -47,12 +50,18 @@ export function Header() {
 
   return (
     <Nav>
-      <LogoGroup>
-        <Logo as={Link} to="/offers">
-          uslehne
-        </Logo>
-        <LogoClaim />
-      </LogoGroup>
+      {isOnFeed ? (
+        <LogoGroup>
+          <Logo as={Link} to="/offers">
+            uslehne
+          </Logo>
+          <LogoClaim />
+        </LogoGroup>
+      ) : (
+        <BackHome as={Link} to="/offers">
+          ← {t('nav.offers')}
+        </BackHome>
+      )}
 
       <SearchWrapper>
         <SearchInput type="search" placeholder="Suchen…" readOnly />
@@ -86,10 +95,7 @@ export function Header() {
             </KontoWrapper>
           </DesktopNav>
 
-          <HamburgerBtn
-            onClick={() => setMobileOpen((o) => !o)}
-            aria-label="Menü öffnen"
-          >
+          <HamburgerBtn onClick={() => setMobileOpen((o) => !o)} aria-label="Menü öffnen">
             {mobileOpen ? '✕' : '☰'}
           </HamburgerBtn>
 

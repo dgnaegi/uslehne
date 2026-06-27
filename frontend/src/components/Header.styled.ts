@@ -42,6 +42,24 @@ export const LogoClaim = styled.span`
   display: none;
 `
 
+export const BackHome = styled.span`
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: ${({ theme }) => theme.colors.primary};
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+`
+
 export const SearchWrapper = styled.div`
   flex: 1;
   display: flex;

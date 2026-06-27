@@ -14,14 +14,19 @@
   "requesterLabel": "Anfragend",
   "requestDialog": {
     "title": "Anfrage stellen",
-    "contactType": "Kontaktart",
+    "contactType": "Kontakt via",
     "contactValue": "Kontaktangabe",
-    "phone": "Telefon",
+    "sms": "SMS",
+    "whatsapp": "WhatsApp",
+    "signal": "Signal",
     "email": "E-Mail",
     "message": "Nachricht (optional)",
     "submit": "Anfrage senden",
     "phonePlaceholder": "+41 79 123 45 67",
     "emailPlaceholder": "deine@email.ch",
+    "useSaved": "Gespeicherte Nummer verwenden",
+    "messagePlaceholderLend": "Für welchen Zeitraum benötigst du den Gegenstand? Z.B. 15.–20. Juli. Hast du bereits Erfahrung damit?",
+    "messagePlaceholderGive": "Warum möchtest du den Gegenstand haben? Was planst du damit?",
     "success": "Anfrage gesendet!"
   },
   "status": {
