@@ -1,6 +1,6 @@
 import type { Offer } from '../api/types'
 import { OfferCard } from './OfferCard'
-import { Grid, Empty } from './OfferGrid.styled'
+import { Feed, Empty } from './OfferGrid.styled'
 
 interface Props {
   offers: Offer[]
@@ -10,10 +10,10 @@ interface Props {
 export function OfferGrid({ offers, emptyMessage }: Props) {
   if (offers.length === 0) return <Empty>{emptyMessage}</Empty>
   return (
-    <Grid>
+    <Feed>
       {offers.map((offer) => (
         <OfferCard key={offer.id} offer={offer} />
       ))}
-    </Grid>
+    </Feed>
   )
 }

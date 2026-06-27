@@ -1,39 +1,21 @@
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import type { OfferType } from '../api/types'
-
-const fadeInUp = keyframes`
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-`
 
 export const Card = styled.article`
   position: relative;
-  border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
+  height: 100dvh;
+  width: 100%;
   overflow: hidden;
-  box-shadow: ${({ theme }) => theme.shadow};
-  aspect-ratio: 16 / 9;
   cursor: pointer;
   text-decoration: none;
   display: block;
-  animation: ${fadeInUp} 0.25s ease both;
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease;
-
-  &:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: ${({ theme }) => theme.shadowMd};
-  }
-
-  &:active {
-    transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px ${({ theme }) => theme.colors.primary};
-  }
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background: ${({ theme }) => theme.colors.primary};
 
   &:focus-visible {
-    outline: 3px solid ${({ theme }) => theme.colors.primary};
-    outline-offset: 2px;
+    outline: 3px solid ${({ theme }) => theme.colors.accent};
+    outline-offset: -3px;
   }
 `
 
@@ -45,12 +27,13 @@ export const CardImage = styled.div<{ $type: OfferType }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3.5rem;
+  font-size: 5rem;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     display: block;
   }
 `
@@ -60,38 +43,55 @@ export const CardOverlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  padding: ${({ theme }) => theme.spacing.md};
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.72) 40%);
+  padding: ${({ theme }) => `${theme.spacing.xxl} ${theme.spacing.lg} ${theme.spacing.xl}`};
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.55) 35%, rgba(0, 0, 0, 0.82));
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
-`
-
-export const CardTitle = styled.h3`
-  font-size: 1rem;
-  font-weight: 700;
-  color: white;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-`
-
-export const CardMeta = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
+  gap: ${({ theme }) => theme.spacing.sm};
 `
 
 export const TypeBadge = styled.span<{ $type: OfferType }>`
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
-  border: 2px solid ${({ theme }) => theme.colors.primary};
-  border-radius: ${({ theme }) => theme.radius};
+  padding: 3px 10px;
+  border-radius: 999px;
   background: ${({ theme, $type }) =>
     $type === 'GIVE' ? theme.colors.pastelMint : theme.colors.accent};
   color: ${({ theme }) => theme.colors.primary};
   align-self: flex-start;
+`
+
+export const CardTitle = styled.h3`
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  line-height: 1.2;
+`
+
+export const CardMeta = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  gap: ${({ theme }) => theme.spacing.sm};
+`
+
+export const CardZip = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: white;
+`
+
+export const CardOwner = styled.span`
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
 `

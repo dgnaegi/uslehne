@@ -5,9 +5,11 @@ export const PageWrapper = styled.main`
   max-width: ${({ theme }) => theme.maxWidth};
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
+  padding-top: calc(56px + ${({ theme }) => theme.spacing.lg});
 
   @media (max-width: 600px) {
     padding: ${({ theme }) => theme.spacing.md};
+    padding-top: calc(56px + ${({ theme }) => theme.spacing.md});
   }
 `
 

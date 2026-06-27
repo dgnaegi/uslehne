@@ -7,6 +7,8 @@ import {
   LogoGroup,
   Logo,
   LogoClaim,
+  SearchWrapper,
+  SearchInput,
   DesktopNav,
   NavLink,
   NavButton,
@@ -47,19 +49,27 @@ export function Header() {
   }
 
   return (
-    <Nav style={{ position: 'relative' }}>
+    <Nav>
       <LogoGroup>
         <Logo as={Link} to="/offers">
-          us<span>lehne</span>
+          uslehne
         </Logo>
-        <LogoClaim>Unkommerziell jetzt &amp; für immer</LogoClaim>
+        <LogoClaim />
       </LogoGroup>
+
+      <SearchWrapper>
+        <SearchInput type="search" placeholder="Suchen…" readOnly />
+      </SearchWrapper>
 
       <DesktopNav>
         {user ? (
           <>
-            <NavLink as={Link} to="/transactions">{t('nav.transactions')}</NavLink>
-            <NavLink as={Link} to="/my-offers">{t('nav.myOffers')}</NavLink>
+            <NavLink as={Link} to="/transactions">
+              {t('nav.transactions')}
+            </NavLink>
+            <NavLink as={Link} to="/my-offers">
+              {t('nav.myOffers')}
+            </NavLink>
             <KontoWrapper ref={kontoRef}>
               <NavButton onClick={() => setKontoOpen((o) => !o)}>
                 {t('nav.account')}
@@ -67,8 +77,12 @@ export function Header() {
               </NavButton>
               {kontoOpen && (
                 <DropdownMenu>
-                  <Link to="/invites" onClick={() => setKontoOpen(false)}>{t('nav.invites')}</Link>
-                  <Link to="/profile" onClick={() => setKontoOpen(false)}>{t('nav.profile')}</Link>
+                  <Link to="/invites" onClick={() => setKontoOpen(false)}>
+                    {t('nav.invites')}
+                  </Link>
+                  <Link to="/profile" onClick={() => setKontoOpen(false)}>
+                    {t('nav.profile')}
+                  </Link>
                   <button onClick={handleLogout}>{t('nav.logout')}</button>
                 </DropdownMenu>
               )}
@@ -87,16 +101,27 @@ export function Header() {
         <MobileMenu>
           {user ? (
             <>
-              <Link to="/transactions" onClick={closeMobile}>🤝 {t('nav.transactions')}</Link>
-              <Link to="/my-offers" onClick={closeMobile}>📦 {t('nav.myOffers')}</Link>
-              <Link to="/invites" onClick={closeMobile}>🔗 {t('nav.invites')}</Link>
+              <Link to="/transactions" onClick={closeMobile}>
+                🤝 {t('nav.transactions')}
+              </Link>
+              <Link to="/my-offers" onClick={closeMobile}>
+                📦 {t('nav.myOffers')}
+              </Link>
+              <Link to="/invites" onClick={closeMobile}>
+                🔗 {t('nav.invites')}
+              </Link>
               <Link to="/profile" onClick={closeMobile}>
                 💰 {user.kudosBalance} Kudos
               </Link>
               <button onClick={handleLogout}>🚪 {t('nav.logout')}</button>
             </>
           ) : (
-            <button onClick={() => { openAuthModal(); closeMobile() }}>
+            <button
+              onClick={() => {
+                openAuthModal()
+                closeMobile()
+              }}
+            >
               {t('nav.login')}
             </button>
           )}

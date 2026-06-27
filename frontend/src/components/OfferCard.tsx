@@ -1,7 +1,16 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Offer } from '../api/types'
-import { Card, CardImage, CardOverlay, CardTitle, CardMeta, TypeBadge } from './OfferCard.styled'
+import {
+  Card,
+  CardImage,
+  CardOverlay,
+  TypeBadge,
+  CardTitle,
+  CardMeta,
+  CardZip,
+  CardOwner,
+} from './OfferCard.styled'
 
 interface Props {
   offer: Offer
@@ -23,8 +32,10 @@ export function OfferCard({ offer }: Props) {
         <TypeBadge $type={offer.type}>{t(`offerType.${offer.type}`)}</TypeBadge>
         <CardTitle>{offer.title}</CardTitle>
         <CardMeta>
-          <span>📍 {offer.address.city}</span>
-          <span>@{offer.owner.username}</span>
+          <CardZip>
+            📍 {offer.address.zip} {offer.address.city}
+          </CardZip>
+          <CardOwner>@{offer.owner.username}</CardOwner>
         </CardMeta>
       </CardOverlay>
     </Card>
