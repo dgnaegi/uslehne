@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { Offer } from '../api/types'
-import { offerApi } from '../api/endpoints'
+import { useOfferFeed } from '../hooks/useOfferFeed'
 import { OfferGrid } from '../components/OfferGrid'
+import { ZipFilter } from '../components/ZipFilter'
 
 export function OffersPage() {
-  const { t } = useTranslation(['offers', 'common'])
-  const [offers, setOffers] = useState<Offer[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { t } = useTranslation('offers')
+  const [zips, setZips] = useState<string[]>([])
+  const { offers, loading, loadMore, hasMore } = useOfferFeed(zips)
 
-  useEffect(() => {
-    offerApi
-      .list()
-      .then(({ offers: o }) => setOffers(o))
-      .catch(() => setError(t('offers:loadError')))
-      .finally(() => setLoading(false))
-  }, [t])
-
-  if (error) return null
   if (loading) return null
 
-  return <OfferGrid offers={offers} emptyMessage={t('offers:noOffers')} />
+  return (
+    <>
+      <ZipFilter zips={zips} onZipsChange={setZips} />
+      <OfferGrid
+        offers={offers}
+        emptyMessage={t('noOffers')}
+        loadMore={loadMore}
+        hasMore={hasMore}
+      />
+    </>
+  )
 }

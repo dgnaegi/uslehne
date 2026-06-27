@@ -20,8 +20,15 @@ export const addressApi = {
 }
 
 export const offerApi = {
-  list: (type?: 'LEND' | 'GIVE') =>
-    api.get<{ offers: Offer[] }>(`/offers${type ? `?type=${type}` : ''}`),
+  list: (params?: { type?: 'LEND' | 'GIVE'; cursor?: string; limit?: number; zips?: string[] }) => {
+    const q = new URLSearchParams()
+    if (params?.type) q.set('type', params.type)
+    if (params?.cursor) q.set('cursor', params.cursor)
+    if (params?.limit) q.set('limit', String(params.limit))
+    if (params?.zips?.length) q.set('zip', params.zips.join(','))
+    const qs = q.toString()
+    return api.get<{ offers: Offer[]; nextCursor: string | null }>(`/offers${qs ? `?${qs}` : ''}`)
+  },
   mine: () => api.get<{ offers: Offer[] }>('/offers/mine'),
   get: (id: string) => api.get<{ offer: Offer }>(`/offers/${id}`),
   create: (body: {

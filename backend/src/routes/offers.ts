@@ -44,15 +44,34 @@ router.get('/offers', async (req: Request, res: Response, next: NextFunction) =>
     const typeParam = req.query.type as string | undefined
     const typeFilter: OfferType | undefined =
       typeParam === 'LEND' || typeParam === 'GIVE' ? typeParam : undefined
-    const offers = await db.offer.findMany({
+
+    const cursor = req.query.cursor as string | undefined
+    const limit = Math.min(parseInt((req.query.limit as string) || '10', 10) || 10, 50)
+    const zipParam = req.query.zip as string | undefined
+    const zips = zipParam
+      ? zipParam
+          .split(',')
+          .map((z) => z.trim())
+          .filter(Boolean)
+      : undefined
+
+    const rows = await db.offer.findMany({
       where: {
         status: 'AVAILABLE',
         ...(typeFilter !== undefined ? { type: typeFilter } : {}),
+        ...(zips && zips.length > 0 ? { address: { zip: { in: zips } } } : {}),
       },
       select: offerPublicSelect,
       orderBy: { createdAt: 'desc' },
+      take: limit + 1,
+      ...(cursor ? { cursor: { id: cursor }, skip: 1 } : {}),
     })
-    res.json({ offers })
+
+    const hasMore = rows.length > limit
+    const offers = hasMore ? rows.slice(0, limit) : rows
+    const nextCursor = hasMore ? offers[offers.length - 1].id : null
+
+    res.json({ offers, nextCursor })
   } catch (err) {
     next(err)
   }

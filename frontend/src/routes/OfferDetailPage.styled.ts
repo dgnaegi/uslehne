@@ -5,17 +5,37 @@ export const DetailWrapper = styled.main`
   max-width: 860px;
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
+  padding-top: calc(56px + ${({ theme }) => theme.spacing.lg});
+
+  @media (max-width: 600px) {
+    padding: ${({ theme }) => theme.spacing.md};
+    padding-top: calc(56px + ${({ theme }) => theme.spacing.md});
+  }
 `
 
 export const BackLink = styled.button`
   background: none;
   border: none;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
   margin-bottom: ${({ theme }) => theme.spacing.md};
-  padding: 0;
+  padding: ${({ theme }) => `${theme.spacing.xs} 0`};
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: ${({ theme }) => theme.colors.text};
+  letter-spacing: 0.03em;
+
+  &::before {
+    content: '←';
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
   &:hover {
     text-decoration: underline;
+    text-underline-offset: 3px;
   }
 `
 
