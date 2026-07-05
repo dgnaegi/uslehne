@@ -64,11 +64,7 @@ export function OfferDetailPage() {
     <DetailWrapper>
       <BackLink onClick={() => navigate(-1)}>{t('common:actions.back')}</BackLink>
       <ImageBlock>
-        {offer.imageRef.startsWith('data:image/svg') ? (
-          <span>📦</span>
-        ) : (
-          <img src={offer.imageRef} alt={offer.title} onClick={() => setShowLightbox(true)} />
-        )}
+        <img src={offer.imageRef} alt={offer.title} onClick={() => setShowLightbox(true)} />
       </ImageBlock>
       <InfoBlock>
         <TypeBadge $type={offer.type}>{t(`common:offerType.${offer.type}`)}</TypeBadge>
@@ -113,7 +109,7 @@ export function OfferDetailPage() {
           onClose={() => setShowDialog(false)}
         />
       )}
-      {showLightbox && !offer.imageRef.startsWith('data:image/svg') && (
+      {showLightbox && (
         <ImageLightbox
           src={offer.imageRef}
           alt={offer.title}

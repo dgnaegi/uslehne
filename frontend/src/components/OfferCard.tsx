@@ -22,11 +22,7 @@ export function OfferCard({ offer }: Props) {
   return (
     <Card as={Link} to={`/offers/${offer.id}`}>
       <CardImage $type={offer.type}>
-        {offer.imageRef.startsWith('data:image/svg') ? (
-          <span aria-hidden="true">📦</span>
-        ) : (
-          <img src={offer.imageRef} alt={offer.title} />
-        )}
+        <img src={offer.imageRef} alt={offer.title} />
       </CardImage>
       <CardOverlay>
         <TypeBadge $type={offer.type}>{t(`offerType.${offer.type}`)}</TypeBadge>

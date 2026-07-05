@@ -5,7 +5,7 @@ import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
-import { imageStorage } from '../storage/imageStorage'
+import { imageStorage, withImageUrl } from '../storage/imageStorage'
 import { searchOffers } from './offerSearch'
 
 const router = Router()
@@ -57,7 +57,7 @@ router.get('/offers', async (req: Request, res: Response, next: NextFunction) =>
     const rawQ = (req.query.q as string | undefined)?.trim().slice(0, 80)
     if (rawQ) {
       const offers = await searchOffers({ q: rawQ, typeFilter, zips })
-      return res.json({ offers, nextCursor: null })
+      return res.json({ offers: offers.map(withImageUrl), nextCursor: null })
     }
 
     const cursor = req.query.cursor as string | undefined
@@ -79,7 +79,7 @@ router.get('/offers', async (req: Request, res: Response, next: NextFunction) =>
     const offers = hasMore ? rows.slice(0, limit) : rows
     const nextCursor = hasMore ? offers[offers.length - 1].id : null
 
-    res.json({ offers, nextCursor })
+    res.json({ offers: offers.map(withImageUrl), nextCursor })
   } catch (err) {
     next(err)
   }
@@ -92,7 +92,7 @@ router.get('/offers/mine', requireAuth, async (req: Request, res: Response, next
       select: offerPublicSelect,
       orderBy: { createdAt: 'desc' },
     })
-    res.json({ offers })
+    res.json({ offers: offers.map(withImageUrl) })
   } catch (err) {
     next(err)
   }
@@ -105,7 +105,7 @@ router.get('/offers/:id', async (req: Request, res: Response, next: NextFunction
       select: offerPublicSelect,
     })
     if (!offer) throw new AppError(ErrorCode.NOT_FOUND, 404)
-    res.json({ offer })
+    res.json({ offer: withImageUrl(offer) })
   } catch (err) {
     next(err)
   }
@@ -134,7 +134,7 @@ router.post(
         },
         select: offerPublicSelect,
       })
-      res.status(201).json({ offer })
+      res.status(201).json({ offer: withImageUrl(offer) })
     } catch (err) {
       next(err)
     }

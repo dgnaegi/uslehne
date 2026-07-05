@@ -4,7 +4,7 @@ import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
-import { imageStorage } from '../storage/imageStorage'
+import { imageStorage, withImageUrl } from '../storage/imageStorage'
 import { patchOfferSchema, offerPublicSelect } from './offers'
 
 const router = Router()
@@ -31,7 +31,7 @@ router.patch(
         },
         select: offerPublicSelect,
       })
-      res.json({ offer })
+      res.json({ offer: withImageUrl(offer) })
     } catch (err) {
       next(err)
     }

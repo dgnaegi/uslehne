@@ -1,4 +1,4 @@
-import { PrismaClient, Role, OfferType } from '@prisma/client'
+import { PrismaClient, Role } from '@prisma/client'
 import { randomBytes } from 'crypto'
 import * as bcrypt from 'bcrypt'
 
@@ -73,46 +73,6 @@ async function main() {
       city: 'Zürich',
     },
   })
-
-  const PLACEHOLDER_IMAGE =
-    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM5OTkiPkJlaXNwaWVsYmlsZDwvdGV4dD48L3N2Zz4='
-
-  const offers = [
-    {
-      id: 'seed-offer-1',
-      title: 'Bohrmaschine',
-      description: 'Bosch Schlagbohrmaschine, 750W, inkl. Zubehör.',
-      type: OfferType.LEND,
-    },
-    {
-      id: 'seed-offer-2',
-      title: 'Kuchenform-Set',
-      description: '5-teiliges Set, kaum benutzt.',
-      type: OfferType.GIVE,
-    },
-    {
-      id: 'seed-offer-3',
-      title: 'Campingstuhl',
-      description: 'Leichter Klappstuhl, ideal für Festivals.',
-      type: OfferType.LEND,
-    },
-  ]
-
-  for (const offer of offers) {
-    await prisma.offer.upsert({
-      where: { id: offer.id },
-      update: {},
-      create: {
-        id: offer.id,
-        ownerId: demo.id,
-        title: offer.title,
-        description: offer.description,
-        type: offer.type,
-        imageRef: PLACEHOLDER_IMAGE,
-        addressId: demoAddress.id,
-      },
-    })
-  }
 
   console.log(`Seed complete. Admin: ${admin.email}, Demo: ${demo.email}`)
   console.log(`Admin address: ${adminAddress.city}, Demo address: ${demoAddress.city}`)
