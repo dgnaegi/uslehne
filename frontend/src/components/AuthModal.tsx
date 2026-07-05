@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { authApi, inviteApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
 import { FormGroup, Label, Input, Button, ErrorMsg } from './Layout.styled'
+import { IconEye, IconEyeOff, IconX } from '../icons'
 import {
   Overlay,
   ModalBox,
@@ -112,7 +113,7 @@ export function AuthModal() {
           onClick={() => setShowPw((p) => !p)}
           aria-label={showPw ? t('hidePassword') : t('showPassword')}
         >
-          {showPw ? '🙈' : '👁️'}
+          {showPw ? <IconEyeOff size={16} /> : <IconEye size={16} />}
         </EyeBtn>
       </PasswordWrapper>
     </FormGroup>

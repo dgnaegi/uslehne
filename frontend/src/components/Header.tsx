@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
+import { IconX, IconMenu, IconRepeat, IconBox, IconLink, IconAward, IconLogOut } from '../icons'
 import {
   Nav,
   LogoGroup,
@@ -64,7 +65,7 @@ export function Header() {
       )}
 
       <SearchWrapper>
-        <SearchInput type="search" placeholder="Suchen…" readOnly />
+        <SearchInput type="search" placeholder="Suchen…" />
       </SearchWrapper>
 
       {user ? (
@@ -96,7 +97,7 @@ export function Header() {
           </DesktopNav>
 
           <HamburgerBtn onClick={() => setMobileOpen((o) => !o)} aria-label="Menü öffnen">
-            {mobileOpen ? '✕' : '☰'}
+            {mobileOpen ? <IconX size={20} /> : <IconMenu size={20} />}
           </HamburgerBtn>
 
           {mobileOpen && (

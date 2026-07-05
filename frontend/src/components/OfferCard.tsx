@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Offer } from '../api/types'
+import { IconBox, IconMapPin } from '../icons'
 import {
   Card,
   CardImage,
