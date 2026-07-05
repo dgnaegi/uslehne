@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -41,6 +41,7 @@ export function OfferFormPage() {
   const [addresses, setAddresses] = useState<Address[]>([])
   const [imageDataUrl, setImageDataUrl] = useState('')
   const [showAddressForm, setShowAddressForm] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const {
     register,
     handleSubmit,
@@ -194,11 +195,20 @@ export function OfferFormPage() {
         </FormGroup>
         <FormGroup>
           <Label>{t('offers:image')}</Label>
-          {imageDataUrl ? <ImagePreview src={imageDataUrl} alt="Vorschau" /> : <AspectRatioHint />}
+          {imageDataUrl ? (
+            <ImagePreview src={imageDataUrl} alt="Vorschau" />
+          ) : (
+            <AspectRatioHint
+              onClick={() => fileInputRef.current?.click()}
+              onFileDrop={async (file) => setImageDataUrl(await resizeImage(file))}
+            />
+          )}
           <input
+            ref={fileInputRef}
             type="file"
             accept="image/jpeg,image/png,image/webp"
             onChange={handleImageChange}
+            hidden
           />
         </FormGroup>
         {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
