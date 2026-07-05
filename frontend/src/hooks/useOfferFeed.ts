@@ -4,7 +4,7 @@ import { offerApi } from '../api/endpoints'
 
 const PAGE_SIZE = 10
 
-export function useOfferFeed(zips: string[]) {
+export function useOfferFeed(zips: string[], query?: string) {
   const zipsKey = zips.join(',')
   const [offers, setOffers] = useState<Offer[]>([])
   const [nextCursor, setNextCursor] = useState<string | null>(null)
@@ -17,13 +17,17 @@ export function useOfferFeed(zips: string[]) {
     setOffers([])
     setNextCursor(null)
     offerApi
-      .list({ limit: PAGE_SIZE, zips: zipList.length ? zipList : undefined })
+      .list({
+        limit: PAGE_SIZE,
+        zips: zipList.length ? zipList : undefined,
+        q: query || undefined,
+      })
       .then(({ offers: o, nextCursor: nc }) => {
         setOffers(o)
         setNextCursor(nc)
       })
       .finally(() => setLoading(false))
-  }, [zipsKey])
+  }, [zipsKey, query])
 
   const loadMore = useCallback(() => {
     if (!nextCursor || loadingMore) return

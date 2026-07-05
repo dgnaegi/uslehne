@@ -6,6 +6,7 @@ import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
 import { imageStorage } from '../storage/imageStorage'
+import { searchOffers } from './offerSearch'
 
 const router = Router()
 
@@ -45,8 +46,6 @@ router.get('/offers', async (req: Request, res: Response, next: NextFunction) =>
     const typeFilter: OfferType | undefined =
       typeParam === 'LEND' || typeParam === 'GIVE' ? typeParam : undefined
 
-    const cursor = req.query.cursor as string | undefined
-    const limit = Math.min(parseInt((req.query.limit as string) || '10', 10) || 10, 50)
     const zipParam = req.query.zip as string | undefined
     const zips = zipParam
       ? zipParam
@@ -54,6 +53,15 @@ router.get('/offers', async (req: Request, res: Response, next: NextFunction) =>
           .map((z) => z.trim())
           .filter(Boolean)
       : undefined
+
+    const rawQ = (req.query.q as string | undefined)?.trim().slice(0, 80)
+    if (rawQ) {
+      const offers = await searchOffers({ q: rawQ, typeFilter, zips })
+      return res.json({ offers, nextCursor: null })
+    }
+
+    const cursor = req.query.cursor as string | undefined
+    const limit = Math.min(parseInt((req.query.limit as string) || '10', 10) || 10, 50)
 
     const rows = await db.offer.findMany({
       where: {

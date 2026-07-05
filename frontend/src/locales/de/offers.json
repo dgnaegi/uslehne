@@ -28,5 +28,7 @@
   "selectType": "Typ auswählen",
   "uploadImage": "Bild auswählen",
   "changeImage": "Bild ändern",
-  "noAddresses": "Keine Adressen vorhanden."
+  "noAddresses": "Keine Adressen vorhanden.",
+  "searchPlaceholder": "Angebote suchen…",
+  "noSearchResults": "Keine Angebote für «{{q}}» gefunden."
 }
