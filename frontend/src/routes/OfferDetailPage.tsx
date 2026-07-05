@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { IconBox, IconMapPin } from '../icons'
@@ -8,6 +8,9 @@ import { useAuth } from '../auth/AuthContext'
 import { Button } from '../components/Layout.styled'
 import { RequestDialog } from '../components/RequestDialog'
 import { ImageLightbox } from '../components/ImageLightbox'
+import { JsonLd } from '../components/JsonLd'
+import { usePageMeta } from '../hooks/usePageMeta'
+import { buildOfferJsonLd } from '../utils/offerJsonLd'
 import {
   DetailWrapper,
   ImageBlock,
@@ -34,6 +37,15 @@ export function OfferDetailPage() {
       .then(({ offer: o }) => setOffer(o))
       .catch(() => navigate('/offers'))
   }, [id, navigate])
+
+  const actionWord = offer?.type === 'LEND' ? 'Ausleihen' : 'Verschenken'
+  usePageMeta(
+    offer
+      ? `${offer.title} – ${actionWord} in ${offer.address.city} | uslehne`
+      : 'uslehne – Ausleihen & Verschenken in der Schweiz',
+    offer ? `${offer.description.slice(0, 150)} – Kostenlos ${actionWord.toLowerCase()} in ${offer.address.city} (${offer.address.zip}) auf uslehne.ch.` : undefined,
+  )
+  const offerJsonLd = useMemo(() => (offer ? buildOfferJsonLd(offer) : null), [offer])
 
   if (!offer) return null
 
@@ -63,6 +75,7 @@ export function OfferDetailPage() {
 
   return (
     <DetailWrapper>
+      {offerJsonLd && <JsonLd json={offerJsonLd} />}
       <BackLink onClick={() => navigate(-1)}>{t('common:actions.back')}</BackLink>
       <ImageBlock>
         {offer.imageRef.startsWith('data:image/svg') ? (

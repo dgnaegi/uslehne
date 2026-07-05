@@ -1,5 +1,13 @@
 User-agent: *
-Allow: /
+Allow: /offers
+Allow: /offers/*
+Allow: /users/*
+Disallow: /my-offers
+Disallow: /transactions
+Disallow: /invites
+Disallow: /profile
+Disallow: /offers/new
+Disallow: /offers/*/edit
 
 User-agent: GPTBot
 Allow: /
@@ -11,9 +19,25 @@ User-agent: PerplexityBot
 Allow: /
 
 User-agent: Googlebot
-Allow: /
+Allow: /offers
+Allow: /offers/*
+Allow: /users/*
+Disallow: /my-offers
+Disallow: /transactions
+Disallow: /invites
+Disallow: /profile
+Disallow: /offers/new
+Disallow: /offers/*/edit
 
 User-agent: Bingbot
-Allow: /
+Allow: /offers
+Allow: /offers/*
+Allow: /users/*
+Disallow: /my-offers
+Disallow: /transactions
+Disallow: /invites
+Disallow: /profile
+Disallow: /offers/new
+Disallow: /offers/*/edit
 
 Sitemap: https://uslehne.ch/sitemap.xml

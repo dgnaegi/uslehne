@@ -5,13 +5,14 @@ import { IconX } from '../icons'
 
 interface Props {
   onSearch: (q: string) => void
+  defaultValue?: string
 }
 
 const DEBOUNCE_MS = 300
 
-export function SearchBar({ onSearch }: Props) {
+export function SearchBar({ onSearch, defaultValue = '' }: Props) {
   const { t } = useTranslation('offers')
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(defaultValue)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
