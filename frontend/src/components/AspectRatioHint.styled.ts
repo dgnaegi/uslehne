@@ -7,9 +7,8 @@ export const HintWrapper = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
   padding: ${({ theme }) => theme.spacing.md};
   border: 1.5px dashed ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius};
   margin-bottom: ${({ theme }) => theme.spacing.sm};
-  background: ${({ theme }) => theme.colors.surface};
+  background: ${({ theme }) => theme.colors.muted};
 `
 
 export const HintFrames = styled.div`
