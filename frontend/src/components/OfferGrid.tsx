@@ -1,16 +1,17 @@
 import { Fragment, useRef, useEffect } from 'react'
 import type { Offer } from '../api/types'
 import { OfferCard } from './OfferCard'
-import { Feed, Empty } from './OfferGrid.styled'
+import { Feed, Empty, SpinnerOverlay, Spinner } from './OfferGrid.styled'
 
 interface Props {
   offers: Offer[]
   emptyMessage: string
   loadMore: () => void
   hasMore: boolean
+  loading?: boolean
 }
 
-export function OfferGrid({ offers, emptyMessage, loadMore, hasMore }: Props) {
+export function OfferGrid({ offers, emptyMessage, loadMore, hasMore, loading }: Props) {
   const feedRef = useRef<HTMLDivElement>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
 
@@ -32,6 +33,13 @@ export function OfferGrid({ offers, emptyMessage, loadMore, hasMore }: Props) {
     observer.observe(sentinel)
     return () => observer.disconnect()
   }, [hasMore, loadMore, offers.length])
+
+  if (loading)
+    return (
+      <SpinnerOverlay>
+        <Spinner />
+      </SpinnerOverlay>
+    )
 
   if (offers.length === 0) return <Empty>{emptyMessage}</Empty>
 

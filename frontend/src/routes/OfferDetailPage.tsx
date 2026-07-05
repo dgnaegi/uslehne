@@ -43,7 +43,9 @@ export function OfferDetailPage() {
     offer
       ? `${offer.title} – ${actionWord} in ${offer.address.city} | uslehne`
       : 'uslehne – Ausleihen & Verschenken in der Schweiz',
-    offer ? `${offer.description.slice(0, 150)} – Kostenlos ${actionWord.toLowerCase()} in ${offer.address.city} (${offer.address.zip}) auf uslehne.ch.` : undefined,
+    offer
+      ? `${offer.description.slice(0, 150)} – Kostenlos ${actionWord.toLowerCase()} in ${offer.address.city} (${offer.address.zip}) auf uslehne.ch.`
+      : undefined,
   )
   const offerJsonLd = useMemo(() => (offer ? buildOfferJsonLd(offer) : null), [offer])
 

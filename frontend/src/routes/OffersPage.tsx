@@ -32,8 +32,6 @@ export function OffersPage() {
 
   const emptyMessage = query ? t('noSearchResults', { q: query }) : t('noOffers')
 
-  if (loading) return null
-
   return (
     <>
       <ZipFilter zips={zips} onZipsChange={setZips} />
@@ -43,6 +41,7 @@ export function OffersPage() {
         emptyMessage={emptyMessage}
         loadMore={loadMore}
         hasMore={hasMore}
+        loading={loading}
       />
     </>
   )
