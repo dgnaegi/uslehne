@@ -118,9 +118,7 @@ export function Header() {
           )}
         </>
       ) : (
-        <GuestAuthBtn onClick={openAuthModal}>
-          {t('nav.login')}
-        </GuestAuthBtn>
+        <GuestAuthBtn onClick={openAuthModal}>{t('nav.login')}</GuestAuthBtn>
       )}
     </Nav>
   )
