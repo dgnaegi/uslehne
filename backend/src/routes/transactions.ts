@@ -32,7 +32,10 @@ router.post(
       if (body.contactType === 'EMAIL' && !EMAIL_RE.test(body.contactValue)) {
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
-      if (['SMS', 'WHATSAPP', 'SIGNAL'].includes(body.contactType) && !PHONE_RE.test(body.contactValue)) {
+      if (
+        ['SMS', 'WHATSAPP', 'SIGNAL'].includes(body.contactType) &&
+        !PHONE_RE.test(body.contactValue)
+      ) {
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
 

@@ -32,7 +32,10 @@ const loginSchema = z.object({
 router.post('/auth/check-email', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email } = req.body as { email?: string }
-    if (!email) { res.json({ exists: false }); return }
+    if (!email) {
+      res.json({ exists: false })
+      return
+    }
     const user = await db.user.findUnique({ where: { email } })
     res.json({ exists: Boolean(user) })
   } catch (err) {
@@ -64,7 +67,8 @@ router.post(
         db.user.findUnique({ where: { username } }),
       ])
       if (existingEmail) throw new AppError(ErrorCode.CONFLICT, 409, 'E-Mail bereits vergeben.')
-      if (existingUsername) throw new AppError(ErrorCode.CONFLICT, 409, 'Benutzername bereits vergeben.')
+      if (existingUsername)
+        throw new AppError(ErrorCode.CONFLICT, 409, 'Benutzername bereits vergeben.')
 
       const passwordHash = await hashPassword(password)
 
@@ -93,7 +97,12 @@ router.post(
       const token = signToken({ sub: user.id, role: user.role })
       res.status(201).json({
         token,
-        user: { id: user.id, username: user.username, email: user.email, kudosBalance: user.kudosBalance },
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          kudosBalance: user.kudosBalance,
+        },
       })
     } catch (err) {
       next(err)
@@ -116,7 +125,12 @@ router.post(
       const token = signToken({ sub: user.id, role: user.role })
       res.json({
         token,
-        user: { id: user.id, username: user.username, email: user.email, kudosBalance: user.kudosBalance },
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          kudosBalance: user.kudosBalance,
+        },
       })
     } catch (err) {
       next(err)
@@ -128,7 +142,14 @@ router.get('/auth/me', requireAuth, async (req: Request, res: Response, next: Ne
   try {
     const user = await db.user.findUniqueOrThrow({
       where: { id: req.user!.id },
-      select: { id: true, username: true, email: true, role: true, kudosBalance: true, createdAt: true },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+        kudosBalance: true,
+        createdAt: true,
+      },
     })
     res.json({ user })
   } catch (err) {
