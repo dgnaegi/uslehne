@@ -6,6 +6,8 @@ import type { Address, ContactType } from '../api/types'
 import { offerApi, addressApi } from '../api/endpoints'
 import { resizeImage } from '../utils/imageResize'
 import { AddressInlineCreate } from '../components/AddressInlineCreate'
+import { PhoneField } from '../components/PhoneField'
+import { SelectRow, AddIconButton } from '../components/PhoneField.styled'
 import {
   PageWrapper,
   PageTitle,
@@ -20,8 +22,7 @@ import {
 } from '../components/Layout.styled'
 import { ImagePreview } from './OfferFormPage.styled'
 import { AspectRatioHint } from '../components/AspectRatioHint'
-
-const PHONE_CHANNELS: ContactType[] = ['SMS', 'WHATSAPP', 'SIGNAL']
+import { IconPlus } from '../icons'
 
 interface FormValues {
   title: string
@@ -39,6 +40,7 @@ export function OfferFormPage() {
   const navigate = useNavigate()
   const [addresses, setAddresses] = useState<Address[]>([])
   const [imageDataUrl, setImageDataUrl] = useState('')
+  const [showAddressForm, setShowAddressForm] = useState(false)
   const {
     register,
     handleSubmit,
@@ -47,10 +49,7 @@ export function OfferFormPage() {
     setValue,
     formState: { errors, isSubmitting },
     setError,
-  } = useForm<FormValues>({ defaultValues: { contactType: 'SMS' } })
-
-  const contactType = watch('contactType')
-  const isPhoneChannel = (PHONE_CHANNELS as string[]).includes(contactType)
+  } = useForm<FormValues>({ defaultValues: { contactType: 'SMS', contactValue: '' } })
 
   useEffect(() => {
     addressApi.list().then(({ addresses: a }) => setAddresses(a))
@@ -73,6 +72,11 @@ export function OfferFormPage() {
     const file = e.target.files?.[0]
     if (!file) return
     setImageDataUrl(await resizeImage(file))
+  }
+
+  function handleContactSelect(type: ContactType, value: string) {
+    setValue('contactType', type, { shouldValidate: true })
+    setValue('contactValue', value, { shouldValidate: true })
   }
 
   async function onSubmit(values: FormValues) {
@@ -144,34 +148,49 @@ export function OfferFormPage() {
               }}
             />
           ) : (
-            <Select {...register('addressId', { required: true })}>
-              <option value="">{t('offers:selectAddress')}</option>
-              {addresses.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.label ? `${a.label} — ` : ''}
-                  {a.zip} {a.city}
-                </option>
-              ))}
-            </Select>
+            <>
+              <SelectRow>
+                <Select {...register('addressId', { required: true })}>
+                  <option value="">{t('offers:selectAddress')}</option>
+                  {addresses.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.label ? `${a.label} — ` : ''}
+                      {a.zip} {a.city}
+                    </option>
+                  ))}
+                </Select>
+                <AddIconButton
+                  type="button"
+                  onClick={() => setShowAddressForm((v) => !v)}
+                  title="Neue Adresse"
+                >
+                  <IconPlus size={14} />
+                </AddIconButton>
+              </SelectRow>
+              {showAddressForm && (
+                <AddressInlineCreate
+                  onCreated={(newId) => {
+                    addressApi.list().then(({ addresses: a }) => {
+                      setAddresses(a)
+                      setValue('addressId', newId)
+                      setShowAddressForm(false)
+                    })
+                  }}
+                />
+              )}
+            </>
           )}
         </FormGroup>
         <FormGroup>
           <Label>{t('offers:contactType')}</Label>
-          <Select {...register('contactType', { required: true })}>
-            <option value="SMS">SMS</option>
-            <option value="WHATSAPP">WhatsApp</option>
-            <option value="SIGNAL">Signal</option>
-            <option value="EMAIL">E-Mail</option>
-          </Select>
-        </FormGroup>
-        <FormGroup>
-          <Label>{t('offers:contactValue')}</Label>
-          <Input
-            {...register('contactValue', { required: true })}
-            type={isPhoneChannel ? 'tel' : 'email'}
-            placeholder={isPhoneChannel ? '+41 79 000 00 00' : 'name@beispiel.ch'}
+          <input type="hidden" {...register('contactType', { required: true })} />
+          <input type="hidden" {...register('contactValue', { required: true })} />
+          <PhoneField
+            selectedType={watch('contactType')}
+            selectedValue={watch('contactValue')}
+            onSelect={handleContactSelect}
           />
-          {errors.contactValue && <ErrorMsg>{errors.contactValue.message}</ErrorMsg>}
+          {errors.contactValue && <ErrorMsg>Bitte Kontakt auswählen.</ErrorMsg>}
         </FormGroup>
         <FormGroup>
           <Label>{t('offers:image')}</Label>
