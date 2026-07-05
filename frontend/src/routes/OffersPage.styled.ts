@@ -10,27 +10,24 @@ export const Filters = styled.div`
 export const FilterButton = styled.button<{ $active: boolean }>`
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
   border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
   background: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.surface)};
   color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
-  font-weight: 700;
-  font-size: 0.85rem;
+  font-weight: 800;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   cursor: pointer;
   transition:
-    background 0.12s ease,
-    color 0.12s ease,
-    transform 0.1s ease;
+    background 0.15s ease-out,
+    color 0.15s ease-out;
+
   &:hover {
-    background: ${({ theme, $active }) =>
-      $active ? theme.colors.primary : theme.colors.background};
+    background: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.accent)};
+    color: ${({ theme }) => theme.colors.primary};
   }
-  &:active {
-    transform: translateY(2px);
-  }
+
   &:focus-visible {
-    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
 `

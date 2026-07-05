@@ -96,8 +96,7 @@ export const HistoryItem = styled.li`
 export const HistoryDelta = styled.span<{ $positive: boolean }>`
   font-weight: 800;
   font-size: 1rem;
-  color: ${({ $positive, theme }) =>
-    $positive ? theme.colors.success : theme.colors.danger};
+  color: ${({ $positive, theme }) => ($positive ? theme.colors.success : theme.colors.danger)};
   flex-shrink: 0;
 `
 

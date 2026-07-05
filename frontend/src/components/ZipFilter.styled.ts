@@ -8,19 +8,20 @@ export const FilterBar = styled.div`
   z-index: ${({ theme }) => theme.zIndex.filterBar};
   display: flex;
   flex-direction: column;
-  background: rgba(253, 250, 240, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: ${({ theme }) => theme.colors.background};
+  border-bottom: ${({ theme }) => theme.border};
 `
 
 export const Tagline = styled.div`
   width: 100%;
   background: ${({ theme }) => theme.colors.accent};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
   text-align: center;
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 3px ${({ theme }) => theme.spacing.md};
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px ${({ theme }) => theme.spacing.md};
   color: ${({ theme }) => theme.colors.primary};
   white-space: nowrap;
   overflow: hidden;
@@ -47,11 +48,12 @@ export const Chip = styled.span`
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.accent};
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   white-space: nowrap;
   flex-shrink: 0;
+  text-transform: uppercase;
 `
 
 export const ChipRemove = styled.button`
@@ -59,10 +61,11 @@ export const ChipRemove = styled.button`
   border: none;
   cursor: pointer;
   color: inherit;
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   line-height: 1;
   padding: 0;
-  opacity: 0.7;
+  opacity: 0.65;
+  transition: opacity 0.1s;
 
   &:hover {
     opacity: 1;
@@ -72,12 +75,13 @@ export const ChipRemove = styled.button`
 export const ZipInput = styled.input`
   height: ${({ theme }) => theme.spacing.xl};
   padding: 0 ${({ theme }) => theme.spacing.sm};
-  border: 2px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 999px;
+  border: none;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
   font-size: 0.82rem;
+  font-weight: 700;
   width: 88px;
   outline: none;
-  background: ${({ theme }) => theme.colors.surface};
+  background: transparent;
   color: ${({ theme }) => theme.colors.text};
   flex-shrink: 0;
 `
@@ -85,17 +89,24 @@ export const ZipInput = styled.input`
 export const AddButton = styled.button`
   background: none;
   border: 2px solid rgba(26, 26, 26, 0.3);
-  border-radius: 999px;
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.text};
   white-space: nowrap;
   flex-shrink: 0;
-  opacity: 0.65;
+  opacity: 0.6;
+  transition:
+    opacity 0.12s,
+    background 0.12s,
+    color 0.12s;
 
   &:hover {
     opacity: 1;
+    background: ${({ theme }) => theme.colors.accent};
+    border-color: ${({ theme }) => theme.colors.primary};
   }
 `

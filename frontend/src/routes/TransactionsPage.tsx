@@ -99,8 +99,8 @@ export function TransactionsPage() {
             </TxMeta>
             {tab === 'incoming' && tx.contactType && (
               <TxContact>
-                {t('transactions:contactLabel')}:{' '}
-                {CONTACT_ICON[tx.contactType] ?? '📞'} {tx.contactValue}
+                {t('transactions:contactLabel')}: {CONTACT_ICON[tx.contactType] ?? '📞'}{' '}
+                {tx.contactValue}
               </TxContact>
             )}
             {tx.message && (
@@ -126,9 +126,7 @@ export function TransactionsPage() {
                       }
                     />
                     {pendingRatings[tx.id] && (
-                      <Button onClick={() => submitRating(tx.id)}>
-                        Speichern
-                      </Button>
+                      <Button onClick={() => submitRating(tx.id)}>Speichern</Button>
                     )}
                   </>
                 )}

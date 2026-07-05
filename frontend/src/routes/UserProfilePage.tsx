@@ -31,7 +31,11 @@ const REASON_LABEL: Record<LedgerReason, string> = {
 }
 
 function fmt(iso: string) {
-  return new Date(iso).toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: '2-digit' })
+  return new Date(iso).toLocaleDateString('de-CH', {
+    day: '2-digit',
+    month: '2-digit',
+    year: '2-digit',
+  })
 }
 
 export function UserProfilePage() {
@@ -41,7 +45,10 @@ export function UserProfilePage() {
 
   useEffect(() => {
     if (!id) return
-    userApi.getProfile(id).then(({ user }) => setProfile(user)).catch(() => navigate('/offers'))
+    userApi
+      .getProfile(id)
+      .then(({ user }) => setProfile(user))
+      .catch(() => navigate('/offers'))
   }, [id, navigate])
 
   if (!profile) return null
@@ -59,9 +66,7 @@ export function UserProfilePage() {
       <StatsGrid>
         <StatCard>
           <StatLabel>Sterne Ø</StatLabel>
-          <StatValue>
-            {profile.avgStars !== null ? profile.avgStars.toFixed(1) : '—'}
-          </StatValue>
+          <StatValue>{profile.avgStars !== null ? profile.avgStars.toFixed(1) : '—'}</StatValue>
         </StatCard>
         <StatCard>
           <StatLabel>Karma</StatLabel>

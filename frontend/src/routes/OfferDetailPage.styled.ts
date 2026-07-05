@@ -16,8 +16,10 @@ export const DetailWrapper = styled.main`
 export const BackLink = styled.button`
   background: none;
   border: none;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
   margin-bottom: ${({ theme }) => theme.spacing.md};
   padding: ${({ theme }) => `${theme.spacing.xs} 0`};
@@ -25,11 +27,10 @@ export const BackLink = styled.button`
   align-items: center;
   gap: 6px;
   color: ${({ theme }) => theme.colors.text};
-  letter-spacing: 0.03em;
 
   &::before {
     content: '←';
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1;
   }
 
@@ -47,9 +48,10 @@ export const ImageBlock = styled.div`
   align-items: center;
   justify-content: center;
   background: ${({ theme }) => theme.colors.pastelYellow};
+  border-top: ${({ theme }) => theme.border};
+  border-bottom: ${({ theme }) => theme.border};
   margin-bottom: ${({ theme }) => theme.spacing.xl};
   font-size: 6rem;
-  /* break out of the DetailWrapper padding to span full viewport width */
   width: 100vw;
   position: relative;
   left: 50%;
@@ -72,10 +74,12 @@ export const InfoBlock = styled.div`
 export const MetaRow = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.lg};
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: ${({ theme }) => theme.colors.textMuted};
   font-weight: 600;
   flex-wrap: wrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 `
 
 export const ActionRow = styled.div`
@@ -85,13 +89,12 @@ export const ActionRow = styled.div`
 `
 
 export const TypeBadge = styled.span<{ $type: OfferType }>`
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
   border: 2px solid ${({ theme }) => theme.colors.primary};
-  border-radius: ${({ theme }) => theme.radius};
   background: ${({ theme, $type }) =>
     $type === 'GIVE' ? theme.colors.pastelMint : theme.colors.accent};
   align-self: flex-start;

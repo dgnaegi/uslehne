@@ -119,7 +119,7 @@ export function Header() {
         </>
       ) : (
         <GuestAuthBtn onClick={openAuthModal}>
-          {t('nav.register')} / {t('nav.login')}
+          {t('nav.login')}
         </GuestAuthBtn>
       )}
     </Nav>

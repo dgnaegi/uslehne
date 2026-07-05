@@ -14,7 +14,9 @@ export const Star = styled.button<{ $filled: boolean; $interactive: boolean }>`
   line-height: 1;
   color: ${({ $filled, theme }) => ($filled ? theme.colors.accent : theme.colors.border)};
   cursor: ${({ $interactive }) => ($interactive ? 'pointer' : 'default')};
-  transition: color 0.1s, transform 0.1s;
+  transition:
+    color 0.1s,
+    transform 0.1s;
   -webkit-text-stroke: ${({ theme }) => `1.5px ${theme.colors.primary}`};
 
   &:hover {

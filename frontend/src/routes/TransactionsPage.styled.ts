@@ -2,19 +2,36 @@ import styled from 'styled-components'
 
 export const TabBar = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: 0;
   margin-bottom: ${({ theme }) => theme.spacing.lg};
+  border: ${({ theme }) => theme.border};
+  width: fit-content;
 `
 
 export const Tab = styled.button<{ $active: boolean }>`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.lg}`};
-  border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
-  background: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.surface)};
+  border: none;
+  border-right: ${({ theme, $active: _ }) => theme.border};
+  background: ${({ theme, $active }) => ($active ? theme.colors.primary : 'transparent')};
   color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
-  font-weight: 700;
-  font-size: 0.9rem;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
+  transition:
+    background 0.1s ease-out,
+    color 0.1s ease-out;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover:not(:disabled) {
+    background: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.accent)};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
   &:focus-visible {
     outline: 3px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
@@ -23,7 +40,6 @@ export const Tab = styled.button<{ $active: boolean }>`
 
 export const TxCard = styled.div`
   border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
   background: ${({ theme }) => theme.colors.surface};
   padding: ${({ theme }) => theme.spacing.md};
   margin-bottom: ${({ theme }) => theme.spacing.sm};
@@ -31,24 +47,29 @@ export const TxCard = styled.div`
 `
 
 export const TxTitle = styled.h3`
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   margin-bottom: ${({ theme }) => theme.spacing.xs};
 `
 
 export const TxMeta = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.md};
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: ${({ theme }) => theme.colors.textMuted};
   font-weight: 600;
+  letter-spacing: 0.03em;
   margin-bottom: ${({ theme }) => theme.spacing.sm};
   flex-wrap: wrap;
 `
 
 export const TxContact = styled.p`
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   margin-bottom: ${({ theme }) => theme.spacing.xs};
+  letter-spacing: 0.02em;
 `
 
 export const RateRow = styled.div`
@@ -57,12 +78,14 @@ export const RateRow = styled.div`
   gap: ${({ theme }) => theme.spacing.sm};
   margin-top: ${({ theme }) => theme.spacing.sm};
   flex-wrap: wrap;
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: ${({ theme }) => theme.colors.textMuted};
 
   button {
-    font-size: 0.82rem;
+    font-size: 0.75rem;
     padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
   }
 `

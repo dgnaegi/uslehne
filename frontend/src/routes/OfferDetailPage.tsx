@@ -67,11 +67,7 @@ export function OfferDetailPage() {
         {offer.imageRef.startsWith('data:image/svg') ? (
           <span>📦</span>
         ) : (
-          <img
-            src={offer.imageRef}
-            alt={offer.title}
-            onClick={() => setShowLightbox(true)}
-          />
+          <img src={offer.imageRef} alt={offer.title} onClick={() => setShowLightbox(true)} />
         )}
       </ImageBlock>
       <InfoBlock>

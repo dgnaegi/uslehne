@@ -15,46 +15,56 @@ export const PageWrapper = styled.main`
 `
 
 export const PageTitle = styled.h1`
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `
 
 export const Button = styled.button<{ $variant?: 'primary' | 'secondary' | 'danger' }>`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.lg}`};
-  font-weight: 700;
-  font-size: 0.9rem;
+  font-weight: 800;
+  font-size: 0.8rem;
   border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
   cursor: pointer;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   background: ${({ theme, $variant }) =>
     $variant === 'danger'
       ? theme.colors.danger
       : $variant === 'secondary'
         ? theme.colors.surface
         : theme.colors.accent};
-  color: ${({ theme }) => theme.colors.primary};
-  box-shadow: ${({ theme }) => theme.shadow};
+  color: ${({ theme, $variant }) => ($variant === 'danger' ? '#ffffff' : theme.colors.primary)};
   transition:
-    transform 0.1s,
-    box-shadow 0.1s;
+    background 0.15s ease-out,
+    color 0.15s ease-out;
   text-decoration: none;
   display: inline-block;
 
   &:hover:not(:disabled) {
-    transform: translate(-2px, -2px);
-    box-shadow: ${({ theme }) => theme.shadowMd};
+    background: ${({ theme, $variant }) =>
+      $variant === 'danger'
+        ? '#b71c1c'
+        : $variant === 'secondary'
+          ? theme.colors.accent
+          : theme.colors.primary};
+    color: ${({ theme, $variant }) =>
+      $variant === 'danger'
+        ? '#ffffff'
+        : $variant === 'secondary'
+          ? theme.colors.primary
+          : theme.colors.accent};
   }
 
   &:focus-visible {
-    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.45;
     cursor: not-allowed;
   }
 `
@@ -63,13 +73,14 @@ export const Input = styled.input`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.sm};
   border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
   font-size: 1rem;
   background: ${({ theme }) => theme.colors.surface};
+  outline: none;
+  transition: border-color 0.12s ease-out;
 
   &:focus-visible {
     outline: none;
-    box-shadow: ${({ theme }) => theme.shadow};
+    border-color: ${({ theme }) => theme.colors.accent};
   }
 `
 
@@ -77,15 +88,16 @@ export const Textarea = styled.textarea`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.sm};
   border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
   font-size: 1rem;
   background: ${({ theme }) => theme.colors.surface};
   resize: vertical;
   min-height: 100px;
+  outline: none;
+  transition: border-color 0.12s ease-out;
 
   &:focus-visible {
     outline: none;
-    box-shadow: ${({ theme }) => theme.shadow};
+    border-color: ${({ theme }) => theme.colors.accent};
   }
 `
 
@@ -93,14 +105,15 @@ export const Select = styled.select`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.sm};
   border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
   font-size: 1rem;
   background: ${({ theme }) => theme.colors.surface};
   cursor: pointer;
+  outline: none;
+  transition: border-color 0.12s ease-out;
 
   &:focus-visible {
     outline: none;
-    box-shadow: ${({ theme }) => theme.shadow};
+    border-color: ${({ theme }) => theme.colors.accent};
   }
 `
 
@@ -111,7 +124,6 @@ export const FormGroup = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.md};
 `
 
-// Row of action buttons with consistent spacing
 export const FormActions = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.sm};
@@ -119,7 +131,6 @@ export const FormActions = styled.div`
   margin-top: ${({ theme }) => theme.spacing.xs};
 `
 
-// Centered container for auth-prompt / empty-state screens
 export const AuthPrompt = styled.div`
   text-align: center;
   padding-top: ${({ theme }) => theme.spacing.xxl};
@@ -130,24 +141,26 @@ export const AuthPrompt = styled.div`
 `
 
 export const Label = styled.label`
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 `
 
 export const ErrorMsg = styled.p`
   color: ${({ theme }) => theme.colors.error};
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 `
 
 export const Badge = styled.span<{ $type?: OfferType | 'status' }>`
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
-  border: 2px solid ${({ theme }) => theme.colors.primary};
-  border-radius: ${({ theme }) => theme.radius};
+  border: ${({ theme }) => theme.border};
   background: ${({ theme, $type }) =>
     $type === 'GIVE' ? theme.colors.pastelMint : theme.colors.accent};
   align-self: flex-start;

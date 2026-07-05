@@ -12,9 +12,8 @@ export const Nav = styled.header`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
-  background: rgba(253, 250, 240, 0.55);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: ${({ theme }) => theme.colors.background};
+  border-bottom: ${({ theme }) => theme.border};
 `
 
 export const LogoGroup = styled.div`
@@ -29,14 +28,14 @@ export const LogoGroup = styled.div`
 `
 
 export const Logo = styled.span`
-  font-family: ${({ theme }) => theme.fontComic};
-  font-size: 1.35rem;
-  letter-spacing: 0.06em;
-  text-transform: lowercase;
+  font-family: ${({ theme }) => theme.font};
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
   line-height: 1;
   color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
-  opacity: 0.55;
 `
 
 export const LogoClaim = styled.span`
@@ -44,7 +43,7 @@ export const LogoClaim = styled.span`
 `
 
 export const BackHome = styled.span`
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-decoration: none;
   color: ${({ theme }) => theme.colors.primary};
@@ -53,7 +52,8 @@ export const BackHome = styled.span`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};
   white-space: nowrap;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 
   &:hover {
     text-decoration: underline;
@@ -70,24 +70,21 @@ export const SearchWrapper = styled.div`
 export const SearchInput = styled.input`
   width: 100%;
   height: ${({ theme }) => theme.spacing.xl};
-  padding: 0 ${({ theme }) => theme.spacing.md};
-  border: 2px solid rgba(26, 26, 26, 0.18);
-  border-radius: 999px;
+  padding: 0 ${({ theme }) => theme.spacing.sm};
+  border: none;
+  border-bottom: 2px solid rgba(26, 26, 26, 0.2);
   font-size: 0.9rem;
-  background: rgba(255, 255, 255, 0.45);
+  background: transparent;
   color: ${({ theme }) => theme.colors.text};
   outline: none;
-  transition:
-    border-color 0.15s,
-    background 0.15s;
+  transition: border-color 0.12s;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.textMuted};
   }
 
   &:focus {
-    border-color: rgba(26, 26, 26, 0.45);
-    background: rgba(255, 255, 255, 0.75);
+    border-bottom-color: ${({ theme }) => theme.colors.primary};
   }
 `
 
@@ -103,13 +100,14 @@ export const DesktopNav = styled.nav`
 `
 
 export const NavLink = styled.span`
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.colors.primary};
+  transition: color 0.12s;
 
   &:hover {
     text-decoration: underline;
@@ -120,10 +118,10 @@ export const NavLink = styled.span`
 export const NavButton = styled.button`
   background: none;
   border: none;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.primary};
   padding: 0;
@@ -140,10 +138,11 @@ export const NavButton = styled.button`
 export const KudoBadge = styled.span`
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.accent};
-  font-weight: 700;
-  font-size: 0.7rem;
-  padding: ${({ theme }) => `2px ${theme.spacing.sm}`};
-  border-radius: ${({ theme }) => theme.radius};
+  font-weight: 800;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px ${({ theme }) => theme.spacing.sm};
 `
 
 export const KontoWrapper = styled.div`
@@ -156,7 +155,6 @@ export const DropdownMenu = styled.div`
   right: 0;
   background: ${({ theme }) => theme.colors.surface};
   border: ${({ theme }) => theme.border};
-  border-radius: ${({ theme }) => theme.radius};
   box-shadow: ${({ theme }) => theme.shadowMd};
   min-width: 180px;
   display: flex;
@@ -167,8 +165,10 @@ export const DropdownMenu = styled.div`
   button {
     display: block;
     padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     text-decoration: none;
     color: ${({ theme }) => theme.colors.text};
     background: none;
@@ -176,10 +176,13 @@ export const DropdownMenu = styled.div`
     width: 100%;
     text-align: left;
     cursor: pointer;
-    letter-spacing: 0.03em;
+    transition:
+      background 0.1s,
+      color 0.1s;
 
     &:hover {
       background: ${({ theme }) => theme.colors.accent};
+      color: ${({ theme }) => theme.colors.primary};
     }
 
     & + * {
@@ -189,20 +192,24 @@ export const DropdownMenu = styled.div`
 `
 
 export const GuestAuthBtn = styled.button`
-  background: none;
-  border: none;
+  background: ${({ theme }) => theme.colors.primary};
+  border: ${({ theme }) => theme.border};
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
-  color: ${({ theme }) => theme.colors.primary};
-  padding: 0;
+  color: ${({ theme }) => theme.colors.accent};
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
   white-space: nowrap;
   flex-shrink: 0;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition:
+    background 0.1s,
+    color 0.1s;
 
   &:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    background: ${({ theme }) => theme.colors.accent};
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 
@@ -231,6 +238,7 @@ export const MobileMenu = styled.div`
   right: 0;
   height: calc(100dvh - ${({ theme }) => theme.headerHeight});
   background: ${({ theme }) => theme.colors.surface};
+  border-top: ${({ theme }) => theme.border};
   z-index: ${({ theme }) => theme.zIndex.mobileMenu};
   display: flex;
   flex-direction: column;
@@ -242,18 +250,21 @@ export const MobileMenu = styled.div`
     align-items: center;
     gap: ${({ theme }) => theme.spacing.sm};
     padding: ${({ theme }) => `${theme.spacing.lg} ${theme.spacing.xl}`};
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     text-decoration: none;
     color: ${({ theme }) => theme.colors.text};
     background: none;
     border: none;
-    border-bottom: 2px solid ${({ theme }) => theme.colors.border};
+    border-bottom: ${({ theme }) => theme.border};
     width: 100%;
     text-align: left;
     cursor: pointer;
+    transition:
+      background 0.1s,
+      color 0.1s;
 
     &:last-child {
       border-bottom: none;

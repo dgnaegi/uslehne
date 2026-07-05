@@ -10,8 +10,11 @@ export const GlobalStyle = createGlobalStyle`
   body {
     font-family: ${({ theme }) => theme.font};
     background-color: ${({ theme }) => theme.colors.background};
-    background-image: radial-gradient(circle, #1a1a1a18 1px, transparent 1px);
-    background-size: 20px 20px;
+    /* Swiss grid pattern: visible 24px structure */
+    background-image:
+      linear-gradient(rgba(26, 26, 26, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26, 26, 26, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
     color: ${({ theme }) => theme.colors.text};
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;

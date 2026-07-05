@@ -5,11 +5,12 @@ export const theme = {
   colors: {
     primary: '#1a1a1a',
     accent: '#FFD600',
-    background: '#FDFAF0',
+    background: '#FFFFFF',
     surface: '#FFFFFF',
     text: '#1a1a1a',
     textMuted: '#555555',
     border: '#1a1a1a',
+    muted: '#F2F2F2',
     pastelBlue: '#B8E1F9',
     pastelYellow: '#FFE9A0',
     pastelPink: '#FFB8D4',
@@ -51,11 +52,13 @@ export const theme = {
     gutter: px(4), // 16px — matches spacing.md
     maxWidth: '1200px',
   },
-  border: '3px solid #1a1a1a',
-  radius: px(1), //  4px
-  radiusLg: px(2), //  8px
-  shadow: '4px 4px 0px #1a1a1a',
-  shadowMd: '6px 6px 0px #1a1a1a',
+  border: '2px solid #1a1a1a',
+  // Swiss International: strictly rectangular, no rounding
+  radius: '0px',
+  radiusLg: '0px',
+  // Swiss: flat design — no shadows of any kind
+  shadow: 'none',
+  shadowMd: 'none',
   maxWidth: '1200px',
   font: "'Inter', system-ui, sans-serif",
   fontComic: "'Bangers', 'Impact', system-ui, sans-serif",
