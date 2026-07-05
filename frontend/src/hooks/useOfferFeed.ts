@@ -14,7 +14,6 @@ export function useOfferFeed(zips: string[], query?: string) {
   useEffect(() => {
     const zipList = zipsKey.split(',').filter(Boolean)
     setLoading(true)
-    setOffers([])
     setNextCursor(null)
     offerApi
       .list({

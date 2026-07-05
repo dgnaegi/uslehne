@@ -1,7 +1,7 @@
 import { Fragment, useRef, useEffect } from 'react'
 import type { Offer } from '../api/types'
 import { OfferCard } from './OfferCard'
-import { Feed, Empty, SpinnerOverlay, Spinner } from './OfferGrid.styled'
+import { Feed, Empty, CenteredSpinner } from './OfferGrid.styled'
 
 interface Props {
   offers: Offer[]
@@ -15,7 +15,10 @@ export function OfferGrid({ offers, emptyMessage, loadMore, hasMore, loading }: 
   const feedRef = useRef<HTMLDivElement>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
 
-  // Trigger load when sentinel (3 cards before end) scrolls into the feed viewport
+  useEffect(() => {
+    if (loading) feedRef.current?.scrollTo({ top: 0, behavior: 'instant' })
+  }, [loading])
+
   useEffect(() => {
     const sentinel = sentinelRef.current
     const feed = feedRef.current
@@ -25,28 +28,26 @@ export function OfferGrid({ offers, emptyMessage, loadMore, hasMore, loading }: 
       ([entry]) => {
         if (entry.isIntersecting) loadMore()
       },
-      {
-        root: feed,
-        threshold: 0,
-      },
+      { root: feed, threshold: 0 },
     )
     observer.observe(sentinel)
     return () => observer.disconnect()
   }, [hasMore, loadMore, offers.length])
 
-  if (loading)
+  if (loading && offers.length === 0) {
     return (
-      <SpinnerOverlay>
-        <Spinner />
-      </SpinnerOverlay>
+      <Feed ref={feedRef}>
+        <CenteredSpinner />
+      </Feed>
     )
+  }
 
   if (offers.length === 0) return <Empty>{emptyMessage}</Empty>
 
   const sentinelAfterIndex = Math.max(0, offers.length - 4)
 
   return (
-    <Feed ref={feedRef}>
+    <Feed ref={feedRef} $loading={loading}>
       {offers.map((offer, i) => (
         <Fragment key={offer.id}>
           <OfferCard offer={offer} />

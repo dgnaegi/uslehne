@@ -1,11 +1,13 @@
 import styled, { keyframes } from 'styled-components'
 
-export const Feed = styled.div`
+export const Feed = styled.div<{ $loading?: boolean }>`
   position: fixed;
   inset: 0;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
+  opacity: ${({ $loading }) => ($loading ? 0.35 : 1)};
+  transition: opacity 0.15s;
 `
 
 export const Empty = styled.p`
@@ -23,17 +25,11 @@ const spin = keyframes`
   to { transform: rotate(360deg); }
 `
 
-export const SpinnerOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: ${({ theme }) => theme.zIndex.overlay};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${({ theme }) => theme.colors.background};
-`
-
-export const Spinner = styled.div`
+export const CenteredSpinner = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 40px;
   height: 40px;
   border: 3px solid ${({ theme }) => theme.colors.border};

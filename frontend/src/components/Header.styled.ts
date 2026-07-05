@@ -73,7 +73,7 @@ export const SearchInput = styled.input`
   padding: 0 ${({ theme }) => theme.spacing.sm};
   border: none;
   border-bottom: 2px solid rgba(26, 26, 26, 0.2);
-  font-size: 0.9rem;
+  font-size: 1rem;
   background: transparent;
   color: ${({ theme }) => theme.colors.text};
   outline: none;

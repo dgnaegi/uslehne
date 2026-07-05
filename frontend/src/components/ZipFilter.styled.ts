@@ -77,7 +77,7 @@ export const ZipInput = styled.input`
   padding: 0 ${({ theme }) => theme.spacing.sm};
   border: none;
   border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
-  font-size: 0.82rem;
+  font-size: 1rem;
   font-weight: 700;
   width: 88px;
   outline: none;
