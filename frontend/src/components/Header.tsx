@@ -103,18 +103,18 @@ export function Header() {
           {mobileOpen && (
             <MobileMenu>
               <Link to="/transactions" onClick={() => setMobileOpen(false)}>
-                🤝 {t('nav.transactions')}
+                <IconRepeat size={18} /> {t('nav.transactions')}
               </Link>
               <Link to="/my-offers" onClick={() => setMobileOpen(false)}>
-                📦 {t('nav.myOffers')}
+                <IconBox size={18} /> {t('nav.myOffers')}
               </Link>
               <Link to="/invites" onClick={() => setMobileOpen(false)}>
-                🔗 {t('nav.invites')}
+                <IconLink size={18} /> {t('nav.invites')}
               </Link>
               <Link to="/profile" onClick={() => setMobileOpen(false)}>
-                💰 {user.kudosBalance} Kudos
+                <IconAward size={18} /> {user.kudosBalance} Kudos
               </Link>
-              <button onClick={handleLogout}>🚪 {t('nav.logout')}</button>
+              <button onClick={handleLogout}><IconLogOut size={18} /> {t('nav.logout')}</button>
             </MobileMenu>
           )}
         </>

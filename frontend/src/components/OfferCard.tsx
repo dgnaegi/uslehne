@@ -23,14 +23,18 @@ export function OfferCard({ offer }: Props) {
   return (
     <Card as={Link} to={`/offers/${offer.id}`}>
       <CardImage $type={offer.type}>
-        <img src={offer.imageRef} alt={offer.title} />
+        {offer.imageRef.startsWith('data:image/svg') ? (
+          <IconBox size={64} aria-hidden="true" />
+        ) : (
+          <img src={offer.imageRef} alt={offer.title} />
+        )}
       </CardImage>
       <CardOverlay>
         <TypeBadge $type={offer.type}>{t(`offerType.${offer.type}`)}</TypeBadge>
         <CardTitle>{offer.title}</CardTitle>
         <CardMeta>
           <CardZip>
-            📍 {offer.address.zip} {offer.address.city}
+            <IconMapPin size={14} /> {offer.address.zip} {offer.address.city}
           </CardZip>
           <CardOwner>@{offer.owner.username}</CardOwner>
         </CardMeta>

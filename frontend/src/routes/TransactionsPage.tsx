@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { IconMail, IconMessageSquare, IconSmartphone, IconShield, IconPhone } from '../icons'
 import type { Transaction } from '../api/types'
 import { transactionApi } from '../api/endpoints'
 import { PageWrapper, PageTitle, Button, ErrorMsg } from '../components/Layout.styled'
@@ -58,11 +60,11 @@ export function TransactionsPage() {
     })
   }
 
-  const CONTACT_ICON: Record<string, string> = {
-    EMAIL: '✉️',
-    SMS: '💬',
-    WHATSAPP: '📱',
-    SIGNAL: '🔒',
+  const CONTACT_ICON: Record<string, ReactNode> = {
+    EMAIL: <IconMail size={14} />,
+    SMS: <IconMessageSquare size={14} />,
+    WHATSAPP: <IconSmartphone size={14} />,
+    SIGNAL: <IconShield size={14} />,
   }
 
   return (
@@ -99,7 +101,7 @@ export function TransactionsPage() {
             </TxMeta>
             {tab === 'incoming' && tx.contactType && (
               <TxContact>
-                {t('transactions:contactLabel')}: {CONTACT_ICON[tx.contactType] ?? '📞'}{' '}
+                {t('transactions:contactLabel')}: {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />}{' '}
                 {tx.contactValue}
               </TxContact>
             )}

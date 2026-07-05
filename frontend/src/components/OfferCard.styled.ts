@@ -27,7 +27,6 @@ export const CardImage = styled.div<{ $type: OfferType }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 5rem;
 
   img {
     width: 100%;

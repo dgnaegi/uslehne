@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Row, Star, Count } from './StarRating.styled'
+import { IconStar } from '../icons'
 
 interface Props {
   value: number | null
@@ -26,7 +27,7 @@ export function StarRating({ value, count, readOnly = false, onChange }: Props) 
           onClick={() => !readOnly && onChange?.(n)}
           aria-label={readOnly ? undefined : `${n} Stern${n > 1 ? 'e' : ''}`}
         >
-          ★
+          <IconStar size={20} />
         </Star>
       ))}
       {count !== undefined && count > 0 && <Count>({count})</Count>}

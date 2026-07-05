@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { IconBox, IconMapPin } from '../icons'
 import type { Offer } from '../api/types'
 import { offerApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
@@ -64,14 +65,18 @@ export function OfferDetailPage() {
     <DetailWrapper>
       <BackLink onClick={() => navigate(-1)}>{t('common:actions.back')}</BackLink>
       <ImageBlock>
-        <img src={offer.imageRef} alt={offer.title} onClick={() => setShowLightbox(true)} />
+        {offer.imageRef.startsWith('data:image/svg') ? (
+          <IconBox size={80} aria-hidden="true" />
+        ) : (
+          <img src={offer.imageRef} alt={offer.title} onClick={() => setShowLightbox(true)} />
+        )}
       </ImageBlock>
       <InfoBlock>
         <TypeBadge $type={offer.type}>{t(`common:offerType.${offer.type}`)}</TypeBadge>
         <h1>{offer.title}</h1>
         <p>{offer.description}</p>
         <MetaRow>
-          <span>📍 {offer.address.zip}</span>
+          <span><IconMapPin size={14} /> {offer.address.zip}</span>
           <Link to={`/users/${offer.ownerId}`}>@{offer.owner.username}</Link>
         </MetaRow>
         <MetaRow>

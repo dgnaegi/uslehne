@@ -19,6 +19,7 @@ import {
   ErrorMsg,
 } from '../components/Layout.styled'
 import { ImagePreview } from './OfferFormPage.styled'
+import { AspectRatioHint } from '../components/AspectRatioHint'
 
 interface FormValues {
   title: string
@@ -132,7 +133,11 @@ export function OfferFormPage() {
         </FormGroup>
         <FormGroup>
           <Label>{t('offers:image')}</Label>
-          {imageDataUrl && <ImagePreview src={imageDataUrl} alt="Vorschau" />}
+          {imageDataUrl ? (
+            <ImagePreview src={imageDataUrl} alt="Vorschau" />
+          ) : (
+            <AspectRatioHint />
+          )}
           <input
             type="file"
             accept="image/jpeg,image/png,image/webp"

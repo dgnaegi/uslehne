@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { Backdrop, CloseBtn, Img } from './ImageLightbox.styled'
+import { IconX } from '../icons'
 
 interface Props {
   src: string
@@ -140,7 +141,7 @@ export function ImageLightbox({ src, alt, onClose }: Props) {
         }}
         aria-label="Schliessen"
       >
-        ✕
+        <IconX size={20} />
       </CloseBtn>
       <Img
         ref={imgRef}

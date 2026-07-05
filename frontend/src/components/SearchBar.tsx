@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SearchWrapper, SearchInput, ClearButton } from './SearchBar.styled'
+import { IconX } from '../icons'
 
 interface Props {
   onSearch: (q: string) => void
@@ -37,7 +38,7 @@ export function SearchBar({ onSearch }: Props) {
       />
       {value && (
         <ClearButton onClick={handleClear} aria-label="Clear search">
-          ✕
+          <IconX size={14} />
         </ClearButton>
       )}
     </SearchWrapper>

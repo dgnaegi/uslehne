@@ -216,7 +216,6 @@ export const GuestAuthBtn = styled.button`
 export const HamburgerBtn = styled.button`
   background: none;
   border: none;
-  font-size: 1.5rem;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.primary};
   line-height: 1;

@@ -51,7 +51,6 @@ export const ImageBlock = styled.div`
   border-top: ${({ theme }) => theme.border};
   border-bottom: ${({ theme }) => theme.border};
   margin-bottom: ${({ theme }) => theme.spacing.xl};
-  font-size: 6rem;
   width: 100vw;
   position: relative;
   left: 50%;
@@ -80,6 +79,12 @@ export const MetaRow = styled.div`
   flex-wrap: wrap;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+
+  & > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
 `
 
 export const ActionRow = styled.div`

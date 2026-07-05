@@ -10,14 +10,18 @@ export const Star = styled.button<{ $filled: boolean; $interactive: boolean }>`
   background: none;
   border: none;
   padding: 0;
-  font-size: 1.3rem;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
   color: ${({ $filled, theme }) => ($filled ? theme.colors.accent : theme.colors.border)};
   cursor: ${({ $interactive }) => ($interactive ? 'pointer' : 'default')};
   transition:
     color 0.1s,
     transform 0.1s;
-  -webkit-text-stroke: ${({ theme }) => `1.5px ${theme.colors.primary}`};
+
+  & svg polygon {
+    fill: ${({ $filled }) => ($filled ? 'currentColor' : 'none')};
+  }
 
   &:hover {
     transform: ${({ $interactive }) => ($interactive ? 'scale(1.2)' : 'none')};

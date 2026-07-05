@@ -128,7 +128,7 @@ export function AuthModal() {
         onClick={(e) => e.stopPropagation()}
       >
         <CloseBtn onClick={closeAuthModal} aria-label="Schliessen">
-          ✕
+          <IconX size={16} />
         </CloseBtn>
 
         {step === 'email' && (
