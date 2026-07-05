@@ -1,25 +1,16 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useOfferFeed } from '../hooks/useOfferFeed'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { OfferGrid } from '../components/OfferGrid'
 import { ZipFilter } from '../components/ZipFilter'
-import { SearchBar } from '../components/SearchBar'
 
 export function OffersPage() {
   const { t } = useTranslation('offers')
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const [zips, setZips] = useState<string[]>([])
-  const [query, setQuery] = useState(() => searchParams.get('q') ?? '')
-
-  const handleSearch = useCallback(
-    (q: string) => {
-      setQuery(q)
-      setSearchParams(q ? { q } : {}, { replace: true })
-    },
-    [setSearchParams],
-  )
+  const query = searchParams.get('q') ?? ''
 
   const { offers, loading, loadMore, hasMore } = useOfferFeed(zips, query)
 
@@ -35,7 +26,6 @@ export function OffersPage() {
   return (
     <>
       <ZipFilter zips={zips} onZipsChange={setZips} />
-      <SearchBar onSearch={handleSearch} defaultValue={query} />
       <OfferGrid
         offers={offers}
         emptyMessage={emptyMessage}

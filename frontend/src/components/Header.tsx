@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
 import { IconX, IconMenu, IconRepeat, IconBox, IconLink, IconAward, IconLogOut } from '../icons'
@@ -27,10 +27,30 @@ export function Header() {
   const { t } = useTranslation('common')
   const navigate = useNavigate()
   const location = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
   const isOnFeed = location.pathname === '/offers'
   const [mobileOpen, setMobileOpen] = useState(false)
   const [kontoOpen, setKontoOpen] = useState(false)
+  const [searchValue, setSearchValue] = useState(() => searchParams.get('q') ?? '')
   const kontoRef = useRef<HTMLDivElement>(null)
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    setSearchValue(searchParams.get('q') ?? '')
+  }, [searchParams])
+
+  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const val = e.target.value
+    setSearchValue(val)
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+    searchTimerRef.current = setTimeout(() => {
+      if (isOnFeed) {
+        setSearchParams(val.trim() ? { q: val.trim() } : {}, { replace: true })
+      } else {
+        navigate(val.trim() ? `/offers?q=${encodeURIComponent(val.trim())}` : '/offers')
+      }
+    }, 300)
+  }
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -65,7 +85,12 @@ export function Header() {
       )}
 
       <SearchWrapper>
-        <SearchInput type="search" placeholder="Suchen…" />
+        <SearchInput
+          type="search"
+          placeholder="Suchen…"
+          value={searchValue}
+          onChange={handleSearchChange}
+        />
       </SearchWrapper>
 
       {user ? (
