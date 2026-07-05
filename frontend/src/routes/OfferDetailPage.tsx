@@ -76,7 +76,9 @@ export function OfferDetailPage() {
         <h1>{offer.title}</h1>
         <p>{offer.description}</p>
         <MetaRow>
-          <span><IconMapPin size={14} /> {offer.address.zip}</span>
+          <span>
+            <IconMapPin size={14} /> {offer.address.zip}
+          </span>
           <Link to={`/users/${offer.ownerId}`}>@{offer.owner.username}</Link>
         </MetaRow>
         <MetaRow>

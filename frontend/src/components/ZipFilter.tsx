@@ -42,7 +42,9 @@ export function ZipFilter({ zips, onZipsChange }: Props) {
         {zips.map((zip) => (
           <Chip key={zip}>
             {zip}
-            <ChipRemove onClick={() => onZipsChange(zips.filter((z) => z !== zip))}><IconX size={10} /></ChipRemove>
+            <ChipRemove onClick={() => onZipsChange(zips.filter((z) => z !== zip))}>
+              <IconX size={10} />
+            </ChipRemove>
           </Chip>
         ))}
         {showInput ? (
@@ -56,7 +58,9 @@ export function ZipFilter({ zips, onZipsChange }: Props) {
             autoFocus
           />
         ) : (
-          <AddButton onClick={() => setShowInput(true)}><IconPlus size={13} /> PLZ</AddButton>
+          <AddButton onClick={() => setShowInput(true)}>
+            <IconPlus size={13} /> PLZ
+          </AddButton>
         )}
       </ChipsRow>
     </FilterBar>

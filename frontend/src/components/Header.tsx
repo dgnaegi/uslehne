@@ -114,7 +114,9 @@ export function Header() {
               <Link to="/profile" onClick={() => setMobileOpen(false)}>
                 <IconAward size={18} /> {user.kudosBalance} Kudos
               </Link>
-              <button onClick={handleLogout}><IconLogOut size={18} /> {t('nav.logout')}</button>
+              <button onClick={handleLogout}>
+                <IconLogOut size={18} /> {t('nav.logout')}
+              </button>
             </MobileMenu>
           )}
         </>

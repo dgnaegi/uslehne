@@ -8,13 +8,8 @@ import { AppError, ErrorCode } from '../errors'
 const router = Router()
 
 const requestSchema = z.object({
-  contactType: z.enum(['SMS', 'WHATSAPP', 'SIGNAL', 'EMAIL']),
-  contactValue: z.string().min(1),
   message: z.string().optional(),
 })
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const PHONE_RE = /\d.*\d.*\d.*\d.*\d.*\d.*\d/
 
 router.post(
   '/offers/:id/request',
@@ -28,16 +23,6 @@ router.post(
         throw new AppError(ErrorCode.OFFER_NOT_AVAILABLE, 409)
       }
       if (offer.ownerId === req.user!.id) throw new AppError(ErrorCode.FORBIDDEN, 403)
-      if (!body.contactValue) throw new AppError(ErrorCode.CONTACT_REQUIRED, 422)
-      if (body.contactType === 'EMAIL' && !EMAIL_RE.test(body.contactValue)) {
-        throw new AppError(ErrorCode.CONTACT_INVALID, 422)
-      }
-      if (
-        ['SMS', 'WHATSAPP', 'SIGNAL'].includes(body.contactType) &&
-        !PHONE_RE.test(body.contactValue)
-      ) {
-        throw new AppError(ErrorCode.CONTACT_INVALID, 422)
-      }
 
       const kudos = offer.type === 'LEND' ? 1 : 5
       const requester = await db.user.findUniqueOrThrow({ where: { id: req.user!.id } })
@@ -51,8 +36,8 @@ router.post(
             ownerId: offer.ownerId,
             type: offer.type,
             kudos,
-            contactType: body.contactType,
-            contactValue: body.contactValue,
+            contactType: offer.contactType,
+            contactValue: offer.contactValue,
             message: body.message,
           },
         }),

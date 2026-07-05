@@ -30,7 +30,6 @@ export interface Address {
   id: string
   userId: string
   label?: string
-  street: string
   zip: string
   city: string
 }
@@ -46,6 +45,9 @@ export interface Offer {
   imageRef: string
   addressId: string
   address: { zip: string; city: string }
+  // Only returned for the owner (mine / create / edit responses)
+  contactType?: ContactType
+  contactValue?: string
   createdAt: string
   updatedAt: string
 }

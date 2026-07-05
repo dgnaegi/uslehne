@@ -73,7 +73,6 @@ model Address {
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   label     String?
-  street    String
   zip       String
   city      String
   offers    Offer[]
@@ -89,6 +88,8 @@ model Offer {
   type         OfferType
   status       OfferStatus   @default(AVAILABLE)
   imageRef     String
+  contactType  ContactType
+  contactValue String
   address      Address       @relation(fields: [addressId], references: [id])
   addressId    String
   transactions Transaction[]

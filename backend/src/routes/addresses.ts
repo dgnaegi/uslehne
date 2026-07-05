@@ -8,7 +8,6 @@ import { AppError, ErrorCode } from '../errors'
 const router = Router()
 
 const createAddressSchema = z.object({
-  street: z.string().min(1),
   zip: z.string().min(1),
   city: z.string().min(1),
   label: z.string().optional(),
@@ -32,13 +31,13 @@ router.post(
   validate(createAddressSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { street, zip, city, label } = req.body as z.infer<typeof createAddressSchema>
+      const { zip, city, label } = req.body as z.infer<typeof createAddressSchema>
       const cityLower = city.trim().toLowerCase()
       if (cityLower !== 'zürich' && cityLower !== 'zurich') {
         throw new AppError(ErrorCode.ADDRESS_CITY_NOT_ALLOWED, 422)
       }
       const address = await db.address.create({
-        data: { userId: req.user!.id, street, zip, city, label },
+        data: { userId: req.user!.id, zip, city, label },
       })
       res.status(201).json({ address })
     } catch (err) {

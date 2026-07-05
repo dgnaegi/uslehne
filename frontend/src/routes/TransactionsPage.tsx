@@ -101,8 +101,8 @@ export function TransactionsPage() {
             </TxMeta>
             {tab === 'incoming' && tx.contactType && (
               <TxContact>
-                {t('transactions:contactLabel')}: {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />}{' '}
-                {tx.contactValue}
+                {t('transactions:contactLabel')}:{' '}
+                {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
               </TxContact>
             )}
             {tx.message && (

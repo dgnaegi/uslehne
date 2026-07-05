@@ -24,7 +24,7 @@ export const authApi = {
 
 export const addressApi = {
   list: () => api.get<{ addresses: Address[] }>('/addresses'),
-  create: (body: { street: string; zip: string; city: string; label?: string }) =>
+  create: (body: { zip: string; city: string; label?: string }) =>
     api.post<{ address: Address }>('/addresses', body),
   delete: (id: string) => api.delete<void>(`/addresses/${id}`),
 }
@@ -56,19 +56,26 @@ export const offerApi = {
     type: string
     addressId: string
     image: string
+    contactType: string
+    contactValue: string
   }) => api.post<{ offer: Offer }>('/offers', body),
   update: (
     id: string,
-    body: { title?: string; description?: string; image?: string; status?: string },
+    body: {
+      title?: string
+      description?: string
+      image?: string
+      status?: string
+      contactType?: string
+      contactValue?: string
+    },
   ) => api.patch<{ offer: Offer }>(`/offers/${id}`, body),
   delete: (id: string) => api.delete<void>(`/offers/${id}`),
 }
 
 export const transactionApi = {
-  request: (
-    offerId: string,
-    body: { contactType: string; contactValue: string; message?: string },
-  ) => api.post<{ transaction: Transaction }>(`/offers/${offerId}/request`, body),
+  request: (offerId: string, body: { message?: string }) =>
+    api.post<{ transaction: Transaction }>(`/offers/${offerId}/request`, body),
   list: (role: 'incoming' | 'outgoing') =>
     api.get<{ transactions: Transaction[] }>(`/transactions?role=${role}`),
   accept: (id: string) => api.post<void>(`/transactions/${id}/accept`, {}),
