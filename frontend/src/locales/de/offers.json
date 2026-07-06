@@ -12,8 +12,6 @@
   "description": "Beschreibung",
   "type": "Typ",
   "address": "PLZ-Gebiet",
-  "contactType": "Kontaktweg",
-  "contactValue": "Kontaktangabe",
   "image": "Bild",
   "requestButton": "Anfragen / Mieten",
   "requestButtonGuest": "Anmelden um anzufragen",

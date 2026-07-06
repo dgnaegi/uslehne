@@ -10,22 +10,12 @@ import { searchOffers } from './offerSearch'
 
 const router = Router()
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const PHONE_RE = /\d.*\d.*\d.*\d.*\d.*\d.*\d/
-
-export const contactSchema = z.object({
-  contactType: z.enum(['SMS', 'WHATSAPP', 'SIGNAL', 'EMAIL']),
-  contactValue: z.string().min(1),
-})
-
 export const createOfferSchema = z.object({
   title: z.string().min(1).max(80),
   description: z.string().min(1).max(2000),
   type: z.enum(['LEND', 'GIVE']),
   addressId: z.string().min(1),
   image: z.string().min(1),
-  contactType: z.enum(['SMS', 'WHATSAPP', 'SIGNAL', 'EMAIL']),
-  contactValue: z.string().min(1),
 })
 
 export const patchOfferSchema = z.object({
@@ -33,12 +23,8 @@ export const patchOfferSchema = z.object({
   description: z.string().min(1).max(2000).optional(),
   image: z.string().optional(),
   status: z.enum(['ARCHIVED']).optional(),
-  contactType: z.enum(['SMS', 'WHATSAPP', 'SIGNAL', 'EMAIL']).optional(),
-  contactValue: z.string().min(1).optional(),
 })
 
-// Contact fields are returned only to authenticated callers via /offers/:id and /offers/mine.
-// Public list endpoints strip them to avoid exposing phone/email to anonymous browsers.
 export const offerPublicSelect = {
   id: true,
   ownerId: true,
@@ -52,18 +38,6 @@ export const offerPublicSelect = {
   updatedAt: true,
   owner: { select: { username: true } },
   address: { select: { zip: true, city: true } },
-}
-
-export const offerOwnerSelect = {
-  ...offerPublicSelect,
-  contactType: true,
-  contactValue: true,
-}
-
-function validateContact(type: string, value: string) {
-  const isPhone = ['SMS', 'WHATSAPP', 'SIGNAL'].includes(type)
-  if (isPhone && !PHONE_RE.test(value)) throw new AppError(ErrorCode.CONTACT_INVALID, 422)
-  if (type === 'EMAIL' && !EMAIL_RE.test(value)) throw new AppError(ErrorCode.CONTACT_INVALID, 422)
 }
 
 router.get('/offers', async (req: Request, res: Response, next: NextFunction) => {
@@ -115,7 +89,7 @@ router.get('/offers/mine', requireAuth, async (req: Request, res: Response, next
   try {
     const offers = await db.offer.findMany({
       where: { ownerId: req.user!.id },
-      select: offerOwnerSelect,
+      select: offerPublicSelect,
       orderBy: { createdAt: 'desc' },
     })
     res.json({ offers: offers.map(withImageUrl) })
@@ -144,7 +118,6 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = req.body as z.infer<typeof createOfferSchema>
-      validateContact(body.contactType, body.contactValue)
       const address = await db.address.findUnique({ where: { id: body.addressId } })
       if (!address || address.userId !== req.user!.id) {
         throw new AppError(ErrorCode.NOT_FOUND, 404)
@@ -158,10 +131,8 @@ router.post(
           type: body.type,
           addressId: body.addressId,
           imageRef,
-          contactType: body.contactType,
-          contactValue: body.contactValue,
         },
-        select: offerOwnerSelect,
+        select: offerPublicSelect,
       })
       res.status(201).json({ offer: withImageUrl(offer) })
     } catch (err) {

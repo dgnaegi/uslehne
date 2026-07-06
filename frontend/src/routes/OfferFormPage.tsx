@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import type { Address, ContactType } from '../api/types'
+import type { Address } from '../api/types'
 import { offerApi, addressApi } from '../api/endpoints'
 import { resizeImage } from '../utils/imageResize'
 import { AddressInlineCreate } from '../components/AddressInlineCreate'
-import { PhoneField } from '../components/PhoneField'
 import { SelectRow, AddIconButton } from '../components/PhoneField.styled'
 import {
   PageWrapper,
@@ -29,8 +28,6 @@ interface FormValues {
   description: string
   type: 'LEND' | 'GIVE'
   addressId: string
-  contactType: ContactType
-  contactValue: string
 }
 
 export function OfferFormPage() {
@@ -46,11 +43,10 @@ export function OfferFormPage() {
     register,
     handleSubmit,
     reset,
-    watch,
     setValue,
     formState: { errors, isSubmitting },
     setError,
-  } = useForm<FormValues>({ defaultValues: { contactType: 'SMS', contactValue: '' } })
+  } = useForm<FormValues>()
 
   useEffect(() => {
     addressApi.list().then(({ addresses: a }) => setAddresses(a))
@@ -61,8 +57,6 @@ export function OfferFormPage() {
           description: offer.description,
           type: offer.type,
           addressId: offer.addressId,
-          contactType: offer.contactType ?? 'SMS',
-          contactValue: offer.contactValue ?? '',
         })
         setImageDataUrl(offer.imageRef)
       })
@@ -75,35 +69,16 @@ export function OfferFormPage() {
     setImageDataUrl(await resizeImage(file))
   }
 
-  function handleContactSelect(type: ContactType, value: string) {
-    setValue('contactType', type, { shouldValidate: true })
-    setValue('contactValue', value, { shouldValidate: true })
-  }
-
   async function onSubmit(values: FormValues) {
     try {
       if (isEdit && id) {
-        await offerApi.update(id, {
-          title: values.title,
-          description: values.description,
-          image: imageDataUrl || undefined,
-          contactType: values.contactType,
-          contactValue: values.contactValue,
-        })
+        await offerApi.update(id, { ...values, image: imageDataUrl || undefined })
       } else {
         if (!imageDataUrl) {
           setError('root', { message: 'Bitte Bild auswählen.' })
           return
         }
-        await offerApi.create({
-          title: values.title,
-          description: values.description,
-          type: values.type,
-          addressId: values.addressId,
-          image: imageDataUrl,
-          contactType: values.contactType,
-          contactValue: values.contactValue,
-        })
+        await offerApi.create({ ...values, image: imageDataUrl })
       }
       navigate('/my-offers')
     } catch (err: unknown) {
@@ -181,17 +156,6 @@ export function OfferFormPage() {
               )}
             </>
           )}
-        </FormGroup>
-        <FormGroup>
-          <Label>{t('offers:contactType')}</Label>
-          <input type="hidden" {...register('contactType', { required: true })} />
-          <input type="hidden" {...register('contactValue', { required: true })} />
-          <PhoneField
-            selectedType={watch('contactType')}
-            selectedValue={watch('contactValue')}
-            onSelect={handleContactSelect}
-          />
-          {errors.contactValue && <ErrorMsg>Bitte Kontakt auswählen.</ErrorMsg>}
         </FormGroup>
         <FormGroup>
           <Label>{t('offers:image')}</Label>

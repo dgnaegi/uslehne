@@ -6,10 +6,11 @@
   "noOutgoing": "Keine ausgehenden Anfragen.",
   "contactLabel": "Kontakt",
   "messageLabel": "Nachricht",
-  "acceptButton": "Bestätigen",
+  "acceptButton": "Anfrage annehmen",
   "declineButton": "Ablehnen",
   "cancelButton": "Zurückziehen",
-  "returnButton": "Rückgabe bestätigen",
+  "confirmButton": "Austausch bestätigen",
+  "alreadyConfirmed": "Du hast den Austausch bestätigt — warte auf die andere Person.",
   "offerLabel": "Angebot",
   "requesterLabel": "Anfragend",
   "requestDialog": {

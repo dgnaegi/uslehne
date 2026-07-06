@@ -56,32 +56,26 @@ export const offerApi = {
     type: string
     addressId: string
     image: string
-    contactType: string
-    contactValue: string
   }) => api.post<{ offer: Offer }>('/offers', body),
   update: (
     id: string,
-    body: {
-      title?: string
-      description?: string
-      image?: string
-      status?: string
-      contactType?: string
-      contactValue?: string
-    },
+    body: { title?: string; description?: string; image?: string; status?: string },
   ) => api.patch<{ offer: Offer }>(`/offers/${id}`, body),
   delete: (id: string) => api.delete<void>(`/offers/${id}`),
 }
 
 export const transactionApi = {
-  request: (offerId: string, body: { message?: string }) =>
-    api.post<{ transaction: Transaction }>(`/offers/${offerId}/request`, body),
+  request: (
+    offerId: string,
+    body: { contactType: string; contactValue: string; message?: string },
+  ) => api.post<{ transaction: Transaction }>(`/offers/${offerId}/request`, body),
+  confirm: (id: string) =>
+    api.post<{ ok: boolean; completed: boolean }>(`/transactions/${id}/confirm`, {}),
   list: (role: 'incoming' | 'outgoing') =>
     api.get<{ transactions: Transaction[] }>(`/transactions?role=${role}`),
   accept: (id: string) => api.post<void>(`/transactions/${id}/accept`, {}),
   decline: (id: string) => api.post<void>(`/transactions/${id}/decline`, {}),
   cancel: (id: string) => api.post<void>(`/transactions/${id}/cancel`, {}),
-  return: (id: string) => api.post<void>(`/transactions/${id}/return`, {}),
   rate: (id: string, stars: number) =>
     api.post<{ rating: Rating }>(`/transactions/${id}/rate`, { stars }),
 }

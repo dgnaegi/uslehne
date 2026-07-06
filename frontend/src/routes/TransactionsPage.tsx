@@ -18,7 +18,14 @@ import {
   RateRow,
 } from './TransactionsPage.styled'
 
-const RATEABLE = new Set<Transaction['status']>(['ACCEPTED', 'RETURNED', 'COMPLETED'])
+const RATEABLE = new Set<Transaction['status']>(['ACCEPTED', 'COMPLETED'])
+
+const CONTACT_ICON: Record<string, ReactNode> = {
+  EMAIL: <IconMail size={14} />,
+  SMS: <IconMessageSquare size={14} />,
+  WHATSAPP: <IconSmartphone size={14} />,
+  SIGNAL: <IconShield size={14} />,
+}
 
 export function TransactionsPage() {
   const { t } = useTranslation(['transactions', 'common'])
@@ -40,7 +47,7 @@ export function TransactionsPage() {
     load()
   }, [load])
 
-  async function doAction(fn: () => Promise<void>) {
+  async function doAction(fn: () => Promise<unknown>) {
     try {
       await fn()
       load()
@@ -52,7 +59,7 @@ export function TransactionsPage() {
   async function submitRating(txId: string) {
     const stars = pendingRatings[txId]
     if (!stars) return
-    await doAction(() => transactionApi.rate(txId, stars).then(() => undefined))
+    await doAction(() => transactionApi.rate(txId, stars))
     setPendingRatings((prev) => {
       const next = { ...prev }
       delete next[txId]
@@ -60,12 +67,7 @@ export function TransactionsPage() {
     })
   }
 
-  const CONTACT_ICON: Record<string, ReactNode> = {
-    EMAIL: <IconMail size={14} />,
-    SMS: <IconMessageSquare size={14} />,
-    WHATSAPP: <IconSmartphone size={14} />,
-    SIGNAL: <IconShield size={14} />,
-  }
+  const amOwner = tab === 'incoming'
 
   return (
     <PageWrapper>
@@ -84,86 +86,99 @@ export function TransactionsPage() {
       ) : txs.length === 0 ? (
         <p>{tab === 'incoming' ? t('transactions:noIncoming') : t('transactions:noOutgoing')}</p>
       ) : (
-        txs.map((tx) => (
-          <TxCard key={tx.id}>
-            <TxTitle>{tx.offer.title}</TxTitle>
-            <TxMeta>
-              <span>{t(`transactions:status.${tx.status}`)}</span>
-              <span>
-                {tx.kudos} {t('common:currencyPlural', { ns: 'common' })}
-              </span>
-              {tab === 'incoming' && tx.requester && (
-                <Link to={`/users/${tx.requesterId}`}>@{tx.requester.username}</Link>
+        txs.map((tx) => {
+          const myConfirmed = amOwner ? tx.ownerConfirmed : tx.requesterConfirmed
+          const myId = amOwner ? tx.ownerId : tx.requesterId
+          const hasRated = tx.ratings.some((r) => r.raterId === myId)
+          const canCancel =
+            (tab === 'outgoing' && tx.status === 'PENDING') || tx.status === 'ACCEPTED'
+
+          return (
+            <TxCard key={tx.id}>
+              <TxTitle>{tx.offer.title}</TxTitle>
+              <TxMeta>
+                <span>{t(`transactions:status.${tx.status}`)}</span>
+                <span>
+                  {tx.kudos} {t('common:currencyPlural', { ns: 'common' })}
+                </span>
+                {amOwner && tx.requester && (
+                  <Link to={`/users/${tx.requesterId}`}>@{tx.requester.username}</Link>
+                )}
+                {!amOwner && tx.owner && (
+                  <Link to={`/users/${tx.ownerId}`}>@{tx.owner.username}</Link>
+                )}
+              </TxMeta>
+              {amOwner && tx.contactType && (
+                <TxContact>
+                  {t('transactions:contactLabel')}:{' '}
+                  {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
+                </TxContact>
               )}
-              {tab === 'outgoing' && tx.owner && (
-                <Link to={`/users/${tx.ownerId}`}>@{tx.owner.username}</Link>
+              {tx.message && (
+                <TxContact>
+                  {t('transactions:messageLabel')}: {tx.message}
+                </TxContact>
               )}
-            </TxMeta>
-            {tab === 'incoming' && tx.contactType && (
-              <TxContact>
-                {t('transactions:contactLabel')}:{' '}
-                {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
-              </TxContact>
-            )}
-            {tx.message && (
-              <TxContact>
-                {t('transactions:messageLabel')}: {tx.message}
-              </TxContact>
-            )}
-            {/* Rating row — owner rates requester on accepted/completed incoming requests */}
-            {tab === 'incoming' && RATEABLE.has(tx.status) && (
-              <RateRow>
-                {tx.rating ? (
+              {tx.status === 'ACCEPTED' && myConfirmed && (
+                <TxContact>{t('transactions:alreadyConfirmed')}</TxContact>
+              )}
+              {RATEABLE.has(tx.status) && (
+                <RateRow>
+                  {hasRated ? (
+                    <>
+                      <span>Bewertet:</span>
+                      <StarRating
+                        value={tx.ratings.find((r) => r.raterId === myId)?.stars ?? null}
+                        readOnly
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <span>Bewerten:</span>
+                      <StarRating
+                        value={pendingRatings[tx.id] ?? null}
+                        onChange={(stars) =>
+                          setPendingRatings((prev) => ({ ...prev, [tx.id]: stars }))
+                        }
+                      />
+                      {pendingRatings[tx.id] && (
+                        <Button onClick={() => submitRating(tx.id)}>Speichern</Button>
+                      )}
+                    </>
+                  )}
+                </RateRow>
+              )}
+              <TxActions>
+                {amOwner && tx.status === 'PENDING' && (
                   <>
-                    <span>Bewertet:</span>
-                    <StarRating value={tx.rating.stars} readOnly />
-                  </>
-                ) : (
-                  <>
-                    <span>Bewerten:</span>
-                    <StarRating
-                      value={pendingRatings[tx.id] ?? null}
-                      onChange={(stars) =>
-                        setPendingRatings((prev) => ({ ...prev, [tx.id]: stars }))
-                      }
-                    />
-                    {pendingRatings[tx.id] && (
-                      <Button onClick={() => submitRating(tx.id)}>Speichern</Button>
-                    )}
+                    <Button onClick={() => doAction(() => transactionApi.accept(tx.id))}>
+                      {t('transactions:acceptButton')}
+                    </Button>
+                    <Button
+                      $variant="secondary"
+                      onClick={() => doAction(() => transactionApi.decline(tx.id))}
+                    >
+                      {t('transactions:declineButton')}
+                    </Button>
                   </>
                 )}
-              </RateRow>
-            )}
-            <TxActions>
-              {tab === 'incoming' && tx.status === 'PENDING' && (
-                <>
-                  <Button onClick={() => doAction(() => transactionApi.accept(tx.id))}>
-                    {t('transactions:acceptButton')}
+                {tx.status === 'ACCEPTED' && !myConfirmed && (
+                  <Button onClick={() => doAction(() => transactionApi.confirm(tx.id))}>
+                    {t('transactions:confirmButton')}
                   </Button>
+                )}
+                {canCancel && (
                   <Button
-                    $variant="secondary"
-                    onClick={() => doAction(() => transactionApi.decline(tx.id))}
+                    $variant="danger"
+                    onClick={() => doAction(() => transactionApi.cancel(tx.id))}
                   >
-                    {t('transactions:declineButton')}
+                    {t('transactions:cancelButton')}
                   </Button>
-                </>
-              )}
-              {tab === 'incoming' && tx.status === 'ACCEPTED' && tx.type === 'LEND' && (
-                <Button onClick={() => doAction(() => transactionApi.return(tx.id))}>
-                  {t('transactions:returnButton')}
-                </Button>
-              )}
-              {tab === 'outgoing' && tx.status === 'PENDING' && (
-                <Button
-                  $variant="danger"
-                  onClick={() => doAction(() => transactionApi.cancel(tx.id))}
-                >
-                  {t('transactions:cancelButton')}
-                </Button>
-              )}
-            </TxActions>
-          </TxCard>
-        ))
+                )}
+              </TxActions>
+            </TxCard>
+          )
+        })
       )}
     </PageWrapper>
   )

@@ -45,9 +45,6 @@ export interface Offer {
   imageRef: string
   addressId: string
   address: { zip: string; city: string }
-  // Only returned for the owner (mine / create / edit responses)
-  contactType?: ContactType
-  contactValue?: string
   createdAt: string
   updatedAt: string
 }
@@ -71,7 +68,9 @@ export interface Transaction {
   message?: string
   contactType?: ContactType
   contactValue?: string
-  rating?: Rating
+  ownerConfirmed: boolean
+  requesterConfirmed: boolean
+  ratings: Array<{ id: string; stars: number; raterId: string }>
   createdAt: string
   decidedAt?: string
 }

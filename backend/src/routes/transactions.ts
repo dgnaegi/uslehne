@@ -7,7 +7,12 @@ import { AppError, ErrorCode } from '../errors'
 
 const router = Router()
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const PHONE_RE = /\d.*\d.*\d.*\d.*\d.*\d.*\d/
+
 const requestSchema = z.object({
+  contactType: z.enum(['SMS', 'WHATSAPP', 'SIGNAL', 'EMAIL']),
+  contactValue: z.string().min(1),
   message: z.string().optional(),
 })
 
@@ -24,6 +29,13 @@ router.post(
       }
       if (offer.ownerId === req.user!.id) throw new AppError(ErrorCode.FORBIDDEN, 403)
 
+      if (body.contactType === 'EMAIL' && !EMAIL_RE.test(body.contactValue)) {
+        throw new AppError(ErrorCode.CONTACT_INVALID, 422)
+      }
+      if (['SMS', 'WHATSAPP', 'SIGNAL'].includes(body.contactType) && !PHONE_RE.test(body.contactValue)) {
+        throw new AppError(ErrorCode.CONTACT_INVALID, 422)
+      }
+
       const kudos = offer.type === 'LEND' ? 1 : 5
       const requester = await db.user.findUniqueOrThrow({ where: { id: req.user!.id } })
       if (requester.kudosBalance < kudos) throw new AppError(ErrorCode.INSUFFICIENT_KUDOS, 402)
@@ -36,8 +48,8 @@ router.post(
             ownerId: offer.ownerId,
             type: offer.type,
             kudos,
-            contactType: offer.contactType,
-            contactValue: offer.contactValue,
+            contactType: body.contactType,
+            contactValue: body.contactValue,
             message: body.message,
           },
         }),
@@ -57,10 +69,11 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const role = req.query.role as string | undefined
+      const userId = req.user!.id
 
       if (role === 'incoming') {
         const rows = await db.transaction.findMany({
-          where: { ownerId: req.user!.id },
+          where: { ownerId: userId },
           orderBy: { createdAt: 'desc' },
           select: {
             id: true,
@@ -70,19 +83,21 @@ router.get(
             message: true,
             contactType: true,
             contactValue: true,
+            ownerConfirmed: true,
+            requesterConfirmed: true,
             requesterId: true,
             createdAt: true,
             decidedAt: true,
             offer: { select: { title: true } },
             requester: { select: { id: true, username: true } },
-            rating: { select: { id: true, stars: true } },
+            ratings: { select: { id: true, stars: true, raterId: true } },
           },
         })
         return res.json({ transactions: rows })
       }
 
       const rows = await db.transaction.findMany({
-        where: { requesterId: req.user!.id },
+        where: { requesterId: userId },
         orderBy: { createdAt: 'desc' },
         select: {
           id: true,
@@ -90,10 +105,13 @@ router.get(
           kudos: true,
           type: true,
           message: true,
+          ownerConfirmed: true,
+          requesterConfirmed: true,
           createdAt: true,
           decidedAt: true,
           ownerId: true,
           offer: { select: { title: true } },
+          ratings: { select: { id: true, stars: true, raterId: true } },
         },
       })
 

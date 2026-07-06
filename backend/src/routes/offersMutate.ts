@@ -5,7 +5,7 @@ import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
 import { imageStorage, withImageUrl } from '../storage/imageStorage'
-import { patchOfferSchema, offerOwnerSelect } from './offers'
+import { patchOfferSchema, offerPublicSelect } from './offers'
 
 const router = Router()
 
@@ -28,10 +28,8 @@ router.patch(
           ...(body.description !== undefined ? { description: body.description } : {}),
           ...(imageRef !== undefined ? { imageRef } : {}),
           ...(body.status !== undefined ? { status: body.status } : {}),
-          ...(body.contactType !== undefined ? { contactType: body.contactType } : {}),
-          ...(body.contactValue !== undefined ? { contactValue: body.contactValue } : {}),
         },
-        select: offerOwnerSelect,
+        select: offerPublicSelect,
       })
       res.json({ offer: withImageUrl(offer) })
     } catch (err) {

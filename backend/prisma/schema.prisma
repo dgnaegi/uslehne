@@ -51,21 +51,32 @@ enum ContactType {
 }
 
 model User {
-  id              String        @id @default(cuid())
-  username        String        @unique
-  email           String        @unique
-  passwordHash    String
-  role            Role          @default(USER)
-  kudosBalance    Int           @default(0)
-  addresses       Address[]
-  offers          Offer[]
-  invitesCreated  Invite[]      @relation("InvitesCreated")
-  inviteUsed      Invite?       @relation("InviteUsed")
-  requests        Transaction[] @relation("Requester")
-  ledger          KudoLedger[]
-  ratingsGiven    Rating[]      @relation("RatingsGiven")
-  ratingsReceived Rating[]      @relation("RatingsReceived")
-  createdAt       DateTime      @default(now())
+  id                  String               @id @default(cuid())
+  username            String               @unique
+  email               String               @unique
+  passwordHash        String
+  role                Role                 @default(USER)
+  kudosBalance        Int                  @default(0)
+  addresses           Address[]
+  offers              Offer[]
+  invitesCreated      Invite[]             @relation("InvitesCreated")
+  inviteUsed          Invite?              @relation("InviteUsed")
+  requests            Transaction[]        @relation("Requester")
+  ledger              KudoLedger[]
+  ratingsGiven        Rating[]             @relation("RatingsGiven")
+  ratingsReceived     Rating[]             @relation("RatingsReceived")
+  passwordResetTokens PasswordResetToken[]
+  createdAt           DateTime             @default(now())
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
 }
 
 model Address {
@@ -88,8 +99,6 @@ model Offer {
   type         OfferType
   status       OfferStatus   @default(AVAILABLE)
   imageRef     String
-  contactType  ContactType
-  contactValue String
   address      Address       @relation(fields: [addressId], references: [id])
   addressId    String
   transactions Transaction[]
@@ -106,11 +115,13 @@ model Transaction {
   ownerId      String
   type         OfferType
   kudos        Int
-  status       TransactionStatus @default(PENDING)
-  message      String?
-  contactType  ContactType
-  contactValue String
-  rating       Rating?
+  status            TransactionStatus @default(PENDING)
+  message           String?
+  contactType       ContactType
+  contactValue      String
+  ownerConfirmed    Boolean           @default(false)
+  requesterConfirmed Boolean          @default(false)
+  ratings           Rating[]
   createdAt    DateTime          @default(now())
   decidedAt    DateTime?
   returnedAt   DateTime?
@@ -123,8 +134,10 @@ model Rating {
   rater         User        @relation("RatingsGiven", fields: [raterId], references: [id])
   ratedId       String
   rated         User        @relation("RatingsReceived", fields: [ratedId], references: [id])
-  transactionId String      @unique
+  transactionId String
   transaction   Transaction @relation(fields: [transactionId], references: [id])
+
+  @@unique([transactionId, raterId])
   createdAt     DateTime    @default(now())
 }
 
