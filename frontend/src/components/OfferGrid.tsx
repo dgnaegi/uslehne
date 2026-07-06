@@ -1,6 +1,8 @@
-import { Fragment, useRef, useEffect } from 'react'
+import { Fragment, useRef, useEffect, useState } from 'react'
 import type { Offer } from '../api/types'
+import { useAuth } from '../auth/AuthContext'
 import { OfferCard } from './OfferCard'
+import { RequestDialog } from './RequestDialog'
 import { Feed, Empty, CenteredSpinner } from './OfferGrid.styled'
 
 interface Props {
@@ -12,6 +14,8 @@ interface Props {
 }
 
 export function OfferGrid({ offers, emptyMessage, loadMore, hasMore, loading }: Props) {
+  const { user, openAuthModal } = useAuth()
+  const [requestOffer, setRequestOffer] = useState<Offer | null>(null)
   const feedRef = useRef<HTMLDivElement>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
 
@@ -34,6 +38,14 @@ export function OfferGrid({ offers, emptyMessage, loadMore, hasMore, loading }: 
     return () => observer.disconnect()
   }, [hasMore, loadMore, offers.length])
 
+  function handleSwipeRight(offer: Offer) {
+    if (!user) {
+      openAuthModal()
+      return
+    }
+    setRequestOffer(offer)
+  }
+
   if (loading && offers.length === 0) {
     return (
       <Feed ref={feedRef}>
@@ -47,13 +59,22 @@ export function OfferGrid({ offers, emptyMessage, loadMore, hasMore, loading }: 
   const sentinelAfterIndex = Math.max(0, offers.length - 4)
 
   return (
-    <Feed ref={feedRef} $loading={loading}>
-      {offers.map((offer, i) => (
-        <Fragment key={offer.id}>
-          <OfferCard offer={offer} />
-          {i === sentinelAfterIndex && hasMore && <div ref={sentinelRef} />}
-        </Fragment>
-      ))}
-    </Feed>
+    <>
+      <Feed ref={feedRef} $loading={loading}>
+        {offers.map((offer, i) => (
+          <Fragment key={offer.id}>
+            <OfferCard offer={offer} onSwipeRight={() => handleSwipeRight(offer)} />
+            {i === sentinelAfterIndex && hasMore && <div ref={sentinelRef} />}
+          </Fragment>
+        ))}
+      </Feed>
+      {requestOffer && (
+        <RequestDialog
+          offerId={requestOffer.id}
+          offerType={requestOffer.type}
+          onClose={() => setRequestOffer(null)}
+        />
+      )}
+    </>
   )
 }

@@ -99,3 +99,22 @@ export const CardOwner = styled.span`
   color: rgba(255, 255, 255, 0.65);
   letter-spacing: 0.02em;
 `
+
+export const SwipeHint = styled.div<{ $progress: number }>`
+  position: absolute;
+  left: ${({ theme }) => theme.spacing.lg};
+  top: 28%;
+  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+  background: ${({ theme }) => theme.colors.accent};
+  border: 3px solid ${({ theme }) => theme.colors.primary};
+  font-family: ${({ theme }) => theme.fontComic};
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  color: ${({ theme }) => theme.colors.primary};
+  transform: rotate(-14deg);
+  pointer-events: none;
+  user-select: none;
+  z-index: 10;
+  opacity: ${({ $progress }) => Math.min($progress, 1)};
+  scale: ${({ $progress }) => 0.8 + Math.min($progress, 1) * 0.2};
+`
