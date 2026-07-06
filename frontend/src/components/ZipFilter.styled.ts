@@ -125,26 +125,24 @@ export const TypeFilterGroup = styled.div`
 export const TypeBtn = styled.button<{ $active: boolean }>`
   background: ${({ theme, $active }) => ($active ? theme.colors.primary : 'none')};
   border: 2px solid
-    ${({ theme, $active }) => ($active ? theme.colors.primary : 'rgba(26, 26, 26, 0.3)')};
+    ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.textMuted)};
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
+  color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.textMuted)};
   white-space: nowrap;
   flex-shrink: 0;
-  opacity: ${({ $active }) => ($active ? 1 : 0.6)};
   transition:
-    opacity 0.12s,
     background 0.12s,
     color 0.12s,
     border-color 0.12s;
 
   &:hover {
-    opacity: 1;
     background: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.accent)};
     border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
   }
 `

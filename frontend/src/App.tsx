@@ -14,6 +14,8 @@ import { ProfilePage } from './routes/ProfilePage'
 import { UserProfilePage } from './routes/UserProfilePage'
 import { PrivacyPage } from './routes/PrivacyPage'
 import { ImpressumPage } from './routes/ImpressumPage'
+import { ForgotPasswordPage } from './routes/ForgotPasswordPage'
+import { ResetPasswordPage } from './routes/ResetPasswordPage'
 import { AdminPage } from './routes/AdminPage'
 import { AppFooter } from './components/AppFooter'
 
@@ -124,6 +126,8 @@ function App() {
         />
         <Route path="/datenschutz" element={<PrivacyPage />} />
         <Route path="/impressum" element={<ImpressumPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
       <AppFooter />
     </>

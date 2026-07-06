@@ -38,6 +38,7 @@ export function useOfferFeed(zips: string[], query?: string, offerType?: OfferTy
         limit: PAGE_SIZE,
         cursor: nextCursor,
         zips: zipList.length ? zipList : undefined,
+        q: query || undefined,
         type: offerType || undefined,
       })
       .then(({ offers: o, nextCursor: nc }) => {
@@ -45,7 +46,7 @@ export function useOfferFeed(zips: string[], query?: string, offerType?: OfferTy
         setNextCursor(nc)
       })
       .finally(() => setLoadingMore(false))
-  }, [nextCursor, loadingMore, zipsKey, offerType])
+  }, [nextCursor, loadingMore, zipsKey, query, offerType])
 
   return { offers, loading, loadMore, hasMore: nextCursor !== null }
 }

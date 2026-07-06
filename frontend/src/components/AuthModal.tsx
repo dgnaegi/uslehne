@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { authApi, inviteApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
@@ -15,6 +15,7 @@ import {
   EyeBtn,
   InviteBonus,
   BackBtn,
+  ForgotLink,
 } from './AuthModal.styled'
 
 type Step = 'email' | 'login' | 'register'
@@ -22,6 +23,7 @@ type Step = 'email' | 'login' | 'register'
 export function AuthModal() {
   const { t } = useTranslation('auth')
   const { login, closeAuthModal } = useAuth()
+  const navigate = useNavigate()
   const [urlParams] = useSearchParams()
   const [step, setStep] = useState<Step>('email')
   const [email, setEmail] = useState('')
@@ -172,6 +174,14 @@ export function AuthModal() {
                 {t('loginButton')}
               </Button>
             </form>
+            <ForgotLink
+              onClick={() => {
+                closeAuthModal()
+                navigate('/forgot-password')
+              }}
+            >
+              Passwort vergessen?
+            </ForgotLink>
             <BackBtn onClick={goBack}>{t('backButton')}</BackBtn>
           </>
         )}

@@ -31,18 +31,24 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email } = req.body as z.infer<typeof forgotSchema>
+
+      // Prune expired tokens across all users opportunistically
+      await db.passwordResetToken.deleteMany({ where: { expiresAt: { lt: new Date() } } })
+
       const user = await db.user.findUnique({ where: { email } })
 
       if (user) {
-        await db.passwordResetToken.deleteMany({ where: { userId: user.id } })
-
         const rawToken = crypto.randomBytes(32).toString('hex')
-        await db.passwordResetToken.create({
-          data: {
-            userId: user.id,
-            tokenHash: hashToken(rawToken),
-            expiresAt: new Date(Date.now() + TOKEN_TTL_MS),
-          },
+
+        await db.$transaction(async (tx) => {
+          await tx.passwordResetToken.deleteMany({ where: { userId: user.id } })
+          await tx.passwordResetToken.create({
+            data: {
+              userId: user.id,
+              tokenHash: hashToken(rawToken),
+              expiresAt: new Date(Date.now() + TOKEN_TTL_MS),
+            },
+          })
         })
 
         const { subject, html } = passwordResetMail({ username: user.username, token: rawToken })

@@ -120,3 +120,20 @@ export const BackBtn = styled.button`
     outline-offset: 2px;
   }
 `
+
+export const ForgotLink = styled.button`
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: ${({ theme }) => theme.spacing.sm};
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.textMuted};
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+`
