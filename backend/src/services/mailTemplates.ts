@@ -1,12 +1,12 @@
-const APP_URL = process.env.APP_URL ?? 'https://uslehne.ch'
+export const APP_URL = process.env.APP_URL ?? 'https://uslehne.ch'
 
-const FONT = "'Inter', 'Helvetica Neue', Arial, sans-serif"
-const BLACK = '#1a1a1a'
-const YELLOW = '#FFD600'
-const WARM_WHITE = '#FDFAF0'
-const MUTED = '#555555'
+export const FONT = "'Inter', 'Helvetica Neue', Arial, sans-serif"
+export const BLACK = '#1a1a1a'
+export const YELLOW = '#FFD600'
+export const WARM_WHITE = '#FDFAF0'
+export const MUTED = '#555555'
 
-function layout(body: string): string {
+export function layout(body: string): string {
   return `<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -53,7 +53,7 @@ function layout(body: string): string {
 </html>`
 }
 
-function ctaButton(href: string, label: string): string {
+export function ctaButton(href: string, label: string): string {
   return `<a href="${href}"
     style="display:inline-block;margin-top:32px;padding:14px 28px;
            background:${YELLOW};color:${BLACK};
@@ -62,6 +62,23 @@ function ctaButton(href: string, label: string): string {
            text-decoration:none;border:3px solid ${BLACK};">
     ${label}
   </a>`
+}
+
+export function welcomeMail(opts: { username: string }) {
+  const body = `
+    <h1 style="margin:0 0 24px;font-family:${FONT};font-size:24px;font-weight:900;
+               color:${BLACK};text-transform:uppercase;letter-spacing:-0.02em;">
+      Willkommen bei uslehne!
+    </h1>
+    <p style="margin:0 0 16px;font-family:${FONT};font-size:16px;font-weight:400;color:${BLACK};line-height:1.6;">
+      Hallo ${opts.username},
+    </p>
+    <p style="margin:0 0 16px;font-family:${FONT};font-size:16px;font-weight:400;color:${BLACK};line-height:1.6;">
+      Schön, dass du dabei bist! Du kannst jetzt Gegenstände aus deiner Nachbarschaft ausleihen und verleihen.
+    </p>
+    ${ctaButton(APP_URL, 'Angebote entdecken')}`
+
+  return { subject: 'Willkommen bei uslehne!', html: layout(body) }
 }
 
 export function passwordResetMail(opts: { username: string; token: string }) {

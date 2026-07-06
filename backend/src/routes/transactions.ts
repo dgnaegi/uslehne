@@ -4,6 +4,8 @@ import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
+import { sendMail } from '../services/mail'
+import { offerRequestedMail } from '../services/mailTemplatesTransactions'
 
 const router = Router()
 
@@ -55,6 +57,22 @@ router.post(
         }),
         db.offer.update({ where: { id: offer.id }, data: { status: 'RESERVED' } }),
       ])
+
+      const owner = await db.user.findUnique({
+        where: { id: offer.ownerId },
+        select: { email: true, username: true },
+      })
+      if (owner) {
+        const { subject, html } = offerRequestedMail({
+          ownerUsername: owner.username,
+          requesterUsername: requester.username,
+          offerTitle: offer.title,
+          contactType: body.contactType,
+          contactValue: body.contactValue,
+          message: body.message,
+        })
+        sendMail({ to: owner.email, subject, html }).catch(console.error)
+      }
 
       res.status(201).json({ transaction })
     } catch (err) {

@@ -110,7 +110,9 @@ export function AdminPage() {
                 <strong>{o.title}</strong>
               </AdminCell>
               <AdminCell>@{o.owner.username}</AdminCell>
-              <AdminCell>{o.address.zip} {o.address.city}</AdminCell>
+              <AdminCell>
+                {o.address.zip} {o.address.city}
+              </AdminCell>
               <AdminCell>{o.type === 'LEND' ? 'Leihen' : 'Schenken'}</AdminCell>
               <AdminCell>{o.status}</AdminCell>
               <AdminCell>

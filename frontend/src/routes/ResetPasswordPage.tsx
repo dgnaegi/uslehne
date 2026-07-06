@@ -1,7 +1,15 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { authApi } from '../api/endpoints'
-import { PageWrapper, PageTitle, FormGroup, Label, Input, Button, ErrorMsg } from '../components/Layout.styled'
+import {
+  PageWrapper,
+  PageTitle,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  ErrorMsg,
+} from '../components/Layout.styled'
 import { FormWrapper, SuccessBox, SuccessLink } from './ResetPasswordPage.styled'
 
 export function ResetPasswordPage() {

@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { IconMail, IconMessageSquare, IconSmartphone, IconShield, IconPhone } from '../icons'
 import type { Transaction } from '../api/types'
 import { transactionApi } from '../api/endpoints'
+import { ProcessTimeline } from '../components/ProcessTimeline'
+import { getActiveTimelineStep } from '../utils/processTimeline'
 import { PageWrapper, PageTitle, Button, ErrorMsg } from '../components/Layout.styled'
 import { StarRating } from '../components/StarRating'
 import {
@@ -96,6 +98,15 @@ export function TransactionsPage() {
           return (
             <TxCard key={tx.id}>
               <TxTitle>{tx.offer.title}</TxTitle>
+              {(tx.status === 'PENDING' ||
+                tx.status === 'ACCEPTED' ||
+                tx.status === 'RETURNED') && (
+                <ProcessTimeline
+                  offerType={tx.offer.type}
+                  activeStep={getActiveTimelineStep(tx)}
+                  compact
+                />
+              )}
               <TxMeta>
                 <span>{t(`transactions:status.${tx.status}`)}</span>
                 <span>

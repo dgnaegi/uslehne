@@ -2,7 +2,16 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
-import { IconX, IconMenu, IconRepeat, IconBox, IconLink, IconAward, IconLogOut, IconShield } from '../icons'
+import {
+  IconX,
+  IconMenu,
+  IconRepeat,
+  IconBox,
+  IconLink,
+  IconAward,
+  IconLogOut,
+  IconShield,
+} from '../icons'
 import {
   Nav,
   LogoGroup,

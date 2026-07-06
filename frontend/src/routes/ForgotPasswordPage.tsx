@@ -1,6 +1,14 @@
 import { useState } from 'react'
 import { authApi } from '../api/endpoints'
-import { PageWrapper, PageTitle, FormGroup, Label, Input, Button, ErrorMsg } from '../components/Layout.styled'
+import {
+  PageWrapper,
+  PageTitle,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  ErrorMsg,
+} from '../components/Layout.styled'
 import { FormWrapper, SuccessBox } from './ForgotPasswordPage.styled'
 
 export function ForgotPasswordPage() {

@@ -22,8 +22,8 @@ export function ImpressumPage() {
         <a href="mailto:daniel.gnaegi@outlook.com">daniel.gnaegi@outlook.com</a>
       </P>
       <P>
-        uslehne.ch ist ein nicht-kommerzielles Privatprojekt. Keine Handelsregistereintragung,
-        keine Mehrwertsteuerpflicht.
+        uslehne.ch ist ein nicht-kommerzielles Privatprojekt. Keine Handelsregistereintragung, keine
+        Mehrwertsteuerpflicht.
       </P>
     </PageWrapper>
   )
