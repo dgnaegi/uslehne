@@ -109,6 +109,16 @@ export interface UserProfile {
   }>
 }
 
+export interface AdminOffer {
+  id: string
+  title: string
+  type: OfferType
+  status: OfferStatus
+  owner: { id: string; username: string }
+  address: { zip: string; city: string }
+  createdAt: string
+}
+
 export interface AuthResponse {
   token: string
   user: Pick<User, 'id' | 'username' | 'email' | 'kudosBalance'>

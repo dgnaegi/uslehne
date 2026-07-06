@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
-import { IconX, IconMenu, IconRepeat, IconBox, IconLink, IconAward, IconLogOut } from '../icons'
+import { IconX, IconMenu, IconRepeat, IconBox, IconLink, IconAward, IconLogOut, IconShield } from '../icons'
 import {
   Nav,
   LogoGroup,
@@ -96,6 +96,11 @@ export function Header() {
       {user ? (
         <>
           <DesktopNav>
+            {user.role === 'ADMIN' && (
+              <NavLink as={Link} to="/admin">
+                <IconShield size={14} /> Admin
+              </NavLink>
+            )}
             <NavLink as={Link} to="/transactions">
               {t('nav.transactions')}
             </NavLink>
@@ -127,6 +132,11 @@ export function Header() {
 
           {mobileOpen && (
             <MobileMenu>
+              {user.role === 'ADMIN' && (
+                <Link to="/admin" onClick={() => setMobileOpen(false)}>
+                  <IconShield size={18} /> Admin
+                </Link>
+              )}
               <Link to="/transactions" onClick={() => setMobileOpen(false)}>
                 <IconRepeat size={18} /> {t('nav.transactions')}
               </Link>

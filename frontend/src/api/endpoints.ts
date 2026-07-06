@@ -9,6 +9,7 @@ import type {
   Invite,
   LedgerEntry,
   Rating,
+  AdminOffer,
 } from './types'
 
 export const authApi = {
@@ -20,6 +21,11 @@ export const authApi = {
   login: (body: { login: string; password: string }) => api.post<AuthResponse>('/auth/login', body),
 
   me: () => api.get<{ user: User }>('/auth/me'),
+
+  forgotPassword: (email: string) => api.post<{ ok: boolean }>('/auth/forgot-password', { email }),
+
+  resetPassword: (token: string, password: string) =>
+    api.post<{ ok: boolean }>('/auth/reset-password', { token, password }),
 }
 
 export const addressApi = {
@@ -95,4 +101,11 @@ export const kudosApi = {
     api.get<{ entries: LedgerEntry[]; total: number }>(
       `/kudos/ledger?limit=${limit}&offset=${offset}`,
     ),
+}
+
+export const adminApi = {
+  users: () => api.get<{ users: User[] }>('/admin/users'),
+  deleteUser: (id: string) => api.delete<void>(`/admin/users/${id}`),
+  offers: () => api.get<{ offers: AdminOffer[] }>('/admin/offers'),
+  deleteOffer: (id: string) => api.delete<void>(`/admin/offers/${id}`),
 }

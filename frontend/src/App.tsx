@@ -14,6 +14,7 @@ import { ProfilePage } from './routes/ProfilePage'
 import { UserProfilePage } from './routes/UserProfilePage'
 import { PrivacyPage } from './routes/PrivacyPage'
 import { ImpressumPage } from './routes/ImpressumPage'
+import { AdminPage } from './routes/AdminPage'
 import { AppFooter } from './components/AppFooter'
 
 function RegisterRedirect() {
@@ -113,6 +114,14 @@ function App() {
         />
         <Route path="/login" element={<Navigate to="/offers" replace />} />
         <Route path="/register" element={<RegisterRedirect />} />
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <AdminPage />
+            </PrivateRoute>
+          }
+        />
         <Route path="/datenschutz" element={<PrivacyPage />} />
         <Route path="/impressum" element={<ImpressumPage />} />
       </Routes>

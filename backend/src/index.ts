@@ -12,6 +12,7 @@ import { transactionsRouter } from './routes/transactions'
 import { transactionActionsRouter } from './routes/transactionActions'
 import kudosRouter from './routes/kudos'
 import { usersRouter } from './routes/users'
+import { adminRouter } from './routes/admin'
 import passwordResetRouter from './routes/authPasswordReset'
 import { errorHandler } from './middleware/errorHandler'
 
@@ -31,6 +32,7 @@ app.use('/api/v1', transactionsRouter)
 app.use('/api/v1', transactionActionsRouter)
 app.use('/api/v1', kudosRouter)
 app.use('/api/v1', usersRouter)
+app.use('/api/v1', adminRouter)
 app.use('/api/v1', passwordResetRouter)
 
 if (process.env.NODE_ENV === 'production') {
