@@ -5,6 +5,7 @@ import type { Offer } from '../api/types'
 import { offerApi } from '../api/endpoints'
 import { PageWrapper, PageTitle, Button, Badge } from '../components/Layout.styled'
 import { OfferRow, OfferRowTitle, OfferRowMeta, TopBar } from './MyOffersPage.styled'
+import { SwipeToDelete } from '../components/SwipeToDelete'
 
 export function MyOffersPage() {
   const { t } = useTranslation(['offers', 'common'])
@@ -19,6 +20,12 @@ export function MyOffersPage() {
       .finally(() => setLoading(false))
   }, [])
 
+  async function deleteOffer(id: string, title: string) {
+    if (!confirm(`Angebot «${title}» wirklich löschen?`)) return
+    await offerApi.delete(id)
+    setOffers((prev) => prev.filter((o) => o.id !== id))
+  }
+
   return (
     <PageWrapper>
       <TopBar>
@@ -31,18 +38,24 @@ export function MyOffersPage() {
         <p>{t('offers:noMyOffers')}</p>
       ) : (
         offers.map((offer) => (
-          <OfferRow key={offer.id}>
-            <div>
-              <OfferRowTitle>{offer.title}</OfferRowTitle>
-              <OfferRowMeta>
-                <Badge $type={offer.type}>{t(`common:offerType.${offer.type}`)}</Badge>
-                <span>{t(`common:status.${offer.status}`)}</span>
-              </OfferRowMeta>
-            </div>
-            <Button $variant="secondary" onClick={() => navigate(`/offers/${offer.id}/edit`)}>
-              {t('common:actions.edit')}
-            </Button>
-          </OfferRow>
+          <SwipeToDelete
+            key={offer.id}
+            disabled={offer.status !== 'AVAILABLE'}
+            onDelete={() => deleteOffer(offer.id, offer.title)}
+          >
+            <OfferRow>
+              <div>
+                <OfferRowTitle>{offer.title}</OfferRowTitle>
+                <OfferRowMeta>
+                  <Badge $type={offer.type}>{t(`common:offerType.${offer.type}`)}</Badge>
+                  <span>{t(`common:status.${offer.status}`)}</span>
+                </OfferRowMeta>
+              </div>
+              <Button $variant="secondary" onClick={() => navigate(`/offers/${offer.id}/edit`)}>
+                {t('common:actions.edit')}
+              </Button>
+            </OfferRow>
+          </SwipeToDelete>
         ))
       )}
     </PageWrapper>
