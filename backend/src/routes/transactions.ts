@@ -29,7 +29,7 @@ router.post(
       if (!offer || offer.status !== 'AVAILABLE') {
         throw new AppError(ErrorCode.OFFER_NOT_AVAILABLE, 409)
       }
-      if (offer.ownerId === req.user!.id) throw new AppError(ErrorCode.FORBIDDEN, 403)
+      if (offer.ownerId === req.user!.id) throw new AppError(ErrorCode.OWN_OFFER, 403)
 
       const existingPending = await db.transaction.findFirst({
         where: { offerId: offer.id, status: { in: ['PENDING', 'ACCEPTED'] } },
