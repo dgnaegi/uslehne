@@ -171,6 +171,12 @@ git subtree push --prefix frontend scalingo-frontend main
 - Prettier config lives at the repo root (`.prettierrc`) and applies to both apps
 - **Never commit code that fails lint or has unformatted files** — run format + lint before committing
 
+### UI copy & writing style
+- All UI text, error messages, empty states, buttons, and email templates must follow **[docs/UX_WRITING.md](docs/UX_WRITING.md)**
+- Typography, gender language, and punctuation rules are in **[docs/TYPOGRAFIE.md](docs/TYPOGRAFIE.md)**
+- German locale strings live in `frontend/src/locales/de/`; hardcoded strings in components should be moved there
+- When writing or reviewing any copy: check against UX_WRITING.md before committing
+
 ### Styled-components
 - All theme tokens live in `frontend/src/theme.ts`
 - Full TypeScript support via `frontend/src/styled.d.ts` — `DefaultTheme` extends `Theme`

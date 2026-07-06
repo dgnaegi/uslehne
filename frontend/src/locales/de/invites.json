@@ -1,8 +1,8 @@
 {
   "title": "Einladungen",
   "createInvite": "Einladungslink erstellen",
-  "noInvites": "Noch keine Einladungslinks.",
-  "limitReached": "Maximum von 3 Links erreicht.",
+  "noInvites": "Noch keine Links erstellt. Erstell einen für deine Nachbar*innen.",
+  "limitReached": "Du hast das Maximum von 3 Links erreicht.",
   "copyLink": "Link kopieren",
   "copied": "Kopiert!",
   "used": "Eingelöst",

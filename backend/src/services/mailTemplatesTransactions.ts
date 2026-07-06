@@ -49,10 +49,10 @@ export function offerAcceptedMail(opts: {
   offerTitle: string
 }) {
   const body = `
-    ${h1('Anfrage bestätigt!')}
+    ${h1('Anfrage bestätigt')}
     ${p(`Hallo ${esc(opts.requesterUsername)},`)}
     ${p(`<strong>${esc(opts.ownerUsername)}</strong> hat deine Anfrage für <strong>«${esc(opts.offerTitle)}»</strong> bestätigt.`)}
-    ${p('Besprecht die nächsten Schritte direkt miteinander. Vergiss nicht, die Übergabe danach in der App zu bestätigen.')}
+    ${p('Besprecht die nächsten Schritte direkt miteinander — und vergiss nicht, die Übergabe danach in der App zu bestätigen.')}
     ${ctaButton(TRANSACTIONS_URL, 'Zu meinen Transaktionen')}`
 
   return { subject: `Anfrage bestätigt – «${opts.offerTitle}»`, html: layout(body) }

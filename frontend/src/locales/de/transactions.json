@@ -2,13 +2,13 @@
   "title": "Anfragen",
   "incoming": "Eingehend",
   "outgoing": "Ausgehend",
-  "noIncoming": "Keine eingehenden Anfragen.",
-  "noOutgoing": "Keine ausgehenden Anfragen.",
+  "noIncoming": "Noch keine Anfragen eingegangen. Sobald jemand dein Angebot anfrägt, erscheint es hier.",
+  "noOutgoing": "Du hast noch keine Anfrage gestellt. Schau dir die Angebote an.",
   "contactLabel": "Kontakt",
   "messageLabel": "Nachricht",
   "acceptButton": "Anfrage annehmen",
-  "declineButton": "Ablehnen",
-  "cancelButton": "Zurückziehen",
+  "declineButton": "Anfrage ablehnen",
+  "cancelButton": "Anfrage zurückziehen",
   "confirmButton": "Austausch bestätigen",
   "alreadyConfirmed": "Du hast den Austausch bestätigt — warte auf die andere Person.",
   "offerLabel": "Angebot",
@@ -28,7 +28,7 @@
     "useSaved": "Gespeicherte Nummer verwenden",
     "messagePlaceholderLend": "Für welchen Zeitraum benötigst du den Gegenstand? Z.B. 15.–20. Juli. Hast du bereits Erfahrung damit?",
     "messagePlaceholderGive": "Warum möchtest du den Gegenstand haben? Was planst du damit?",
-    "success": "Anfrage gesendet!"
+    "success": "Anfrage gesendet. Der Anbieter meldet sich bald bei dir."
   },
   "status": {
     "PENDING": "Ausstehend",

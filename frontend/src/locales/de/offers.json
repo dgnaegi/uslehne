@@ -7,14 +7,14 @@
   "filterLend": "Verleihen",
   "filterGive": "Verschenken",
   "noOffers": "Keine Angebote gefunden.",
-  "noMyOffers": "Du hast noch keine Angebote.",
+  "noMyOffers": "Du hast noch keine Angebote. Erstell dein erstes.",
   "offerTitle": "Titel",
   "description": "Beschreibung",
   "type": "Typ",
   "address": "PLZ-Gebiet",
   "image": "Bild",
-  "requestButton": "Anfragen / Mieten",
-  "requestButtonGuest": "Anmelden um anzufragen",
+  "requestButton": "Anfragen",
+  "requestButtonGuest": "Anmelden zum Anfragen",
   "archiveButton": "Archivieren",
   "editButton": "Bearbeiten",
   "deleteButton": "Löschen",
@@ -28,7 +28,7 @@
   "selectType": "Typ auswählen",
   "uploadImage": "Bild auswählen",
   "changeImage": "Bild ändern",
-  "noAddresses": "Keine Adressen vorhanden.",
+  "noAddresses": "Noch keine Adresse hinterlegt.",
   "searchPlaceholder": "Angebote suchen…",
-  "noSearchResults": "Keine Angebote für «{{q}}» gefunden."
+  "noSearchResults": "Keine Treffer für «{{q}}». Versuch ein anderes Stichwort."
 }

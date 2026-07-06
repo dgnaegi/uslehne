@@ -153,7 +153,7 @@ export function TransactionsPage() {
                         }
                       />
                       {pendingRatings[tx.id] && (
-                        <Button onClick={() => submitRating(tx.id)}>Speichern</Button>
+                        <Button onClick={() => submitRating(tx.id)}>Bewertung abgeben</Button>
                       )}
                     </>
                   )}

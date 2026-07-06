@@ -74,7 +74,7 @@ export function welcomeMail(opts: { username: string }) {
       Hallo ${opts.username},
     </p>
     <p style="margin:0 0 16px;font-family:${FONT};font-size:16px;font-weight:400;color:${BLACK};line-height:1.6;">
-      Schön, dass du dabei bist! Du kannst jetzt Gegenstände aus deiner Nachbarschaft ausleihen und verleihen.
+      Schön, dass du dabei bist. Du kannst jetzt Gegenstände aus deiner Nachbarschaft ausleihen und verleihen.
     </p>
     ${ctaButton(APP_URL, 'Angebote entdecken')}`
 
