@@ -31,6 +31,11 @@ router.post(
       }
       if (offer.ownerId === req.user!.id) throw new AppError(ErrorCode.FORBIDDEN, 403)
 
+      const existingPending = await db.transaction.findFirst({
+        where: { offerId: offer.id, status: { in: ['PENDING', 'ACCEPTED'] } },
+      })
+      if (existingPending) throw new AppError(ErrorCode.OFFER_NOT_AVAILABLE, 409)
+
       if (body.contactType === 'EMAIL' && !EMAIL_RE.test(body.contactValue)) {
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
@@ -42,21 +47,18 @@ router.post(
       const requester = await db.user.findUniqueOrThrow({ where: { id: req.user!.id } })
       if (requester.kudosBalance < kudos) throw new AppError(ErrorCode.INSUFFICIENT_KUDOS, 402)
 
-      const [transaction] = await db.$transaction([
-        db.transaction.create({
-          data: {
-            offerId: offer.id,
-            requesterId: req.user!.id,
-            ownerId: offer.ownerId,
-            type: offer.type,
-            kudos,
-            contactType: body.contactType,
-            contactValue: body.contactValue,
-            message: body.message,
-          },
-        }),
-        db.offer.update({ where: { id: offer.id }, data: { status: 'LENT' } }),
-      ])
+      const transaction = await db.transaction.create({
+        data: {
+          offerId: offer.id,
+          requesterId: req.user!.id,
+          ownerId: offer.ownerId,
+          type: offer.type,
+          kudos,
+          contactType: body.contactType,
+          contactValue: body.contactValue,
+          message: body.message,
+        },
+      })
 
       const owner = await db.user.findUnique({
         where: { id: offer.ownerId },

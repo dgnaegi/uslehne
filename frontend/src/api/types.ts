@@ -1,6 +1,6 @@
 export type Role = 'USER' | 'ADMIN'
 export type OfferType = 'LEND' | 'GIVE'
-export type OfferStatus = 'AVAILABLE' | 'RESERVED' | 'LENT' | 'GIVEN' | 'ARCHIVED'
+export type OfferStatus = 'AVAILABLE' | 'LENT' | 'GIVEN' | 'ARCHIVED'
 export type TransactionStatus =
   | 'PENDING'
   | 'ACCEPTED'
