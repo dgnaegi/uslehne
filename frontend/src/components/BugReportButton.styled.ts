@@ -9,8 +9,8 @@ export const Fab = styled.button`
   position: fixed;
   bottom: ${({ theme }) => theme.spacing.lg};
   right: ${({ theme }) => theme.spacing.lg};
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.accent};
   border: none;
@@ -33,7 +33,7 @@ export const Fab = styled.button`
 
 export const Panel = styled.div`
   position: fixed;
-  bottom: calc(${({ theme }) => theme.spacing.lg} + 48px + ${({ theme }) => theme.spacing.sm});
+  bottom: calc(${({ theme }) => theme.spacing.lg} + 32px + ${({ theme }) => theme.spacing.sm});
   right: ${({ theme }) => theme.spacing.lg};
   width: 280px;
   background: ${({ theme }) => theme.colors.surface};

@@ -51,7 +51,7 @@ export function BugReportButton() {
         </Panel>
       )}
       <Fab onClick={() => setOpen((o) => !o)} aria-label="Bug melden">
-        <IconBug size={20} />
+        <IconBug size={14} />
       </Fab>
     </>
   )
