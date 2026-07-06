@@ -107,8 +107,8 @@ export const SwipeHint = styled.div<{ $progress: number }>`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
   background: ${({ theme }) => theme.colors.accent};
   border: 3px solid ${({ theme }) => theme.colors.primary};
-  font-family: ${({ theme }) => theme.fontComic};
-  font-size: 2rem;
+  font-family: ${({ theme }) => theme.font};
+  font-size: 1.4rem;
   letter-spacing: 0.08em;
   color: ${({ theme }) => theme.colors.primary};
   transform: rotate(-14deg);

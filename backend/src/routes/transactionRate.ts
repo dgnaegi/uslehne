@@ -4,7 +4,7 @@ import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
-import { sendMail } from '../services/mail'
+import { sendMailSilent } from '../services/mail'
 import { ratingReceivedMail } from '../services/mailTemplatesTransactions'
 
 const router = Router()
@@ -57,7 +57,7 @@ router.post(
             stars,
             offerTitle: tx.offer.title,
           })
-          sendMail({ to: tx.requester.email, subject, html }).catch(console.error)
+          sendMailSilent({ to: tx.requester.email, subject, html })
         }
       } else {
         // requester rated owner → notify owner
@@ -72,7 +72,7 @@ router.post(
             stars,
             offerTitle: tx.offer.title,
           })
-          sendMail({ to: owner.email, subject, html }).catch(console.error)
+          sendMailSilent({ to: owner.email, subject, html })
         }
       }
 

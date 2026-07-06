@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LedgerEntry } from '../api/types'
 import { kudosApi } from '../api/endpoints'
+import { REASON_LABEL, fmtDate } from '../utils/ledger'
 import { useAuth } from '../auth/AuthContext'
 import { PageWrapper, PageTitle } from '../components/Layout.styled'
 import {
@@ -56,8 +57,8 @@ export function ProfilePage() {
                 {e.delta > 0 ? '+' : ''}
                 {e.delta}
               </Delta>
-              <span>{e.reason}</span>
-              <span>{new Date(e.createdAt).toLocaleDateString('de-CH')}</span>
+              <span>{REASON_LABEL[e.reason]}</span>
+              <span>{fmtDate(e.createdAt)}</span>
             </LedgerItem>
           ))}
         </LedgerList>

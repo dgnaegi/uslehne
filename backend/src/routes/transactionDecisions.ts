@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express'
 import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { AppError, ErrorCode } from '../errors'
-import { sendMail } from '../services/mail'
+import { sendMailSilent } from '../services/mail'
 import { offerAcceptedMail, offerDeclinedMail } from '../services/mailTemplatesTransactions'
 
 const router = Router()
@@ -44,7 +44,7 @@ router.post(
           ownerUsername: owner.username,
           offerTitle: tx.offer.title,
         })
-        sendMail({ to: tx.requester.email, subject, html }).catch(console.error)
+        sendMailSilent({ to: tx.requester.email, subject, html })
       }
 
       res.json({ ok: true })
@@ -85,7 +85,7 @@ router.post(
         requesterUsername: tx.requester.username,
         offerTitle: tx.offer.title,
       })
-      sendMail({ to: tx.requester.email, subject, html }).catch(console.error)
+      sendMailSilent({ to: tx.requester.email, subject, html })
 
       res.json({ ok: true })
     } catch (err) {

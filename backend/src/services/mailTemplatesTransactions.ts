@@ -40,7 +40,10 @@ export function offerRequestedMail(opts: {
     ${opts.message ? p(`Nachricht: <em>${esc(opts.message)}</em>`) : ''}
     ${ctaButton(TRANSACTIONS_URL, 'Anfrage anschauen')}`
 
-  return { subject: `Neue Anfrage für «${opts.offerTitle}»`, html: layout(body) }
+  return {
+    subject: `Neue Anfrage für «${opts.offerTitle}»`,
+    html: layout(body, `${opts.requesterUsername} möchte «${opts.offerTitle}» von dir ausleihen.`),
+  }
 }
 
 export function offerAcceptedMail(opts: {
@@ -55,7 +58,10 @@ export function offerAcceptedMail(opts: {
     ${p('Besprecht die nächsten Schritte direkt miteinander — und vergiss nicht, die Übergabe danach in der App zu bestätigen.')}
     ${ctaButton(TRANSACTIONS_URL, 'Zu meinen Transaktionen')}`
 
-  return { subject: `Anfrage bestätigt – «${opts.offerTitle}»`, html: layout(body) }
+  return {
+    subject: `Anfrage bestätigt – «${opts.offerTitle}»`,
+    html: layout(body, `${opts.ownerUsername} hat deine Anfrage bestätigt. Besprecht die nächsten Schritte.`),
+  }
 }
 
 export function offerDeclinedMail(opts: { requesterUsername: string; offerTitle: string }) {
@@ -66,7 +72,10 @@ export function offerDeclinedMail(opts: { requesterUsername: string; offerTitle:
     ${p('Vielleicht findest du ein anderes passendes Angebot.')}
     ${ctaButton(APP_URL, 'Angebote entdecken')}`
 
-  return { subject: `Anfrage abgelehnt – «${opts.offerTitle}»`, html: layout(body) }
+  return {
+    subject: `Anfrage abgelehnt – «${opts.offerTitle}»`,
+    html: layout(body, `Leider wurde deine Anfrage für «${opts.offerTitle}» abgelehnt.`),
+  }
 }
 
 export function confirmReminderMail(opts: {
@@ -81,7 +90,10 @@ export function confirmReminderMail(opts: {
     ${p('Bitte bestätige auch du, damit die Kudos verrechnet werden können.')}
     ${ctaButton(TRANSACTIONS_URL, 'Jetzt bestätigen')}`
 
-  return { subject: `Bitte bestätige die Übergabe – «${opts.offerTitle}»`, html: layout(body) }
+  return {
+    subject: `Bitte bestätige die Übergabe – «${opts.offerTitle}»`,
+    html: layout(body, `${opts.otherUsername} hat bereits bestätigt – du bist dran.`),
+  }
 }
 
 export function ratingReceivedMail(opts: {
@@ -98,5 +110,8 @@ export function ratingReceivedMail(opts: {
     ${p(`<strong>${esc(opts.raterUsername)}</strong> hat dir für <strong>«${esc(opts.offerTitle)}»</strong> ${muted}${starStr}</span> gegeben.`)}
     ${ctaButton(APP_URL, 'Mein Profil ansehen')}`
 
-  return { subject: `Du hast eine Bewertung erhalten – ${starStr}`, html: layout(body) }
+  return {
+    subject: `Du hast eine Bewertung erhalten – ${starStr}`,
+    html: layout(body, `${opts.raterUsername} hat dir ${starStr} für «${opts.offerTitle}» gegeben.`),
+  }
 }

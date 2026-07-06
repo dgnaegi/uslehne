@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
-import { AppError, ErrorCode } from '../errors'
+import { AppError, ErrorCode, assertFound, assertOwns } from '../errors'
 
 const router = Router()
 
@@ -52,8 +52,8 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const address = await db.address.findUnique({ where: { id: req.params.id } })
-      if (!address) throw new AppError(ErrorCode.NOT_FOUND, 404)
-      if (address.userId !== req.user!.id) throw new AppError(ErrorCode.FORBIDDEN, 403)
+      assertFound(address)
+      assertOwns(address.userId, req.user!.id)
 
       const activeOffer = await db.offer.findFirst({
         where: { addressId: req.params.id, status: { not: 'ARCHIVED' } },

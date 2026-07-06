@@ -3,7 +3,7 @@ import { Prisma, LedgerReason, OfferStatus } from '@prisma/client'
 import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { AppError, ErrorCode } from '../errors'
-import { sendMail } from '../services/mail'
+import { sendMailSilent } from '../services/mail'
 import { confirmReminderMail } from '../services/mailTemplatesTransactions'
 
 const router = Router()
@@ -97,14 +97,14 @@ router.post(
             otherUsername: owner.username,
             offerTitle: tx.offer.title,
           })
-          sendMail({ to: tx.requester.email, subject, html }).catch(console.error)
+          sendMailSilent({ to: tx.requester.email, subject, html })
         } else if (isRequester && owner) {
           const { subject, html } = confirmReminderMail({
             username: owner.username,
             otherUsername: tx.requester.username,
             offerTitle: tx.offer.title,
           })
-          sendMail({ to: owner.email, subject, html }).catch(console.error)
+          sendMailSilent({ to: owner.email, subject, html })
         }
       }
 

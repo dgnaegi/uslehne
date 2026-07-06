@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import type { ContactType, OfferType } from '../api/types'
 import { transactionApi } from '../api/endpoints'
+import { useAuth } from '../auth/AuthContext'
 import { FormGroup, Label, Textarea, Button, ErrorMsg } from './Layout.styled'
 import { Overlay, DialogBox, DialogTitle, ButtonRow } from './RequestDialog.styled'
 import { PhoneField } from './PhoneField'
@@ -22,6 +23,7 @@ interface FormValues {
 
 export function RequestDialog({ offerId, offerType, onClose }: Props) {
   const { t } = useTranslation(['transactions', 'common'])
+  const { user } = useAuth()
   const [success, setSuccess] = useState(false)
 
   const {
@@ -87,6 +89,7 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
             <FormGroup>
               <Label>{t('transactions:requestDialog.contactType')}</Label>
               <PhoneField
+                userId={user!.id}
                 selectedType={contactType}
                 selectedValue={contactValue}
                 onSelect={(type, value) => {

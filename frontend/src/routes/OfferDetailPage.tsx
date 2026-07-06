@@ -24,7 +24,7 @@ import {
 export function OfferDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation(['offers', 'common'])
-  const { user, openAuthModal } = useAuth()
+  const { user, logout, openAuthModal } = useAuth()
   const navigate = useNavigate()
   const [offer, setOffer] = useState<Offer | null>(null)
   const [showDialog, setShowDialog] = useState(false)
@@ -56,6 +56,7 @@ export function OfferDetailPage() {
 
   function handleRequest() {
     if (!user) {
+      logout()
       openAuthModal()
       return
     }

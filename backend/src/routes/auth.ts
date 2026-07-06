@@ -8,7 +8,7 @@ import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
 import { ADMIN_USERNAMES } from '../config/admins'
-import { sendMail } from '../services/mail'
+import { sendMailSilent } from '../services/mail'
 import { welcomeMail } from '../services/mailTemplates'
 
 const router = Router()
@@ -99,7 +99,7 @@ router.post(
       const token = signToken({ sub: user.id, role: user.role })
 
       const { subject, html } = welcomeMail({ username: user.username })
-      sendMail({ to: user.email, subject, html }).catch(console.error)
+      sendMailSilent({ to: user.email, subject, html })
 
       res.status(201).json({
         token,

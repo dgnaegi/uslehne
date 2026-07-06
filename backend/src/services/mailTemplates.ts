@@ -82,7 +82,10 @@ export function welcomeMail(opts: { username: string }) {
     </p>
     ${ctaButton(APP_URL, 'Angebote entdecken')}`
 
-  return { subject: 'Willkommen bei uslehne!', html: layout(body) }
+  return {
+    subject: 'Willkommen bei uslehne!',
+    html: layout(body, 'Schön, dass du dabei bist. Entdecke Angebote aus deiner Nachbarschaft.'),
+  }
 }
 
 export function passwordResetMail(opts: { username: string; token: string }) {
@@ -110,6 +113,6 @@ export function passwordResetMail(opts: { username: string; token: string }) {
 
   return {
     subject: 'Passwort zurücksetzen – uslehne',
-    html: layout(body),
+    html: layout(body, 'Setze dein Passwort zurück – der Link ist 1 Stunde gültig.'),
   }
 }

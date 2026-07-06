@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import type { UserProfile, LedgerReason } from '../api/types'
+import type { UserProfile } from '../api/types'
 import { userApi } from '../api/endpoints'
+import { REASON_LABEL, fmtDate } from '../utils/ledger'
 import { PageWrapper } from '../components/Layout.styled'
 import { StarRating } from '../components/StarRating'
 import {
@@ -21,22 +22,6 @@ import {
   EmptyNote,
 } from './UserProfilePage.styled'
 
-const REASON_LABEL: Record<LedgerReason, string> = {
-  INVITE_BONUS: 'Einladungsbonus',
-  LEND_EARN: 'Verleihen',
-  BORROW_SPEND: 'Ausleihen',
-  GIVE_EARN: 'Verschenken',
-  RECEIVE_SPEND: 'Erhalten',
-  ADMIN_ADJUST: 'Anpassung',
-}
-
-function fmt(iso: string) {
-  return new Date(iso).toLocaleDateString('de-CH', {
-    day: '2-digit',
-    month: '2-digit',
-    year: '2-digit',
-  })
-}
 
 export function UserProfilePage() {
   const { id } = useParams<{ id: string }>()
@@ -57,7 +42,7 @@ export function UserProfilePage() {
     <PageWrapper>
       <ProfileHeader>
         <Username>{profile.username}</Username>
-        <JoinDate>Dabei seit {fmt(profile.createdAt)}</JoinDate>
+        <JoinDate>Dabei seit {fmtDate(profile.createdAt)}</JoinDate>
         {profile.ratingCount > 0 && (
           <StarRating value={profile.avgStars} count={profile.ratingCount} readOnly />
         )}
@@ -94,7 +79,7 @@ export function UserProfilePage() {
                 {entry.delta}
               </HistoryDelta>
               <HistoryReason>{REASON_LABEL[entry.reason]}</HistoryReason>
-              <HistoryDate>{fmt(entry.createdAt)}</HistoryDate>
+              <HistoryDate>{fmtDate(entry.createdAt)}</HistoryDate>
             </HistoryItem>
           ))}
         </HistoryList>

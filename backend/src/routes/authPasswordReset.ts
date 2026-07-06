@@ -5,7 +5,7 @@ import { db } from '../db'
 import { hashPassword } from '../auth/password'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
-import { sendMail } from '../services/mail'
+import { sendMailSilent } from '../services/mail'
 import { passwordResetMail } from '../services/mailTemplates'
 
 const router = Router()
@@ -52,7 +52,7 @@ router.post(
         })
 
         const { subject, html } = passwordResetMail({ username: user.username, token: rawToken })
-        await sendMail({ to: user.email, subject, html })
+        sendMailSilent({ to: user.email, subject, html })
       }
 
       res.json({ ok: true })

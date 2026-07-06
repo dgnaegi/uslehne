@@ -53,3 +53,11 @@ export class AppError extends Error {
     super(message ?? defaultMessages[code])
   }
 }
+
+export function assertFound<T>(record: T | null | undefined): asserts record is T {
+  if (record == null) throw new AppError(ErrorCode.NOT_FOUND, 404)
+}
+
+export function assertOwns(ownerId: string, requesterId: string): void {
+  if (ownerId !== requesterId) throw new AppError(ErrorCode.FORBIDDEN, 403)
+}

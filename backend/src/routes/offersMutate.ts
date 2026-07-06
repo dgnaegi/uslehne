@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
-import { AppError, ErrorCode } from '../errors'
+import { AppError, ErrorCode, assertFound, assertOwns } from '../errors'
 import { imageStorage, withImageUrl } from '../storage/imageStorage'
 import { patchOfferSchema, offerPublicSelect } from './offers'
 
@@ -17,8 +17,8 @@ router.patch(
     try {
       const body = req.body as z.infer<typeof patchOfferSchema>
       const existing = await db.offer.findUnique({ where: { id: req.params.id } })
-      if (!existing) throw new AppError(ErrorCode.NOT_FOUND, 404)
-      if (existing.ownerId !== req.user!.id) throw new AppError(ErrorCode.FORBIDDEN, 403)
+      assertFound(existing)
+      assertOwns(existing.ownerId, req.user!.id)
 
       const imageRef = body.image ? await imageStorage.save(body.image) : undefined
       const offer = await db.offer.update({
@@ -44,8 +44,8 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const existing = await db.offer.findUnique({ where: { id: req.params.id } })
-      if (!existing) throw new AppError(ErrorCode.NOT_FOUND, 404)
-      if (existing.ownerId !== req.user!.id) throw new AppError(ErrorCode.FORBIDDEN, 403)
+      assertFound(existing)
+      assertOwns(existing.ownerId, req.user!.id)
 
       const blocking = await db.transaction.findFirst({
         where: { offerId: req.params.id, status: { in: ['PENDING', 'ACCEPTED'] } },

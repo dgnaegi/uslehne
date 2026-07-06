@@ -52,7 +52,7 @@ export function SwipeToDelete({ onDelete, disabled = false, children }: Props) {
       >
         {children}
       </SwipeContent>
-      {!disabled && (
+      {!disabled && offset < 0 && (
         <DeleteReveal>
           <DeleteButton onClick={onDelete} aria-label="Löschen">
             <IconX size={20} />

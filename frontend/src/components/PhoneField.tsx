@@ -4,39 +4,40 @@ import { Select, FormGroup, Label, Input, Button } from './Layout.styled'
 import { SelectRow, AddIconButton, InlineForm } from './PhoneField.styled'
 import { IconPlus } from '../icons'
 
-const STORAGE_KEY = 'uslehne_contacts'
+const storageKey = (userId: string) => `uslehne_contacts_${userId}`
 const PHONE_TYPES: ContactType[] = ['SMS', 'WHATSAPP', 'SIGNAL']
 
 type SavedContact = { id: string; type: ContactType; value: string }
 
-function loadContacts(): SavedContact[] {
+function loadContacts(userId: string): SavedContact[] {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')
+    return JSON.parse(localStorage.getItem(storageKey(userId)) ?? '[]')
   } catch {
     return []
   }
 }
 
-function initContacts(selectedType: ContactType, selectedValue: string): SavedContact[] {
-  const loaded = loadContacts()
+function initContacts(userId: string, selectedType: ContactType, selectedValue: string): SavedContact[] {
+  const loaded = loadContacts(userId)
   if (!selectedValue) return loaded
   const exists = loaded.some((c) => c.type === selectedType && c.value === selectedValue)
   if (exists) return loaded
   const entry: SavedContact = { id: crypto.randomUUID(), type: selectedType, value: selectedValue }
   const updated = [...loaded, entry]
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+  localStorage.setItem(storageKey(userId), JSON.stringify(updated))
   return updated
 }
 
 interface Props {
+  userId: string
   selectedType: ContactType
   selectedValue: string
   onSelect: (type: ContactType, value: string) => void
 }
 
-export function PhoneField({ selectedType, selectedValue, onSelect }: Props) {
+export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Props) {
   const [contacts, setContacts] = useState<SavedContact[]>(() =>
-    initContacts(selectedType, selectedValue),
+    initContacts(userId, selectedType, selectedValue),
   )
   const [showForm, setShowForm] = useState(contacts.length === 0)
   const [newType, setNewType] = useState<ContactType>('SMS')
@@ -56,7 +57,7 @@ export function PhoneField({ selectedType, selectedValue, onSelect }: Props) {
     const entry: SavedContact = { id: crypto.randomUUID(), type: newType, value: val }
     setContacts((prev) => {
       const updated = [...prev, entry]
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+      localStorage.setItem(storageKey(userId), JSON.stringify(updated))
       return updated
     })
     onSelect(entry.type, entry.value)

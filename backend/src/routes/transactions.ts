@@ -4,7 +4,7 @@ import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
-import { sendMail } from '../services/mail'
+import { sendMailSilent } from '../services/mail'
 import { offerRequestedMail } from '../services/mailTemplatesTransactions'
 
 const router = Router()
@@ -71,7 +71,7 @@ router.post(
           contactValue: body.contactValue,
           message: body.message,
         })
-        sendMail({ to: owner.email, subject, html }).catch(console.error)
+        sendMailSilent({ to: owner.email, subject, html })
       }
 
       res.status(201).json({ transaction })

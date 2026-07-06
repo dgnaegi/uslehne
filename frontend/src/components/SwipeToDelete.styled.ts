@@ -8,6 +8,7 @@ export const SwipeWrapper = styled.div`
 `
 
 export const SwipeContent = styled.div<{ $offset: number; $animated: boolean }>`
+  width: 100%;
   transform: translateX(${({ $offset }) => $offset}px);
   transition: ${({ $animated }) => ($animated ? 'transform 0.2s ease' : 'none')};
   background: ${({ theme }) => theme.colors.background};

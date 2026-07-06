@@ -7,7 +7,7 @@ export const AdminTable = styled.div`
   margin-top: ${({ theme }) => theme.spacing.md};
 `
 
-export const AdminRow = styled.div`
+export const AdminRow = styled.div<{ $expanded?: boolean }>`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
@@ -16,14 +16,19 @@ export const AdminRow = styled.div`
   border-radius: ${({ theme }) => theme.radius};
   flex-wrap: wrap;
   font-size: 0.85rem;
+  cursor: pointer;
+
+  > div {
+    overflow: ${({ $expanded }) => ($expanded ? 'visible' : 'hidden')};
+    text-overflow: ${({ $expanded }) => ($expanded ? 'unset' : 'ellipsis')};
+    white-space: ${({ $expanded }) => ($expanded ? 'normal' : 'nowrap')};
+    word-break: ${({ $expanded }) => ($expanded ? 'break-all' : 'normal')};
+  }
 `
 
 export const AdminCell = styled.div`
   flex: 1;
   min-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 
   &:last-child {
     flex: 0;

@@ -16,6 +16,7 @@ export function AdminPage() {
   const [offers, setOffers] = useState<AdminOffer[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   useEffect(() => {
     if (user && user.role !== 'ADMIN') navigate('/offers', { replace: true })
@@ -87,7 +88,10 @@ export function AdminPage() {
               disabled={u.id === user.id}
               onDelete={() => deleteUser(u.id, u.username)}
             >
-              <AdminRow>
+              <AdminRow
+                $expanded={expandedId === u.id}
+                onClick={() => setExpandedId(expandedId === u.id ? null : u.id)}
+              >
                 <AdminCell>
                   <strong>@{u.username}</strong>
                 </AdminCell>
@@ -104,7 +108,10 @@ export function AdminPage() {
         <AdminTable>
           {offers.map((o) => (
             <SwipeToDelete key={o.id} onDelete={() => deleteOffer(o.id, o.title)}>
-              <AdminRow>
+              <AdminRow
+                $expanded={expandedId === o.id}
+                onClick={() => setExpandedId(expandedId === o.id ? null : o.id)}
+              >
                 <AdminCell>
                   <strong>{o.title}</strong>
                 </AdminCell>

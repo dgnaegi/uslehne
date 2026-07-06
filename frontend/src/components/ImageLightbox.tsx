@@ -148,6 +148,10 @@ export function ImageLightbox({ src, alt, onClose }: Props) {
           e.stopPropagation()
           onClose()
         }}
+        onTouchEnd={(e) => {
+          e.stopPropagation()
+          onClose()
+        }}
         aria-label="Schliessen"
       >
         <IconX size={20} />
