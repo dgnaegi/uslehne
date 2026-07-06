@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import type { OfferType } from '../api/types'
+import type { ContactType, OfferType } from '../api/types'
 import { transactionApi } from '../api/endpoints'
-import { FormGroup, Label, Input, Textarea, Button, ErrorMsg, Select } from './Layout.styled'
-import { Overlay, DialogBox, DialogTitle, ButtonRow, PrefillBtn } from './RequestDialog.styled'
-
-const SAVED_PHONE_KEY = 'uslehne_lastPhone'
-const PHONE_CHANNELS = ['SMS', 'WHATSAPP', 'SIGNAL'] as const
+import { FormGroup, Label, Textarea, Button, ErrorMsg } from './Layout.styled'
+import { Overlay, DialogBox, DialogTitle, ButtonRow } from './RequestDialog.styled'
+import { PhoneField } from './PhoneField'
 
 interface Props {
   offerId: string
@@ -16,7 +14,7 @@ interface Props {
 }
 
 interface FormValues {
-  contactType: 'SMS' | 'WHATSAPP' | 'SIGNAL' | 'EMAIL'
+  contactType: ContactType
   contactValue: string
   message?: string
 }
@@ -24,7 +22,6 @@ interface FormValues {
 export function RequestDialog({ offerId, offerType, onClose }: Props) {
   const { t } = useTranslation(['transactions', 'common'])
   const [success, setSuccess] = useState(false)
-  const savedPhone = localStorage.getItem(SAVED_PHONE_KEY) ?? ''
 
   const {
     register,
@@ -33,10 +30,10 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
     setValue,
     formState: { errors, isSubmitting },
     setError,
-  } = useForm<FormValues>({ defaultValues: { contactType: 'SMS' } })
+  } = useForm<FormValues>({ defaultValues: { contactType: 'SMS', contactValue: '' } })
 
   const contactType = watch('contactType')
-  const isPhoneChannel = (PHONE_CHANNELS as readonly string[]).includes(contactType)
+  const contactValue = watch('contactValue')
 
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
@@ -48,9 +45,6 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
 
   async function onSubmit(values: FormValues) {
     try {
-      if (isPhoneChannel && values.contactValue) {
-        localStorage.setItem(SAVED_PHONE_KEY, values.contactValue)
-      }
       await transactionApi.request(offerId, {
         contactType: values.contactType,
         contactValue: values.contactValue,
@@ -86,32 +80,19 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
           </>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
+            <input type="hidden" {...register('contactType', { required: true })} />
+            <input type="hidden" {...register('contactValue', { required: true })} />
             <FormGroup>
               <Label>{t('transactions:requestDialog.contactType')}</Label>
-              <Select {...register('contactType', { required: true })}>
-                <option value="SMS">{t('transactions:requestDialog.sms')}</option>
-                <option value="WHATSAPP">{t('transactions:requestDialog.whatsapp')}</option>
-                <option value="SIGNAL">{t('transactions:requestDialog.signal')}</option>
-                <option value="EMAIL">{t('transactions:requestDialog.email')}</option>
-              </Select>
-            </FormGroup>
-            <FormGroup>
-              <Label>{t('transactions:requestDialog.contactValue')}</Label>
-              <Input
-                {...register('contactValue', { required: true })}
-                type={isPhoneChannel ? 'tel' : 'email'}
-                placeholder={
-                  isPhoneChannel
-                    ? t('transactions:requestDialog.phonePlaceholder')
-                    : t('transactions:requestDialog.emailPlaceholder')
-                }
+              <PhoneField
+                selectedType={contactType}
+                selectedValue={contactValue}
+                onSelect={(type, value) => {
+                  setValue('contactType', type, { shouldValidate: true })
+                  setValue('contactValue', value, { shouldValidate: true })
+                }}
               />
-              {isPhoneChannel && savedPhone && (
-                <PrefillBtn type="button" onClick={() => setValue('contactValue', savedPhone)}>
-                  {t('transactions:requestDialog.useSaved')}: {savedPhone}
-                </PrefillBtn>
-              )}
-              {errors.contactValue && <ErrorMsg>{errors.contactValue.message}</ErrorMsg>}
+              {errors.contactValue && <ErrorMsg>Bitte Kontakt wählen.</ErrorMsg>}
             </FormGroup>
             <FormGroup>
               <Label>{t('transactions:requestDialog.message')}</Label>

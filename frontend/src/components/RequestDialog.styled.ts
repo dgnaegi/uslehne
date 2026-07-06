@@ -45,22 +45,3 @@ export const ButtonRow = styled.div`
   margin-top: ${({ theme }) => theme.spacing.md};
   flex-wrap: wrap;
 `
-
-export const PrefillBtn = styled.button`
-  background: none;
-  border: 2px dashed ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius};
-  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.textMuted};
-  width: 100%;
-  text-align: left;
-  margin-top: ${({ theme }) => theme.spacing.xs};
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.primary};
-  }
-`

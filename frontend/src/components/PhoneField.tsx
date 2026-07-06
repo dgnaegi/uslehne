@@ -38,7 +38,7 @@ export function PhoneField({ selectedType, selectedValue, onSelect }: Props) {
   const [contacts, setContacts] = useState<SavedContact[]>(() =>
     initContacts(selectedType, selectedValue),
   )
-  const [showForm, setShowForm] = useState(false)
+  const [showForm, setShowForm] = useState(contacts.length === 0)
   const [newType, setNewType] = useState<ContactType>('SMS')
   const [newValue, setNewValue] = useState('')
 
