@@ -19,7 +19,6 @@ enum OfferType {
 
 enum OfferStatus {
   AVAILABLE
-  RESERVED
   LENT
   GIVEN
   ARCHIVED
