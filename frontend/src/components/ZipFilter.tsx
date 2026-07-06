@@ -23,7 +23,18 @@ interface Props {
 export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange }: Props) {
   const [inputVal, setInputVal] = useState('')
   const [showInput, setShowInput] = useState(false)
+  const [deactivating, setDeactivating] = useState<OfferType | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  function handleTypeClick(type: OfferType) {
+    if (offerType === type) {
+      onOfferTypeChange(null)
+      setDeactivating(type)
+      setTimeout(() => setDeactivating(null), 500)
+    } else {
+      onOfferTypeChange(type)
+    }
+  }
 
   function commit() {
     const z = inputVal.trim()
