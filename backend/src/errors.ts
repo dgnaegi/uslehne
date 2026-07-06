@@ -16,6 +16,8 @@ export const ErrorCode = {
   OFFER_NOT_AVAILABLE: 'OFFER_NOT_AVAILABLE',
   ADDRESS_IN_USE: 'ADDRESS_IN_USE',
   ALREADY_RATED: 'ALREADY_RATED',
+  RESET_TOKEN_INVALID: 'RESET_TOKEN_INVALID',
+  RESET_TOKEN_EXPIRED: 'RESET_TOKEN_EXPIRED',
 } as const
 
 export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode]
@@ -38,6 +40,8 @@ const defaultMessages: Record<ErrorCode, string> = {
   OFFER_NOT_AVAILABLE: 'Das Angebot ist nicht mehr verfügbar.',
   ADDRESS_IN_USE: 'Die Adresse wird noch von einem Angebot verwendet.',
   ALREADY_RATED: 'Diese Anfrage wurde bereits bewertet.',
+  RESET_TOKEN_INVALID: 'Ungültiger oder bereits verwendeter Reset-Link.',
+  RESET_TOKEN_EXPIRED: 'Der Reset-Link ist abgelaufen. Bitte fordere einen neuen an.',
 }
 
 export class AppError extends Error {

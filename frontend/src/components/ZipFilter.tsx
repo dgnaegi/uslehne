@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import type { OfferType } from '../api/types'
 import { IconX, IconPlus } from '../icons'
 import {
   FilterBar,
@@ -8,14 +9,18 @@ import {
   ChipRemove,
   ZipInput,
   AddButton,
+  TypeFilterGroup,
+  TypeBtn,
 } from './ZipFilter.styled'
 
 interface Props {
   zips: string[]
   onZipsChange: (zips: string[]) => void
+  offerType: OfferType | null
+  onOfferTypeChange: (type: OfferType | null) => void
 }
 
-export function ZipFilter({ zips, onZipsChange }: Props) {
+export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange }: Props) {
   const [inputVal, setInputVal] = useState('')
   const [showInput, setShowInput] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -62,6 +67,20 @@ export function ZipFilter({ zips, onZipsChange }: Props) {
             <IconPlus size={13} /> PLZ
           </AddButton>
         )}
+        <TypeFilterGroup>
+          <TypeBtn
+            $active={offerType === 'LEND'}
+            onClick={() => onOfferTypeChange(offerType === 'LEND' ? null : 'LEND')}
+          >
+            Verleihen
+          </TypeBtn>
+          <TypeBtn
+            $active={offerType === 'GIVE'}
+            onClick={() => onOfferTypeChange(offerType === 'GIVE' ? null : 'GIVE')}
+          >
+            Schenken
+          </TypeBtn>
+        </TypeFilterGroup>
       </ChipsRow>
     </FilterBar>
   )

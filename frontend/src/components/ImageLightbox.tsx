@@ -92,10 +92,19 @@ export function ImageLightbox({ src, alt, onClose }: Props) {
     [applyTransform],
   )
 
-  const onTouchEnd = useCallback((e: TouchEvent) => {
-    if (e.touches.length < 2) lastTouchDist.current = null
-    if (e.touches.length === 0) panStart.current = null
-  }, [])
+  const onTouchEnd = useCallback(
+    (e: TouchEvent) => {
+      if (e.touches.length < 2) lastTouchDist.current = null
+      if (e.touches.length === 0 && panStart.current) {
+        const t = e.changedTouches[0]
+        const dx = t.clientX - panStart.current.x
+        const dy = t.clientY - panStart.current.y
+        if (Math.sqrt(dx * dx + dy * dy) < 10 && scaleRef.current === 1) onClose()
+        panStart.current = null
+      }
+    },
+    [onClose],
+  )
 
   const onWheel = useCallback(
     (e: WheelEvent) => {

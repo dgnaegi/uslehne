@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import type { OfferType } from '../api/types'
 import { useOfferFeed } from '../hooks/useOfferFeed'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { OfferGrid } from '../components/OfferGrid'
@@ -10,9 +11,10 @@ export function OffersPage() {
   const { t } = useTranslation('offers')
   const [searchParams] = useSearchParams()
   const [zips, setZips] = useState<string[]>([])
+  const [offerType, setOfferType] = useState<OfferType | null>(null)
   const query = searchParams.get('q') ?? ''
 
-  const { offers, loading, loadMore, hasMore } = useOfferFeed(zips, query)
+  const { offers, loading, loadMore, hasMore } = useOfferFeed(zips, query, offerType)
 
   usePageMeta(
     query
@@ -25,7 +27,12 @@ export function OffersPage() {
 
   return (
     <>
-      <ZipFilter zips={zips} onZipsChange={setZips} />
+      <ZipFilter
+        zips={zips}
+        onZipsChange={setZips}
+        offerType={offerType}
+        onOfferTypeChange={setOfferType}
+      />
       <OfferGrid
         offers={offers}
         emptyMessage={emptyMessage}

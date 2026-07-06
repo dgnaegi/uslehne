@@ -49,6 +49,13 @@ export function AuthModal() {
     setShowPw(false)
   }
 
+  function apiMsg(err: unknown, fallback: string): string {
+    if (!(err instanceof Error)) return fallback
+    const msg = err.message
+    if (!msg || msg === 'Request failed') return fallback
+    return msg
+  }
+
   async function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
@@ -61,7 +68,7 @@ export function AuthModal() {
       }
       setStep(exists ? 'login' : 'register')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Fehler beim Prüfen.')
+      setError(apiMsg(err, 'E-Mail-Adresse konnte nicht geprüft werden. Bitte Seite neu laden.'))
     } finally {
       setLoading(false)
     }
@@ -76,7 +83,7 @@ export function AuthModal() {
       login(token, user)
       closeAuthModal()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Fehler')
+      setError(apiMsg(err, 'Anmeldung fehlgeschlagen. Bitte E-Mail und Passwort prüfen.'))
     } finally {
       setLoading(false)
     }
@@ -91,7 +98,7 @@ export function AuthModal() {
       login(token, user)
       closeAuthModal()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Fehler')
+      setError(apiMsg(err, 'Registrierung fehlgeschlagen. Bitte Einladungscode prüfen.'))
     } finally {
       setLoading(false)
     }

@@ -15,5 +15,5 @@
   "INVALID_TRANSACTION_STATUS": "Diese Aktion ist im aktuellen Status nicht möglich.",
   "OFFER_NOT_AVAILABLE": "Das Angebot ist nicht mehr verfügbar.",
   "ADDRESS_IN_USE": "Die Adresse wird noch von einem Angebot verwendet.",
-  "GENERIC": "Ein Fehler ist aufgetreten."
+  "GENERIC": "Etwas ist schiefgelaufen. Bitte Seite neu laden oder uns kontaktieren."
 }

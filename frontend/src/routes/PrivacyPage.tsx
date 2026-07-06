@@ -76,6 +76,10 @@ export function PrivacyPage() {
           <li>
             <strong>Einladungen:</strong> Einladungscodes und deren Nutzung
           </li>
+          <li>
+            <strong>Passwort-Reset:</strong> E-Mail-Adresse und ein temporärer Token (1 Stunde
+            gültig, danach automatisch ungültig)
+          </li>
         </Ul>
         <P>
           Wir speichern keine Kreditkartendaten, kein Tracking-Pixel, keine Cookies für Werbezwecke.
@@ -107,6 +111,11 @@ export function PrivacyPage() {
           <li>
             <strong>Scaleway</strong> (Frankreich) — Speicherung von Angebotsfotos in Object
             Storage. Ebenfalls ISO 27001-zertifiziert, Rechenzentren in Paris.
+          </li>
+          <li>
+            <strong>Brevo</strong> (Frankreich) — Versand von transaktionalen E-Mails (z.B.
+            Passwort-Reset). Deine E-Mail-Adresse wird ausschliesslich für diesen Zweck übermittelt.
+            Rechenzentren in der EU.
           </li>
         </Ul>
         <P>Keine US-Cloud, kein AWS, kein Google Cloud. Merci bien.</P>

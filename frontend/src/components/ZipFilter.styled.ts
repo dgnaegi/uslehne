@@ -87,6 +87,9 @@ export const ZipInput = styled.input`
 `
 
 export const AddButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background: none;
   border: 2px solid rgba(26, 26, 26, 0.3);
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
@@ -107,6 +110,41 @@ export const AddButton = styled.button`
   &:hover {
     opacity: 1;
     background: ${({ theme }) => theme.colors.accent};
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
+export const TypeFilterGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.xs};
+  margin-left: auto;
+  flex-shrink: 0;
+`
+
+export const TypeBtn = styled.button<{ $active: boolean }>`
+  background: ${({ theme, $active }) => ($active ? theme.colors.primary : 'none')};
+  border: 2px solid
+    ${({ theme, $active }) => ($active ? theme.colors.primary : 'rgba(26, 26, 26, 0.3)')};
+  padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
+  white-space: nowrap;
+  flex-shrink: 0;
+  opacity: ${({ $active }) => ($active ? 1 : 0.6)};
+  transition:
+    opacity 0.12s,
+    background 0.12s,
+    color 0.12s,
+    border-color 0.12s;
+
+  &:hover {
+    opacity: 1;
+    background: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.accent)};
     border-color: ${({ theme }) => theme.colors.primary};
   }
 `

@@ -49,13 +49,46 @@ scalingo login
 
 ---
 
+## Third-party services setup
+
+### Brevo (transactional email)
+
+1. Create account at brevo.com (free tier: 300 emails/day)
+2. Settings → SMTP & API → SMTP → **Generate a new SMTP key**
+3. Settings → Senders & Domains → Domains → **Add `uslehne.ch`** → add the DNS records at your registrar
+4. Set on Scalingo:
+
+```bash
+scalingo --region osc-fr1 --app uslehne env-set \
+  BREVO_SMTP_USER=your@email.com \
+  BREVO_SMTP_KEY=xsmtp-xxxx \
+  APP_URL=https://uslehne.ch
+```
+
+### Scaleway S3 (image storage)
+
+1. Scaleway console → Object Storage → create bucket in `fr-par`
+2. IAM → API Keys → create key with Object Storage write access
+3. Set on Scalingo:
+
+```bash
+scalingo --region osc-fr1 --app uslehne env-set \
+  S3_BUCKET=your-bucket-name \
+  S3_ACCESS_KEY_ID=xxxx \
+  S3_SECRET_ACCESS_KEY=xxxx
+```
+
+> Both keys should be rotated annually — see [docs/MAINTENANCE.md](docs/MAINTENANCE.md).
+
+---
+
 ## Run locally
 
 ```bash
 # 1. Backend
 cd backend
 cp .env.example .env
-# Edit .env: set DATABASE_URL=postgresql://localhost/uslehne
+# Edit .env: fill in DATABASE_URL, BREVO_SMTP_USER, BREVO_SMTP_KEY, APP_URL, S3_* values
 
 npm install
 npm run db:migrate:dev   # create tables
