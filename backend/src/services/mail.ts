@@ -31,3 +31,7 @@ export async function sendMail({ to, subject, html }: MailOptions): Promise<void
     html,
   })
 }
+
+export function sendMailSilent(opts: MailOptions): void {
+  sendMail(opts).catch(console.error)
+}

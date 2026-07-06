@@ -6,7 +6,10 @@ export const YELLOW = '#FFD600'
 export const WARM_WHITE = '#FDFAF0'
 export const MUTED = '#555555'
 
-export function layout(body: string): string {
+export function layout(body: string, preview?: string): string {
+  const preheader = preview
+    ? `<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">${preview}&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;</div>`
+    : ''
   return `<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -15,6 +18,7 @@ export function layout(body: string): string {
   <title>uslehne</title>
 </head>
 <body style="margin:0;padding:0;background:${WARM_WHITE};font-family:${FONT};">
+  ${preheader}
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${WARM_WHITE};padding:40px 16px;">
     <tr>
       <td align="center">

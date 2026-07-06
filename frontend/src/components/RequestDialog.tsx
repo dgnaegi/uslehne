@@ -6,6 +6,7 @@ import { transactionApi } from '../api/endpoints'
 import { FormGroup, Label, Textarea, Button, ErrorMsg } from './Layout.styled'
 import { Overlay, DialogBox, DialogTitle, ButtonRow } from './RequestDialog.styled'
 import { PhoneField } from './PhoneField'
+import { ProcessTimeline } from './ProcessTimeline'
 
 interface Props {
   offerId: string
@@ -71,6 +72,7 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <DialogTitle id="request-dialog-title">{t('transactions:requestDialog.title')}</DialogTitle>
+        <ProcessTimeline offerType={offerType} activeStep={0} compact />
         {success ? (
           <>
             <p>{t('transactions:requestDialog.success')}</p>

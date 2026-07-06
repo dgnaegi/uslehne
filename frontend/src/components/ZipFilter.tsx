@@ -81,13 +81,15 @@ export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange }: 
         <TypeFilterGroup>
           <TypeBtn
             $active={offerType === 'LEND'}
-            onClick={() => onOfferTypeChange(offerType === 'LEND' ? null : 'LEND')}
+            $deactivating={deactivating === 'LEND'}
+            onClick={() => handleTypeClick('LEND')}
           >
             Verleihen
           </TypeBtn>
           <TypeBtn
             $active={offerType === 'GIVE'}
-            onClick={() => onOfferTypeChange(offerType === 'GIVE' ? null : 'GIVE')}
+            $deactivating={deactivating === 'GIVE'}
+            onClick={() => handleTypeClick('GIVE')}
           >
             Schenken
           </TypeBtn>
