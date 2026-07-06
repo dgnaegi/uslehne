@@ -54,7 +54,7 @@ export function TransactionsPage() {
       await fn()
       load()
     } catch (err: unknown) {
-      setActionError(err instanceof Error ? err.message : 'Fehler')
+      setActionError(err instanceof Error ? err.message : 'Da ist etwas schiefgelaufen.')
     }
   }
 

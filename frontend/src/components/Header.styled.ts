@@ -213,6 +213,40 @@ export const GuestAuthBtn = styled.button`
   }
 `
 
+export const HamburgerWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  ${media.sm} {
+    display: none;
+  }
+`
+
+export const NotifDot = styled.span`
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.danger};
+  pointer-events: none;
+`
+
+export const NavLinkWrapper = styled.span`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  ${NotifDot} {
+    position: absolute;
+    top: -4px;
+    right: -10px;
+  }
+`
+
 export const HamburgerBtn = styled.button`
   background: none;
   border: none;
@@ -220,14 +254,9 @@ export const HamburgerBtn = styled.button`
   color: ${({ theme }) => theme.colors.primary};
   line-height: 1;
   padding: ${({ theme }) => theme.spacing.xs};
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  ${media.sm} {
-    display: none;
-  }
 `
 
 export const MobileMenu = styled.div`
@@ -242,6 +271,12 @@ export const MobileMenu = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+
+  ${NotifDot} {
+    position: static;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
 
   a,
   button {

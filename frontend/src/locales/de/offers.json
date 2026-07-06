@@ -23,7 +23,7 @@
   "kudosEarn": "Du erhältst {{count}} Kudos",
   "postedBy": "von {{username}}",
   "location": "{{city}}",
-  "loadError": "Angebote konnten nicht geladen werden.",
+  "loadError": "Angebote konnten nicht geladen werden. Lade die Seite neu.",
   "selectAddress": "Adresse auswählen",
   "selectType": "Typ auswählen",
   "uploadImage": "Bild auswählen",

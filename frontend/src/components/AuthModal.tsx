@@ -142,7 +142,7 @@ export function AuthModal() {
 
         {step === 'email' && (
           <>
-            <ModalTitle id="auth-modal-title">Anmelden / Registrieren</ModalTitle>
+            <ModalTitle id="auth-modal-title">{t('emailStep')}</ModalTitle>
             <form onSubmit={handleEmailSubmit}>
               <FormGroup>
                 <Label>{t('email')}</Label>

@@ -24,7 +24,7 @@ const STEPS: StepDef[] = [
   {
     icon: <IconMessageSquare size={16} />,
     title: 'Anfragen',
-    desc: 'Anfrage mit Kontaktinfo senden — der Anbieter entscheidet.',
+    desc: 'Anfrage mit Kontaktangabe senden. Die Anbieter*in entscheidet.',
   },
   {
     icon: <IconSmartphone size={16} />,
@@ -34,7 +34,7 @@ const STEPS: StepDef[] = [
   {
     icon: <IconMapPin size={16} />,
     title: 'Abholen',
-    desc: 'Gegenstand beim Anbieter vor Ort abholen.',
+    desc: 'Gegenstand bei der Anbieter*in vor Ort abholen.',
   },
   {
     icon: <IconRepeat size={16} />,

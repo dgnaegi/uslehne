@@ -18,6 +18,7 @@ import { ForgotPasswordPage } from './routes/ForgotPasswordPage'
 import { ResetPasswordPage } from './routes/ResetPasswordPage'
 import { AdminPage } from './routes/AdminPage'
 import { AppFooter } from './components/AppFooter'
+import { BugReportButton } from './components/BugReportButton'
 
 function RegisterRedirect() {
   const [params] = useSearchParams()
@@ -48,7 +49,7 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 }
 
 function App() {
-  const { isAuthModalOpen } = useAuth()
+  const { isAuthModalOpen, user } = useAuth()
 
   return (
     <>
@@ -130,6 +131,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
       <AppFooter />
+      {user && <BugReportButton />}
     </>
   )
 }

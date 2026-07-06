@@ -122,20 +122,17 @@ export const TypeFilterGroup = styled.div`
   flex-shrink: 0;
 `
 
-export const TypeBtn = styled.button<{ $active: boolean; $deactivating: boolean }>`
-  background: ${({ theme, $active, $deactivating }) =>
-    $active ? theme.colors.primary : $deactivating ? theme.colors.accent : 'none'};
+export const TypeBtn = styled.button<{ $active: boolean }>`
+  background: ${({ theme, $active }) => ($active ? theme.colors.primary : 'none')};
   border: 2px solid
-    ${({ theme, $active, $deactivating }) =>
-      $active || $deactivating ? theme.colors.primary : theme.colors.textMuted};
+    ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.textMuted)};
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  color: ${({ theme, $active, $deactivating }) =>
-    $active ? theme.colors.accent : $deactivating ? theme.colors.primary : theme.colors.textMuted};
+  color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.textMuted)};
   white-space: nowrap;
   flex-shrink: 0;
   transition:
@@ -143,9 +140,12 @@ export const TypeBtn = styled.button<{ $active: boolean; $deactivating: boolean 
     color 0.15s,
     border-color 0.15s;
 
-  &:hover {
-    background: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.accent)};
-    border-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
+  @media (hover: hover) {
+    &:hover {
+      background: ${({ theme, $active }) =>
+        $active ? theme.colors.primary : theme.colors.accent};
+      border-color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
+    }
   }
 `

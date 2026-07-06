@@ -15,6 +15,7 @@ import kudosRouter from './routes/kudos'
 import { usersRouter } from './routes/users'
 import { adminRouter } from './routes/admin'
 import passwordResetRouter from './routes/authPasswordReset'
+import bugReportRouter from './routes/bugReport'
 import { errorHandler } from './middleware/errorHandler'
 
 const app = express()
@@ -44,6 +45,7 @@ app.use('/api/v1', kudosRouter)
 app.use('/api/v1', usersRouter)
 app.use('/api/v1', adminRouter)
 app.use('/api/v1', passwordResetRouter)
+app.use('/api/v1', bugReportRouter)
 
 if (process.env.NODE_ENV === 'production') {
   const staticDir = path.resolve(__dirname, '../../frontend/dist')

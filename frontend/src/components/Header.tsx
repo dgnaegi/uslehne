@@ -12,6 +12,7 @@ import {
   IconLogOut,
   IconShield,
 } from '../icons'
+import { usePendingRequests } from '../hooks/usePendingRequests'
 import {
   Nav,
   LogoGroup,
@@ -22,17 +23,21 @@ import {
   SearchInput,
   DesktopNav,
   NavLink,
+  NavLinkWrapper,
   NavButton,
   KudoBadge,
   KontoWrapper,
   DropdownMenu,
   GuestAuthBtn,
+  HamburgerWrapper,
   HamburgerBtn,
+  NotifDot,
   MobileMenu,
 } from './Header.styled'
 
 export function Header() {
   const { user, logout, openAuthModal } = useAuth()
+  const pendingCount = usePendingRequests()
   const { t } = useTranslation('common')
   const navigate = useNavigate()
   const location = useLocation()
@@ -110,9 +115,12 @@ export function Header() {
                 <IconShield size={14} /> Admin
               </NavLink>
             )}
-            <NavLink as={Link} to="/transactions">
-              {t('nav.transactions')}
-            </NavLink>
+            <NavLinkWrapper>
+              <NavLink as={Link} to="/transactions">
+                {t('nav.transactions')}
+              </NavLink>
+              {pendingCount > 0 && <NotifDot />}
+            </NavLinkWrapper>
             <NavLink as={Link} to="/my-offers">
               {t('nav.myOffers')}
             </NavLink>
@@ -135,9 +143,12 @@ export function Header() {
             </KontoWrapper>
           </DesktopNav>
 
-          <HamburgerBtn onClick={() => setMobileOpen((o) => !o)} aria-label="Menü öffnen">
-            {mobileOpen ? <IconX size={20} /> : <IconMenu size={20} />}
-          </HamburgerBtn>
+          <HamburgerWrapper>
+            <HamburgerBtn onClick={() => setMobileOpen((o) => !o)} aria-label="Menü öffnen">
+              {mobileOpen ? <IconX size={20} /> : <IconMenu size={20} />}
+            </HamburgerBtn>
+            {pendingCount > 0 && <NotifDot />}
+          </HamburgerWrapper>
 
           {mobileOpen && (
             <MobileMenu>
@@ -148,6 +159,7 @@ export function Header() {
               )}
               <Link to="/transactions" onClick={() => setMobileOpen(false)}>
                 <IconRepeat size={18} /> {t('nav.transactions')}
+                {pendingCount > 0 && <NotifDot />}
               </Link>
               <Link to="/my-offers" onClick={() => setMobileOpen(false)}>
                 <IconBox size={18} /> {t('nav.myOffers')}

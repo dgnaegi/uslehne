@@ -25,7 +25,7 @@ export function ForgotPasswordPage() {
       await authApi.forgotPassword(email)
       setSent(true)
     } catch {
-      setError('Anfrage fehlgeschlagen. Bitte versuche es erneut.')
+      setError('Anfrage fehlgeschlagen. Versuch es noch einmal.')
     } finally {
       setLoading(false)
     }
@@ -37,7 +37,7 @@ export function ForgotPasswordPage() {
       {sent ? (
         <SuccessBox>
           Falls ein Konto mit dieser E-Mail-Adresse existiert, haben wir dir einen Link geschickt.
-          Bitte prüfe deinen Posteingang (auch Spam).
+          Check auch den Spam-Ordner.
         </SuccessBox>
       ) : (
         <FormWrapper onSubmit={handleSubmit}>

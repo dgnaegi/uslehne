@@ -19,9 +19,9 @@ import {
   Button,
   ErrorMsg,
 } from '../components/Layout.styled'
-import { ImagePreview } from './OfferFormPage.styled'
+import { ImagePreview, ImagePreviewWrapper, ReplaceImageButton } from './OfferFormPage.styled'
 import { AspectRatioHint } from '../components/AspectRatioHint'
-import { IconPlus } from '../icons'
+import { IconPlus, IconRepeat } from '../icons'
 
 interface FormValues {
   title: string
@@ -160,7 +160,16 @@ export function OfferFormPage() {
         <FormGroup>
           <Label>{t('offers:image')}</Label>
           {imageDataUrl ? (
-            <ImagePreview src={imageDataUrl} alt="Vorschau" />
+            <ImagePreviewWrapper>
+              <ImagePreview src={imageDataUrl} alt="Vorschau" />
+              <ReplaceImageButton
+                type="button"
+                title="Bild ersetzen"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <IconRepeat size={14} />
+              </ReplaceImageButton>
+            </ImagePreviewWrapper>
           ) : (
             <AspectRatioHint
               onClick={() => fileInputRef.current?.click()}

@@ -31,7 +31,7 @@ export function ResetPasswordPage() {
       setError(
         err instanceof Error
           ? err.message
-          : 'Fehler beim Zurücksetzen. Bitte fordere einen neuen Link an.',
+          : 'Zurücksetzen fehlgeschlagen. Fordere einen neuen Link an.',
       )
     } finally {
       setLoading(false)
@@ -42,7 +42,7 @@ export function ResetPasswordPage() {
     return (
       <PageWrapper>
         <PageTitle>Ungültiger Link</PageTitle>
-        <ErrorMsg>Dieser Link ist ungültig. Bitte fordere einen neuen Reset-Link an.</ErrorMsg>
+        <ErrorMsg>Ungültiger Link. Fordere einen neuen an.</ErrorMsg>
       </PageWrapper>
     )
   }
@@ -52,7 +52,7 @@ export function ResetPasswordPage() {
       <PageWrapper>
         <PageTitle>Passwort zurückgesetzt</PageTitle>
         <SuccessBox>
-          Dein Passwort wurde erfolgreich geändert.{' '}
+          Passwort geändert.{' '}
           <SuccessLink to="/offers">Jetzt anmelden →</SuccessLink>
         </SuccessBox>
       </PageWrapper>

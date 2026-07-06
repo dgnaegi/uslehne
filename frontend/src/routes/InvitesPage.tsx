@@ -28,7 +28,7 @@ export function InvitesPage() {
       const { invite } = await inviteApi.create()
       setInvites((prev) => [invite, ...prev])
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Fehler')
+      setError(err instanceof Error ? err.message : 'Da ist etwas schiefgelaufen.')
     }
   }
 

@@ -10,7 +10,7 @@
   "declineButton": "Anfrage ablehnen",
   "cancelButton": "Anfrage zurückziehen",
   "confirmButton": "Austausch bestätigen",
-  "alreadyConfirmed": "Du hast den Austausch bestätigt — warte auf die andere Person.",
+  "alreadyConfirmed": "Du hast den Austausch bestätigt. Warte auf die andere Person.",
   "offerLabel": "Angebot",
   "requesterLabel": "Anfragend",
   "requestDialog": {
@@ -28,7 +28,7 @@
     "useSaved": "Gespeicherte Nummer verwenden",
     "messagePlaceholderLend": "Für welchen Zeitraum benötigst du den Gegenstand? Z.B. 15.–20. Juli. Hast du bereits Erfahrung damit?",
     "messagePlaceholderGive": "Warum möchtest du den Gegenstand haben? Was planst du damit?",
-    "success": "Anfrage gesendet. Der Anbieter meldet sich bald bei dir."
+    "success": "Anfrage gesendet. Die Anbieter*in meldet sich bald bei dir."
   },
   "status": {
     "PENDING": "Ausstehend",
