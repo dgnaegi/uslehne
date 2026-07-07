@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import type { ContactType } from '../api/types'
-import { Select, FormGroup, Label, Input, Button } from './Layout.styled'
-import { SelectRow, AddIconButton, InlineForm, TypeButtons, TypeButton } from './PhoneField.styled'
+import { Select, FormGroup, Label, Input, Button, SelectRow, AddIconButton } from './Layout.styled'
+import { InlineForm, TypeButtons, TypeButton } from './PhoneField.styled'
 import { IconPlus } from '../icons'
 
 const storageKey = (userId: string) => `uslehne_contacts_${userId}`
-const PHONE_TYPES: ContactType[] = ['SMS', 'WHATSAPP', 'SIGNAL']
 const CONTACT_TYPE_OPTIONS: { type: ContactType; label: string }[] = [
   { type: 'SMS', label: 'SMS' },
   { type: 'WHATSAPP', label: 'WhatsApp' },
@@ -93,8 +92,8 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
         <Input
           value={newValue}
           onChange={(e) => setNewValue(e.target.value)}
-          type={PHONE_TYPES.includes(newType) ? 'tel' : 'email'}
-          placeholder={PHONE_TYPES.includes(newType) ? '+41 79 000 00 00' : 'name@beispiel.ch'}
+          type={newType !== 'EMAIL' ? 'tel' : 'email'}
+          placeholder={newType !== 'EMAIL' ? '+41 79 000 00 00' : 'name@beispiel.ch'}
           autoFocus
           onKeyDown={(e) => {
             if (e.key === 'Enter') {

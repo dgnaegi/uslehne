@@ -60,8 +60,8 @@ export function PrivacyPage() {
         <P>Wir erheben nur, was wirklich nötig ist:</P>
         <Ul>
           <li>
-            <strong>Registrierung:</strong> Benutzername, E-Mail-Adresse, Passwort (verschlüsselt
-            gespeichert)
+            <strong>Registrierung:</strong> Benutzername, E-Mail-Adresse, Passwort (mit bcrypt
+            gehasht, nie im Klartext)
           </li>
           <li>
             <strong>Angebote:</strong> Titel, Beschreibung, Angebotstyp, PLZ, Kontaktangabe (Telefon

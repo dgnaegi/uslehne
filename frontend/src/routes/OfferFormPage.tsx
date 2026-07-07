@@ -6,7 +6,6 @@ import type { Address } from '../api/types'
 import { offerApi, addressApi } from '../api/endpoints'
 import { resizeImage } from '../utils/imageResize'
 import { AddressInlineCreate } from '../components/AddressInlineCreate'
-import { SelectRow, AddIconButton } from '../components/PhoneField.styled'
 import {
   PageWrapper,
   PageTitle,
@@ -18,6 +17,8 @@ import {
   Select,
   Button,
   ErrorMsg,
+  SelectRow,
+  AddIconButton,
 } from '../components/Layout.styled'
 import { ImagePreview, ImagePreviewWrapper, ReplaceImageButton } from './OfferFormPage.styled'
 import { AspectRatioHint } from '../components/AspectRatioHint'

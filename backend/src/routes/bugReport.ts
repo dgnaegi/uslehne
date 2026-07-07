@@ -1,10 +1,14 @@
 import { Router } from 'express'
 import { requireAuth } from '../middleware/requireAuth'
 import { sendMailSilent } from '../services/mail'
-import db from '../db'
+import { db } from '../db'
 import { AppError, ErrorCode } from '../errors'
 
 const router = Router()
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
 
 router.post('/bug-report', requireAuth, async (req, res, next) => {
   try {
@@ -24,7 +28,7 @@ router.post('/bug-report', requireAuth, async (req, res, next) => {
       html: `
         <p><strong>Benutzer:</strong> ${user?.username ?? 'unbekannt'} (${user?.email ?? req.user!.id})</p>
         <p><strong>Beschreibung:</strong></p>
-        <p>${message.trim().replace(/\n/g, '<br>')}</p>
+        <p>${escapeHtml(message.trim()).replace(/\n/g, '<br>')}</p>
       `,
     })
 

@@ -7,6 +7,8 @@ const router = Router()
 
 router.get('/users/:id', requireAuth, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const isSelf = req.params.id === req.user!.id
+
     const user = await db.user.findUnique({
       where: { id: req.params.id },
       select: {
@@ -15,16 +17,11 @@ router.get('/users/:id', requireAuth, async (req: Request, res: Response, next: 
         kudosBalance: true,
         createdAt: true,
         ratingsReceived: { select: { stars: true } },
-        ledger: {
-          select: { id: true, delta: true, reason: true, createdAt: true },
-          orderBy: { createdAt: 'desc' },
-          take: 30,
-        },
       },
     })
     if (!user) throw new AppError(ErrorCode.NOT_FOUND, 404)
 
-    const [offersGiven, offersTaken] = await Promise.all([
+    const [offersGiven, offersTaken, kudoHistory] = await Promise.all([
       db.transaction.count({
         where: {
           ownerId: user.id,
@@ -38,6 +35,14 @@ router.get('/users/:id', requireAuth, async (req: Request, res: Response, next: 
           status: { in: ['ACCEPTED', 'RETURNED', 'COMPLETED'] },
         },
       }),
+      isSelf
+        ? db.kudoLedger.findMany({
+            where: { userId: user.id },
+            select: { id: true, delta: true, reason: true, createdAt: true },
+            orderBy: { createdAt: 'desc' },
+            take: 30,
+          })
+        : Promise.resolve(undefined),
     ])
 
     const stars = user.ratingsReceived.map((r) => r.stars)
@@ -56,7 +61,7 @@ router.get('/users/:id', requireAuth, async (req: Request, res: Response, next: 
         ratingCount: stars.length,
         offersGiven,
         offersTaken,
-        kudoHistory: user.ledger,
+        ...(kudoHistory !== undefined ? { kudoHistory } : {}),
       },
     })
   } catch (err) {

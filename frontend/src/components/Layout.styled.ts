@@ -159,6 +159,34 @@ export const ErrorMsg = styled.p`
   letter-spacing: 0.03em;
 `
 
+export const SelectRow = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.sm};
+  align-items: stretch;
+
+  & > select {
+    flex: 1;
+    min-width: 0;
+  }
+`
+
+export const AddIconButton = styled.button`
+  flex-shrink: 0;
+  width: 36px;
+  border: ${({ theme }) => theme.border};
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.text};
+  transition: background 0.12s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.accent};
+  }
+`
+
 export const Badge = styled.span<{ $type?: OfferType | 'status' }>`
   font-size: 0.6rem;
   font-weight: 800;
