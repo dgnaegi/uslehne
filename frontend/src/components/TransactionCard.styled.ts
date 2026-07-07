@@ -1,4 +1,9 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const fadeUp = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+`
 
 export const TxCard = styled.div`
   border: ${({ theme }) => theme.border};
@@ -6,6 +11,7 @@ export const TxCard = styled.div`
   padding: ${({ theme }) => theme.spacing.md};
   margin-bottom: ${({ theme }) => theme.spacing.sm};
   box-shadow: ${({ theme }) => theme.shadow};
+  animation: ${fadeUp} 0.22s ease both;
 `
 
 export const TxTitle = styled.h3`

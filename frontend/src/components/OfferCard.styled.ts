@@ -22,6 +22,7 @@ export const Card = styled.article`
 export const CardImage = styled.div<{ $type: OfferType }>`
   position: absolute;
   inset: 0;
+  overflow: hidden;
   background: ${({ theme, $type }) =>
     $type === 'LEND' ? theme.colors.pastelYellow : theme.colors.pastelMint};
   display: flex;
@@ -34,6 +35,13 @@ export const CardImage = styled.div<{ $type: OfferType }>`
     object-fit: cover;
     object-position: center;
     display: block;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  @media (hover: hover) {
+    &:hover img {
+      transform: scale(1.04);
+    }
   }
 `
 

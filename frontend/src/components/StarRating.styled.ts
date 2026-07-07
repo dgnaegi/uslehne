@@ -26,6 +26,10 @@ export const Star = styled.button<{ $filled: boolean; $interactive: boolean }>`
   &:hover {
     transform: ${({ $interactive }) => ($interactive ? 'scale(1.2)' : 'none')};
   }
+
+  &:active {
+    transform: ${({ $interactive }) => ($interactive ? 'scale(0.88)' : 'none')};
+  }
 `
 
 export const Count = styled.span`

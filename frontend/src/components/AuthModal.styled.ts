@@ -6,8 +6,8 @@ const overlayIn = keyframes`
 `
 
 const boxIn = keyframes`
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from { opacity: 0; transform: scale(0.97) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 `
 
 export const Overlay = styled.div`

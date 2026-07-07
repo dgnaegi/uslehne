@@ -1,6 +1,11 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { media } from '../theme'
 import { NotifDot } from './Header.styled'
+
+const slideDown = keyframes`
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+`
 
 export const HamburgerWrapper = styled.div`
   position: relative;
@@ -37,6 +42,7 @@ export const MobileMenu = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  animation: ${slideDown} 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 
   ${NotifDot} {
     position: static;

@@ -1,5 +1,11 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { media } from '../theme'
+
+const ringPulse = keyframes`
+  0%   { box-shadow: 0 0 0 0px rgba(255, 214, 0, 0.8); }
+  70%  { box-shadow: 0 0 0 7px rgba(255, 214, 0, 0); }
+  100% { box-shadow: 0 0 0 0px rgba(255, 214, 0, 0); }
+`
 
 export const Nav = styled.header`
   position: fixed;
@@ -135,4 +141,5 @@ export const NotifDot = styled.span`
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.accent};
   pointer-events: none;
+  animation: ${ringPulse} 1.8s ease-out infinite;
 `
