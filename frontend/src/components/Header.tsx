@@ -99,6 +99,8 @@ export function Header() {
         </BackHome>
       )}
 
+      <AboutBtn as={Link} to="/ueber-uns" aria-label="Über uns">?</AboutBtn>
+
       {isOnFeed && (
         <SearchWrapper>
           <SearchInput
@@ -109,8 +111,6 @@ export function Header() {
           />
         </SearchWrapper>
       )}
-
-      <AboutBtn as={Link} to="/ueber-uns" aria-label="Über uns">?</AboutBtn>
 
       {user ? (
         <>

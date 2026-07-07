@@ -96,6 +96,7 @@ export const DesktopNav = styled.nav`
     gap: ${({ theme }) => theme.spacing.lg};
     align-items: center;
     flex-shrink: 0;
+    margin-left: auto;
   }
 `
 
@@ -201,6 +202,7 @@ export const GuestAuthBtn = styled.button`
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
   white-space: nowrap;
   flex-shrink: 0;
+  margin-left: auto;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   transition:
@@ -214,7 +216,6 @@ export const GuestAuthBtn = styled.button`
 `
 
 export const AboutBtn = styled.span`
-  margin-left: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -236,6 +237,7 @@ export const HamburgerWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  margin-left: auto;
 
   ${media.sm} {
     display: none;
