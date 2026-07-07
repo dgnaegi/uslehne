@@ -67,22 +67,26 @@ export function UserProfilePage() {
         </StatCard>
       </StatsGrid>
 
-      <SectionTitle>Karma-Verlauf</SectionTitle>
-      {profile.kudoHistory.length === 0 ? (
-        <EmptyNote>Noch keine Karma-Aktivität.</EmptyNote>
-      ) : (
-        <HistoryList>
-          {profile.kudoHistory.map((entry) => (
-            <HistoryItem key={entry.id}>
-              <HistoryDelta $positive={entry.delta > 0}>
-                {entry.delta > 0 ? '+' : ''}
-                {entry.delta}
-              </HistoryDelta>
-              <HistoryReason>{REASON_LABEL[entry.reason]}</HistoryReason>
-              <HistoryDate>{fmtDate(entry.createdAt)}</HistoryDate>
-            </HistoryItem>
-          ))}
-        </HistoryList>
+      {profile.kudoHistory !== undefined && (
+        <>
+          <SectionTitle>Karma-Verlauf</SectionTitle>
+          {profile.kudoHistory.length === 0 ? (
+            <EmptyNote>Noch keine Karma-Aktivität.</EmptyNote>
+          ) : (
+            <HistoryList>
+              {profile.kudoHistory.map((entry) => (
+                <HistoryItem key={entry.id}>
+                  <HistoryDelta $positive={entry.delta > 0}>
+                    {entry.delta > 0 ? '+' : ''}
+                    {entry.delta}
+                  </HistoryDelta>
+                  <HistoryReason>{REASON_LABEL[entry.reason]}</HistoryReason>
+                  <HistoryDate>{fmtDate(entry.createdAt)}</HistoryDate>
+                </HistoryItem>
+              ))}
+            </HistoryList>
+          )}
+        </>
       )}
     </PageWrapper>
   )

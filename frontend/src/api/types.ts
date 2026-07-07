@@ -101,7 +101,7 @@ export interface UserProfile {
   ratingCount: number
   offersGiven: number
   offersTaken: number
-  kudoHistory: Array<{
+  kudoHistory?: Array<{
     id: string
     delta: number
     reason: LedgerReason

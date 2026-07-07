@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route, Navigate, useSearchParams, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAuth } from './auth/AuthContext'
 import { Header } from './components/Header'
@@ -79,6 +79,8 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 
 function App() {
   const { isAuthModalOpen } = useAuth()
+  const location = useLocation()
+  const showFooter = location.pathname !== '/offers'
 
   return (
     <>
@@ -162,7 +164,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Routes>
       </Suspense>
-      <AppFooter />
+      {showFooter && <AppFooter />}
       <BugReportButton />
     </>
   )
