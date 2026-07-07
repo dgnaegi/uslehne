@@ -10,6 +10,7 @@
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "db:migrate": "prisma migrate deploy",
+    "db:migrate:resolve": "prisma migrate resolve --rolled-back",
     "db:migrate:dev": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
