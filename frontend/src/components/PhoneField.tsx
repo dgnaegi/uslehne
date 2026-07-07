@@ -1,11 +1,17 @@
 import { useState } from 'react'
 import type { ContactType } from '../api/types'
 import { Select, FormGroup, Label, Input, Button } from './Layout.styled'
-import { SelectRow, AddIconButton, InlineForm } from './PhoneField.styled'
+import { SelectRow, AddIconButton, InlineForm, TypeButtons, TypeButton } from './PhoneField.styled'
 import { IconPlus } from '../icons'
 
 const storageKey = (userId: string) => `uslehne_contacts_${userId}`
 const PHONE_TYPES: ContactType[] = ['SMS', 'WHATSAPP', 'SIGNAL']
+const CONTACT_TYPE_OPTIONS: { type: ContactType; label: string }[] = [
+  { type: 'SMS', label: 'SMS' },
+  { type: 'WHATSAPP', label: 'WhatsApp' },
+  { type: 'SIGNAL', label: 'Signal' },
+  { type: 'EMAIL', label: 'E-Mail' },
+]
 
 type SavedContact = { id: string; type: ContactType; value: string }
 
@@ -39,7 +45,7 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
   const [contacts, setContacts] = useState<SavedContact[]>(() =>
     initContacts(userId, selectedType, selectedValue),
   )
-  const [showForm, setShowForm] = useState(contacts.length === 0)
+  const [showForm, setShowForm] = useState(false)
   const [newType, setNewType] = useState<ContactType>('SMS')
   const [newValue, setNewValue] = useState('')
 
@@ -65,6 +71,49 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
     setShowForm(false)
   }
 
+  const addForm = (
+    <InlineForm>
+      <FormGroup>
+        <Label>Kanal</Label>
+        <TypeButtons>
+          {CONTACT_TYPE_OPTIONS.map(({ type, label }) => (
+            <TypeButton
+              key={type}
+              type="button"
+              $active={newType === type}
+              onClick={() => setNewType(type)}
+            >
+              {label}
+            </TypeButton>
+          ))}
+        </TypeButtons>
+      </FormGroup>
+      <FormGroup>
+        <Label>Nummer / Adresse</Label>
+        <Input
+          value={newValue}
+          onChange={(e) => setNewValue(e.target.value)}
+          type={PHONE_TYPES.includes(newType) ? 'tel' : 'email'}
+          placeholder={PHONE_TYPES.includes(newType) ? '+41 79 000 00 00' : 'name@beispiel.ch'}
+          autoFocus
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault()
+              handleAdd()
+            }
+          }}
+        />
+      </FormGroup>
+      <Button type="button" $variant="secondary" onClick={handleAdd}>
+        Speichern
+      </Button>
+    </InlineForm>
+  )
+
+  if (contacts.length === 0) {
+    return addForm
+  }
+
   return (
     <>
       <SelectRow>
@@ -82,38 +131,7 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
           <IconPlus size={14} />
         </AddIconButton>
       </SelectRow>
-      {showForm && (
-        <InlineForm>
-          <FormGroup>
-            <Label>Kanal</Label>
-            <Select value={newType} onChange={(e) => setNewType(e.target.value as ContactType)}>
-              <option value="SMS">SMS</option>
-              <option value="WHATSAPP">WhatsApp</option>
-              <option value="SIGNAL">Signal</option>
-              <option value="EMAIL">E-Mail</option>
-            </Select>
-          </FormGroup>
-          <FormGroup>
-            <Label>Nummer / Adresse</Label>
-            <Input
-              value={newValue}
-              onChange={(e) => setNewValue(e.target.value)}
-              type={PHONE_TYPES.includes(newType) ? 'tel' : 'email'}
-              placeholder={PHONE_TYPES.includes(newType) ? '+41 79 000 00 00' : 'name@beispiel.ch'}
-              autoFocus
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault()
-                  handleAdd()
-                }
-              }}
-            />
-          </FormGroup>
-          <Button type="button" $variant="secondary" onClick={handleAdd}>
-            Speichern
-          </Button>
-        </InlineForm>
-      )}
+      {showForm && addForm}
     </>
   )
 }

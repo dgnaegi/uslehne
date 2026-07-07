@@ -16,9 +16,25 @@ import {
   TxTitle,
   TxMeta,
   TxContact,
+  TxContactLink,
   TxActions,
   RateRow,
 } from './TransactionsPage.styled'
+
+function buildContactUrl(type: string, value: string): string {
+  switch (type) {
+    case 'WHATSAPP':
+      return `https://wa.me/${value.replace(/\D/g, '')}`
+    case 'SMS':
+      return `sms:${value.replace(/\s/g, '')}`
+    case 'SIGNAL':
+      return `https://signal.me/#p/${value.replace(/\s/g, '')}`
+    case 'EMAIL':
+      return `mailto:${value}`
+    default:
+      return ''
+  }
+}
 
 const RATEABLE = new Set<Transaction['status']>(['ACCEPTED', 'COMPLETED'])
 
@@ -105,6 +121,7 @@ export function TransactionsPage() {
                   offerType={tx.offer.type}
                   activeStep={getActiveTimelineStep(tx)}
                   compact
+                  role={amOwner ? 'owner' : 'requester'}
                 />
               )}
               <TxMeta>
@@ -119,10 +136,16 @@ export function TransactionsPage() {
                   <Link to={`/users/${tx.ownerId}`}>@{tx.owner.username}</Link>
                 )}
               </TxMeta>
-              {amOwner && tx.contactType && (
+              {amOwner && tx.contactType && tx.contactValue && (
                 <TxContact>
                   {t('transactions:contactLabel')}:{' '}
-                  {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
+                  <TxContactLink
+                    href={buildContactUrl(tx.contactType, tx.contactValue)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
+                  </TxContactLink>
                 </TxContact>
               )}
               {tx.message && (

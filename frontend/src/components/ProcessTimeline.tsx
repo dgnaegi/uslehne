@@ -16,7 +16,8 @@ type StepState = 'done' | 'active' | 'future'
 interface StepDef {
   icon: React.ReactNode
   title: string
-  desc: string
+  descRequester: string
+  descOwner: string
   lendOnly?: boolean
 }
 
@@ -24,28 +25,33 @@ const STEPS: StepDef[] = [
   {
     icon: <IconMessageSquare size={16} />,
     title: 'Anfragen',
-    desc: 'Anfrage mit Kontaktangabe senden. Die Anbieter*in entscheidet.',
+    descRequester: 'Die Anbieter*in entscheidet über deine Anfrage.',
+    descOwner: 'Neue Anfrage eingegangen. Nimm sie an oder lehne sie ab.',
   },
   {
     icon: <IconSmartphone size={16} />,
     title: 'Details klären',
-    desc: 'Direkt via WhatsApp, SMS oder Signal koordinieren.',
+    descRequester: 'Kontaktiere die Anbieter*in und klärt Ort und Zeit für die Abholung.',
+    descOwner: 'Kontaktiere die anfragende Person und klärt Ort und Zeit für die Übergabe.',
   },
   {
     icon: <IconMapPin size={16} />,
     title: 'Abholen',
-    desc: 'Gegenstand bei der Anbieter*in vor Ort abholen.',
+    descRequester: 'Hol den Gegenstand bei der Anbieter*in vor Ort ab.',
+    descOwner: 'Übergib den Gegenstand der abholenden Person.',
   },
   {
     icon: <IconRepeat size={16} />,
     title: 'Zurückgeben',
-    desc: 'Gegenstand rechtzeitig und in gutem Zustand zurückbringen.',
+    descRequester: 'Bring den Gegenstand rechtzeitig und in gutem Zustand zurück.',
+    descOwner: 'Warte auf die Rückgabe des Gegenstands.',
     lendOnly: true,
   },
   {
     icon: <IconStar size={16} />,
     title: 'Bestätigen & Bewerten',
-    desc: 'Austausch bestätigen und die andere Person bewerten.',
+    descRequester: 'Bestätige den Austausch und bewerte die Anbieter*in.',
+    descOwner: 'Bestätige den Eingang und bewerte die anfragende Person.',
   },
 ]
 
@@ -53,9 +59,10 @@ interface Props {
   offerType: OfferType
   activeStep?: number
   compact?: boolean
+  role?: 'owner' | 'requester'
 }
 
-export function ProcessTimeline({ offerType, activeStep = 0, compact = false }: Props) {
+export function ProcessTimeline({ offerType, activeStep = 0, compact = false, role }: Props) {
   const steps = STEPS.filter((s) => !s.lendOnly || offerType === 'LEND')
 
   return (
@@ -71,6 +78,8 @@ export function ProcessTimeline({ offerType, activeStep = 0, compact = false }: 
                 ? 'active'
                 : 'future'
 
+        const desc = role === 'owner' ? step.descOwner : step.descRequester
+
         return (
           <StepRow key={step.title}>
             <StepLeft>
@@ -84,7 +93,7 @@ export function ProcessTimeline({ offerType, activeStep = 0, compact = false }: 
                 {step.title}
               </StepTitle>
               {(!compact || state === 'active') && state !== 'future' && (
-                <StepDesc>{step.desc}</StepDesc>
+                <StepDesc>{desc}</StepDesc>
               )}
             </StepBody>
           </StepRow>

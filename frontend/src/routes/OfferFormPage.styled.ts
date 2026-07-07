@@ -24,8 +24,7 @@ export const ReplaceImageButton = styled.button`
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.8);
   background: rgba(0, 0, 0, 0.55);
   color: #fff;
   cursor: pointer;

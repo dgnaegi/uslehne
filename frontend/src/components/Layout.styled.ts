@@ -104,9 +104,14 @@ export const Textarea = styled.textarea`
 export const Select = styled.select`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.sm};
+  padding-right: 36px;
   border: ${({ theme }) => theme.border};
   font-size: 1rem;
   background: ${({ theme }) => theme.colors.surface};
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a1a1a' stroke-width='2' fill='none' stroke-linecap='square'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  appearance: none;
   cursor: pointer;
   outline: none;
   transition: border-color 0.12s ease-out;

@@ -4,6 +4,7 @@ import { IconX, IconPlus } from '../icons'
 import {
   FilterBar,
   Tagline,
+  MainRow,
   ChipsRow,
   Chip,
   ChipRemove,
@@ -18,9 +19,10 @@ interface Props {
   onZipsChange: (zips: string[]) => void
   offerType: OfferType | null
   onOfferTypeChange: (type: OfferType | null) => void
+  compact?: boolean
 }
 
-export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange }: Props) {
+export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange, compact = false }: Props) {
   const [inputVal, setInputVal] = useState('')
   const [showInput, setShowInput] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -45,17 +47,9 @@ export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange }: 
   }
 
   return (
-    <FilterBar>
-      <Tagline>uslehne.ch — unkommerziell jetzt &amp; für immer</Tagline>
-      <ChipsRow>
-        {zips.map((zip) => (
-          <Chip key={zip}>
-            {zip}
-            <ChipRemove onClick={() => onZipsChange(zips.filter((z) => z !== zip))}>
-              <IconX size={10} />
-            </ChipRemove>
-          </Chip>
-        ))}
+    <FilterBar $compact={compact}>
+      {!compact && <Tagline>uslehne.ch — unkommerziell jetzt &amp; für immer</Tagline>}
+      <MainRow>
         {showInput ? (
           <ZipInput
             ref={inputRef}
@@ -72,20 +66,26 @@ export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange }: 
           </AddButton>
         )}
         <TypeFilterGroup>
-          <TypeBtn
-            $active={offerType === 'LEND'}
-            onClick={() => handleTypeClick('LEND')}
-          >
+          <TypeBtn $active={offerType === 'LEND'} onClick={() => handleTypeClick('LEND')}>
             Verleihen
           </TypeBtn>
-          <TypeBtn
-            $active={offerType === 'GIVE'}
-            onClick={() => handleTypeClick('GIVE')}
-          >
+          <TypeBtn $active={offerType === 'GIVE'} onClick={() => handleTypeClick('GIVE')}>
             Schenken
           </TypeBtn>
         </TypeFilterGroup>
-      </ChipsRow>
+      </MainRow>
+      {zips.length > 0 && (
+        <ChipsRow>
+          {zips.map((zip) => (
+            <Chip key={zip}>
+              {zip}
+              <ChipRemove onClick={() => onZipsChange(zips.filter((z) => z !== zip))}>
+                <IconX size={10} />
+              </ChipRemove>
+            </Chip>
+          ))}
+        </ChipsRow>
+      )}
     </FilterBar>
   )
 }

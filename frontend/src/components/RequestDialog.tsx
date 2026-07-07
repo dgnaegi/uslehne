@@ -74,7 +74,7 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <DialogTitle id="request-dialog-title">{t('transactions:requestDialog.title')}</DialogTitle>
-        <ProcessTimeline offerType={offerType} activeStep={0} compact />
+        <ProcessTimeline offerType={offerType} activeStep={0} compact role="requester" />
         {success ? (
           <>
             <p>{t('transactions:requestDialog.success')}</p>

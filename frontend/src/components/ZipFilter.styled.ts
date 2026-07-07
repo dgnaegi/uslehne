@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
-export const FilterBar = styled.div`
-  position: fixed;
-  top: ${({ theme }) => theme.headerHeight};
-  left: 0;
-  right: 0;
-  z-index: ${({ theme }) => theme.zIndex.filterBar};
+export const FilterBar = styled.div<{ $compact?: boolean }>`
+  position: ${({ $compact }) => ($compact ? 'static' : 'fixed')};
+  top: ${({ theme, $compact }) => ($compact ? 'auto' : theme.headerHeight)};
+  left: ${({ $compact }) => ($compact ? 'auto' : '0')};
+  right: ${({ $compact }) => ($compact ? 'auto' : '0')};
+  z-index: ${({ theme, $compact }) => ($compact ? 0 : theme.zIndex.filterBar)};
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => theme.colors.background};
@@ -28,17 +28,19 @@ export const Tagline = styled.div`
   text-overflow: ellipsis;
 `
 
-export const ChipsRow = styled.div`
+export const MainRow = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
-  overflow-x: auto;
-  scrollbar-width: none;
+`
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+export const ChipsRow = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing.xs};
+  padding: ${({ theme }) => `0 ${theme.spacing.md} ${theme.spacing.xs}`};
 `
 
 export const Chip = styled.span`
@@ -107,10 +109,17 @@ export const AddButton = styled.button`
     background 0.12s,
     color 0.12s;
 
-  &:hover {
-    opacity: 1;
-    background: ${({ theme }) => theme.colors.accent};
-    border-color: ${({ theme }) => theme.colors.primary};
+  @media (hover: hover) {
+    &:hover {
+      opacity: 1;
+      background: ${({ theme }) => theme.colors.accent};
+      border-color: ${({ theme }) => theme.colors.primary};
+    }
+  }
+
+  &:active {
+    opacity: 0.6;
+    background: none;
   }
 `
 
@@ -147,5 +156,12 @@ export const TypeBtn = styled.button<{ $active: boolean }>`
       border-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
     }
+  }
+
+  &:active {
+    background: ${({ theme, $active }) => ($active ? theme.colors.primary : 'none')};
+    border-color: ${({ theme, $active }) =>
+      $active ? theme.colors.primary : theme.colors.textMuted};
+    color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.textMuted)};
   }
 `

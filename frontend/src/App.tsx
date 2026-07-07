@@ -49,7 +49,7 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 }
 
 function App() {
-  const { isAuthModalOpen, user } = useAuth()
+  const { isAuthModalOpen } = useAuth()
 
   return (
     <>
@@ -131,7 +131,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
       <AppFooter />
-      {user && <BugReportButton />}
+      <BugReportButton />
     </>
   )
 }

@@ -72,6 +72,22 @@ export const TxContact = styled.p`
   letter-spacing: 0.02em;
 `
 
+export const TxContactLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: ${({ theme }) => theme.colors.text};
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  letter-spacing: 0.02em;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.textMuted};
+  }
+`
+
 export const RateRow = styled.div`
   display: flex;
   align-items: center;
