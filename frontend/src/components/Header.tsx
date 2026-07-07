@@ -11,7 +11,6 @@ import {
   IconAward,
   IconLogOut,
   IconShield,
-  IconInfo,
 } from '../icons'
 import { usePendingRequests } from '../hooks/usePendingRequests'
 import {
@@ -163,9 +162,6 @@ export function Header() {
                   <IconShield size={18} /> Admin
                 </Link>
               )}
-              <Link to="/ueber-uns" onClick={() => setMobileOpen(false)}>
-                <IconInfo size={18} /> Über uns
-              </Link>
               <Link to="/transactions" onClick={() => setMobileOpen(false)}>
                 <IconRepeat size={18} /> {t('nav.transactions')}
                 {pendingCount > 0 && <NotifDot />}
