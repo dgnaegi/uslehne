@@ -2,6 +2,7 @@ import 'dotenv/config'
 import path from 'path'
 import express from 'express'
 import cors from 'cors'
+import compression from 'compression'
 import rateLimit from 'express-rate-limit'
 import healthRouter from './routes/health'
 import authRouter from './routes/auth'
@@ -22,6 +23,7 @@ const app = express()
 const port = process.env.PORT || 3001
 
 app.set('trust proxy', 1)
+app.use(compression())
 
 const globalLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200 })
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20 })

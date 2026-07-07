@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Address } from '../api/types'
 import { offerApi, addressApi } from '../api/endpoints'
-import { resizeImage } from '../utils/imageResize'
-import { AddressInlineCreate } from '../components/AddressInlineCreate'
+import { OfferAddressField } from '../components/OfferAddressField'
+import { OfferImageField } from '../components/OfferImageField'
 import {
   PageWrapper,
   PageTitle,
@@ -17,12 +17,7 @@ import {
   Select,
   Button,
   ErrorMsg,
-  SelectRow,
-  AddIconButton,
 } from '../components/Layout.styled'
-import { ImagePreview, ImagePreviewWrapper, ReplaceImageButton } from './OfferFormPage.styled'
-import { AspectRatioHint } from '../components/AspectRatioHint'
-import { IconPlus, IconRepeat } from '../icons'
 
 interface FormValues {
   title: string
@@ -38,8 +33,6 @@ export function OfferFormPage() {
   const navigate = useNavigate()
   const [addresses, setAddresses] = useState<Address[]>([])
   const [imageDataUrl, setImageDataUrl] = useState('')
-  const [showAddressForm, setShowAddressForm] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const {
     register,
     handleSubmit,
@@ -64,10 +57,11 @@ export function OfferFormPage() {
     }
   }, [id, isEdit, reset])
 
-  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setImageDataUrl(await resizeImage(file))
+  function handleAddressCreated(newId: string) {
+    addressApi.list().then(({ addresses: a }) => {
+      setAddresses(a)
+      setValue('addressId', newId)
+    })
   }
 
   async function onSubmit(values: FormValues) {
@@ -113,78 +107,13 @@ export function OfferFormPage() {
             <option value="GIVE">{t('common:offerType.GIVE')}</option>
           </Select>
         </FormGroup>
-        <FormGroup>
-          <Label>{t('offers:address')}</Label>
-          {!hasAddresses && !isEdit ? (
-            <AddressInlineCreate
-              onCreated={(newId) => {
-                addressApi.list().then(({ addresses: a }) => {
-                  setAddresses(a)
-                  setValue('addressId', newId)
-                })
-              }}
-            />
-          ) : (
-            <>
-              <SelectRow>
-                <Select {...register('addressId', { required: true })}>
-                  <option value="">{t('offers:selectAddress')}</option>
-                  {addresses.map((a) => (
-                    <option key={a.id} value={a.id}>
-                      {a.label ? `${a.label} — ` : ''}
-                      {a.zip} {a.city}
-                    </option>
-                  ))}
-                </Select>
-                <AddIconButton
-                  type="button"
-                  onClick={() => setShowAddressForm((v) => !v)}
-                  title="Neue Adresse"
-                >
-                  <IconPlus size={14} />
-                </AddIconButton>
-              </SelectRow>
-              {showAddressForm && (
-                <AddressInlineCreate
-                  onCreated={(newId) => {
-                    addressApi.list().then(({ addresses: a }) => {
-                      setAddresses(a)
-                      setValue('addressId', newId)
-                      setShowAddressForm(false)
-                    })
-                  }}
-                />
-              )}
-            </>
-          )}
-        </FormGroup>
-        <FormGroup>
-          <Label>{t('offers:image')}</Label>
-          {imageDataUrl ? (
-            <ImagePreviewWrapper>
-              <ImagePreview src={imageDataUrl} alt="Vorschau" />
-              <ReplaceImageButton
-                type="button"
-                title="Bild ersetzen"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <IconRepeat size={14} />
-              </ReplaceImageButton>
-            </ImagePreviewWrapper>
-          ) : (
-            <AspectRatioHint
-              onClick={() => fileInputRef.current?.click()}
-              onFileDrop={async (file) => setImageDataUrl(await resizeImage(file))}
-            />
-          )}
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={handleImageChange}
-            hidden
-          />
-        </FormGroup>
+        <OfferAddressField
+          addresses={addresses}
+          showInlineCreateOnly={!hasAddresses && !isEdit}
+          selectProps={register('addressId', { required: true })}
+          onAddressCreated={handleAddressCreated}
+        />
+        <OfferImageField value={imageDataUrl} onChange={setImageDataUrl} />
         {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
         <FormActions>
           <Button type="submit" disabled={isSubmitting || (!hasAddresses && !isEdit)}>

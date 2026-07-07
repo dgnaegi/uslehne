@@ -7,7 +7,6 @@ export const HamburgerWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  margin-left: auto;
 
   ${media.sm} {
     display: none;

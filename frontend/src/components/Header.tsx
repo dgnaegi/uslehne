@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-do
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
 import { usePendingRequests } from '../hooks/usePendingRequests'
+import { IconInfo } from '../icons'
 import { HeaderDesktopNav } from './HeaderDesktopNav'
 import { HeaderMobileMenu } from './HeaderMobileMenu'
 import {
@@ -77,7 +78,7 @@ export function Header() {
       )}
 
       <AboutBtn as={Link} to="/ueber-uns" aria-label="Über uns">
-        ?
+        <IconInfo size={22} />
       </AboutBtn>
 
       {user ? (

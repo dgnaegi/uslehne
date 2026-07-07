@@ -7,6 +7,7 @@ import type { Transaction } from '../api/types'
 import { transactionApi } from '../api/endpoints'
 import { ProcessTimeline } from './ProcessTimeline'
 import { getActiveTimelineStep } from '../utils/processTimeline'
+import { buildContactUrl } from '../utils/contactUrl'
 import { Button } from './Layout.styled'
 import { StarRating } from './StarRating'
 import {
@@ -18,21 +19,6 @@ import {
   TxActions,
   RateRow,
 } from './TransactionCard.styled'
-
-function buildContactUrl(type: string, value: string): string {
-  switch (type) {
-    case 'WHATSAPP':
-      return `https://wa.me/${value.replace(/\D/g, '')}`
-    case 'SMS':
-      return `sms:${value.replace(/\s/g, '')}`
-    case 'SIGNAL':
-      return `https://signal.me/#p/${value.replace(/\s/g, '')}`
-    case 'EMAIL':
-      return `mailto:${value}`
-    default:
-      return ''
-  }
-}
 
 const RATEABLE = new Set<Transaction['status']>(['COMPLETED', 'RETURNED'])
 

@@ -62,7 +62,7 @@ export function OfferCard({ offer, onSwipeRight }: Props) {
         {offer.imageRef.startsWith('data:image/svg') ? (
           <IconBox size={64} aria-hidden="true" />
         ) : (
-          <img src={offer.imageRef} alt={offer.title} />
+          <img src={offer.imageRef} alt={offer.title} loading="lazy" decoding="async" />
         )}
       </CardImage>
       <CardOverlay>

@@ -10,7 +10,6 @@ export const DesktopNav = styled.nav`
     gap: ${({ theme }) => theme.spacing.lg};
     align-items: center;
     flex-shrink: 0;
-    margin-left: auto;
   }
 `
 

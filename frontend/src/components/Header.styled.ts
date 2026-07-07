@@ -98,7 +98,6 @@ export const GuestAuthBtn = styled.button`
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
   white-space: nowrap;
   flex-shrink: 0;
-  margin-left: auto;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   transition:
@@ -115,8 +114,7 @@ export const AboutBtn = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  font-weight: 800;
+  margin-left: auto;
   color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
   cursor: pointer;
