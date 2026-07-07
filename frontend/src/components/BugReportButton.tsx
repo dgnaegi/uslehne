@@ -1,7 +1,18 @@
 import { useState } from 'react'
 import { IconBug } from '../icons/IconBug'
+import { IconX } from '../icons/IconX'
 import { Button } from './Layout.styled'
-import { Fab, Panel, PanelTitle, BugTextArea, PanelActions, SuccessMsg } from './BugReportButton.styled'
+import {
+  Fab,
+  Overlay,
+  Panel,
+  PanelHeader,
+  PanelTitle,
+  CloseButton,
+  BugTextArea,
+  PanelActions,
+  SuccessMsg,
+} from './BugReportButton.styled'
 import { api } from '../api/client'
 
 export function BugReportButton() {
@@ -26,29 +37,42 @@ export function BugReportButton() {
     }
   }
 
+  function handleClose() {
+    setOpen(false)
+    setMessage('')
+    setSuccess(false)
+  }
+
   return (
     <>
       {open && (
-        <Panel>
-          <PanelTitle>Bug melden</PanelTitle>
-          {success ? (
-            <SuccessMsg>Danke, gesendet!</SuccessMsg>
-          ) : (
-            <>
-              <BugTextArea
-                placeholder="Was ist passiert?"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                autoFocus
-              />
-              <PanelActions>
-                <Button onClick={handleSubmit} disabled={loading || !message.trim()}>
-                  Senden
-                </Button>
-              </PanelActions>
-            </>
-          )}
-        </Panel>
+        <Overlay onClick={handleClose}>
+          <Panel onClick={(e) => e.stopPropagation()}>
+            <PanelHeader>
+              <PanelTitle>Bug melden</PanelTitle>
+              <CloseButton onClick={handleClose} aria-label="Schliessen">
+                <IconX size={16} />
+              </CloseButton>
+            </PanelHeader>
+            {success ? (
+              <SuccessMsg>Danke, gesendet!</SuccessMsg>
+            ) : (
+              <>
+                <BugTextArea
+                  placeholder="Was ist passiert?"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  autoFocus
+                />
+                <PanelActions>
+                  <Button onClick={handleSubmit} disabled={loading || !message.trim()}>
+                    Senden
+                  </Button>
+                </PanelActions>
+              </>
+            )}
+          </Panel>
+        </Overlay>
       )}
       <Fab onClick={() => setOpen((o) => !o)} aria-label="Bug melden">
         <IconBug size={14} />

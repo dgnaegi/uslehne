@@ -5,7 +5,7 @@ import type { ContactType, OfferType } from '../api/types'
 import { transactionApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
 import { FormGroup, Label, Textarea, Button, ErrorMsg } from './Layout.styled'
-import { Overlay, DialogBox, DialogTitle, ButtonRow } from './RequestDialog.styled'
+import { Overlay, DialogBox, DialogTitle, ButtonRow, FieldHint } from './RequestDialog.styled'
 import { PhoneField } from './PhoneField'
 import { ProcessTimeline } from './ProcessTimeline'
 
@@ -102,6 +102,7 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
             <FormGroup>
               <Label>{t('transactions:requestDialog.message')}</Label>
               <Textarea {...register('message')} placeholder={messagePlaceholder} />
+              <FieldHint>{t('transactions:requestDialog.messageHint')}</FieldHint>
             </FormGroup>
             {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
             <ButtonRow>

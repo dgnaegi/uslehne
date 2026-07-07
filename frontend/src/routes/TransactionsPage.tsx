@@ -156,6 +156,9 @@ export function TransactionsPage() {
               {tx.status === 'ACCEPTED' && myConfirmed && (
                 <TxContact>{t('transactions:alreadyConfirmed')}</TxContact>
               )}
+              {tx.status === 'ACCEPTED' && !amOwner && (
+                <TxContact>{t('transactions:acceptedOutgoing')}</TxContact>
+              )}
               {RATEABLE.has(tx.status) && (
                 <RateRow>
                   {hasRated ? (

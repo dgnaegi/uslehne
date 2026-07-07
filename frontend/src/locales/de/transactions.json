@@ -11,6 +11,7 @@
   "cancelButton": "Anfrage zurückziehen",
   "confirmButton": "Austausch bestätigen",
   "alreadyConfirmed": "Du hast den Austausch bestätigt. Warte auf die andere Person.",
+  "acceptedOutgoing": "Die Anbieter*in meldet sich über den gewählten Kanal bei dir.",
   "offerLabel": "Angebot",
   "requesterLabel": "Anfragend",
   "requestDialog": {
@@ -22,6 +23,7 @@
     "signal": "Signal",
     "email": "E-Mail",
     "message": "Nachricht (optional)",
+    "messageHint": "Eine Nachricht erhöht deine Chancen, das Angebot zu kriegen.",
     "submit": "Anfrage senden",
     "phonePlaceholder": "+41 79 123 45 67",
     "emailPlaceholder": "deine@email.ch",

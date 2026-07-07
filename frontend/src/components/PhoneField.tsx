@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { ContactType } from '../api/types'
 import { Select, FormGroup, Label, Input, Button, SelectRow, AddIconButton } from './Layout.styled'
 import { InlineForm, TypeButtons, TypeButton } from './PhoneField.styled'
-import { IconPlus } from '../icons'
+import { IconPlus, IconMinus } from '../icons'
 
 const storageKey = (userId: string) => `uslehne_contacts_${userId}`
 const CONTACT_TYPE_OPTIONS: { type: ContactType; label: string }[] = [
@@ -127,7 +127,7 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
           ))}
         </Select>
         <AddIconButton type="button" onClick={() => setShowForm((v) => !v)} title="Neuer Kontakt">
-          <IconPlus size={14} />
+          {showForm ? <IconMinus size={14} /> : <IconPlus size={14} />}
         </AddIconButton>
       </SelectRow>
       {showForm && addForm}

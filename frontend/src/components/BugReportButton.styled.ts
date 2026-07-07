@@ -1,13 +1,13 @@
 import styled, { keyframes } from 'styled-components'
 
 const panelIn = keyframes`
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
 `
 
 export const Fab = styled.button`
   position: fixed;
-  bottom: ${({ theme }) => theme.spacing.lg};
+  bottom: ${({ theme }) => theme.spacing.xxl};
   right: ${({ theme }) => theme.spacing.lg};
   width: 32px;
   height: 32px;
@@ -31,16 +31,31 @@ export const Fab = styled.button`
   }
 `
 
-export const Panel = styled.div`
+export const Overlay = styled.div`
   position: fixed;
-  bottom: calc(${({ theme }) => theme.spacing.lg} + 32px + ${({ theme }) => theme.spacing.sm});
-  right: ${({ theme }) => theme.spacing.lg};
-  width: 280px;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 149;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ${({ theme }) => theme.spacing.lg};
+`
+
+export const Panel = styled.div`
+  width: 100%;
+  max-width: 360px;
   background: ${({ theme }) => theme.colors.surface};
   border: ${({ theme }) => theme.border};
   padding: ${({ theme }) => theme.spacing.md};
-  z-index: 150;
   animation: ${panelIn} 0.15s ease-out both;
+`
+
+export const PanelHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
 `
 
 export const PanelTitle = styled.h3`
@@ -48,7 +63,25 @@ export const PanelTitle = styled.h3`
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
+`
+
+export const CloseButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.textMuted};
+  display: flex;
+  align-items: center;
+  padding: 0;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.accent};
+    outline-offset: 2px;
+  }
 `
 
 export const BugTextArea = styled.textarea`

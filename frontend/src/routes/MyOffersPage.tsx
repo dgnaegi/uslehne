@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import type { Offer } from '../api/types'
 import { offerApi } from '../api/endpoints'
 import { PageWrapper, PageTitle, Button, Badge } from '../components/Layout.styled'
-import { OfferRow, OfferRowTitle, OfferRowMeta, TopBar } from './MyOffersPage.styled'
+import { OfferRow, OfferRowTitle, OfferRowMeta, OfferRowBottom, TopBar } from './MyOffersPage.styled'
 import { SwipeToDelete } from '../components/SwipeToDelete'
 
 export function MyOffersPage() {
@@ -44,16 +44,16 @@ export function MyOffersPage() {
             onDelete={() => deleteOffer(offer.id, offer.title)}
           >
             <OfferRow>
-              <div>
-                <OfferRowTitle>{offer.title}</OfferRowTitle>
+              <OfferRowTitle>{offer.title}</OfferRowTitle>
+              <OfferRowBottom>
                 <OfferRowMeta>
                   <Badge $type={offer.type}>{t(`common:offerType.${offer.type}`)}</Badge>
                   <span>{t(`common:status.${offer.status}`)}</span>
                 </OfferRowMeta>
-              </div>
-              <Button $variant="secondary" onClick={() => navigate(`/offers/${offer.id}/edit`)}>
-                {t('common:actions.edit')}
-              </Button>
+                <Button $variant="secondary" onClick={() => navigate(`/offers/${offer.id}/edit`)}>
+                  {t('common:actions.edit')}
+                </Button>
+              </OfferRowBottom>
             </OfferRow>
           </SwipeToDelete>
         ))

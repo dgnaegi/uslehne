@@ -231,7 +231,7 @@ export const NotifDot = styled.span`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: ${({ theme }) => theme.colors.danger};
+  background: ${({ theme }) => theme.colors.accent};
   pointer-events: none;
 `
 

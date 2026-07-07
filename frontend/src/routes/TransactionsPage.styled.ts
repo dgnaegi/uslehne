@@ -29,7 +29,7 @@ export const Tab = styled.button<{ $active: boolean }>`
 
   &:hover:not(:disabled) {
     background: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.accent)};
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.primary)};
   }
 
   &:focus-visible {

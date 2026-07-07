@@ -9,8 +9,7 @@ export const TopBar = styled.div`
 
 export const OfferRow = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   padding: ${({ theme }) => theme.spacing.md};
   border: ${({ theme }) => theme.border};
   background: ${({ theme }) => theme.colors.surface};
@@ -23,6 +22,14 @@ export const OfferRow = styled.div`
     border-color: ${({ theme }) => theme.colors.accent};
     background: ${({ theme }) => theme.colors.muted};
   }
+`
+
+export const OfferRowBottom = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing.md};
+  margin-top: ${({ theme }) => theme.spacing.xs};
 `
 
 export const OfferRowTitle = styled.h3`
