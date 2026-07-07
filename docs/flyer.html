@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="de-CH">
+  <head>
+    <meta charset="UTF-8" />
+    <title>uslehne Quartier-Flyer (A5)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Design tokens aus frontend/src/theme.ts */
+      :root {
+        --ink: #1a1a1a;
+        --accent: #ffd600;
+        --pastel-blue: #b8e1f9;
+        --border: 2px solid var(--ink);
+      }
+
+      @page {
+        size: 148mm 210mm; /* A5 hoch */
+        margin: 0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--ink);
+        background: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .flyer {
+        width: 148mm;
+        height: 210mm;
+        background: #ffffff;
+        padding: 10mm;
+        display: flex;
+        flex-direction: column;
+        gap: 6mm;
+      }
+
+      @media print {
+        body {
+          background: #ffffff;
+          padding: 0;
+        }
+        .flyer {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .logo {
+        font-family: 'Bangers', 'Impact', system-ui, sans-serif;
+        font-size: 64pt;
+        line-height: 1;
+        letter-spacing: 1px;
+      }
+
+      .headline {
+        font-family: 'Bangers', 'Impact', system-ui, sans-serif;
+        font-size: 34pt;
+        line-height: 1.05;
+        background: var(--accent);
+        border: var(--border);
+        padding: 5mm 6mm;
+      }
+
+      .intro {
+        font-size: 12pt;
+        line-height: 1.5;
+      }
+
+      .steps {
+        background: var(--pastel-blue);
+        border: var(--border);
+        padding: 5mm 6mm;
+      }
+
+      .steps h2 {
+        font-size: 12pt;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 3mm;
+      }
+
+      .steps ol {
+        list-style: none;
+        counter-reset: step;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5mm;
+      }
+
+      .steps li {
+        counter-increment: step;
+        font-size: 11pt;
+        line-height: 1.45;
+        display: flex;
+        gap: 3mm;
+      }
+
+      .steps li::before {
+        content: counter(step);
+        font-family: 'Bangers', 'Impact', system-ui, sans-serif;
+        font-size: 16pt;
+        line-height: 1.2;
+        flex-shrink: 0;
+      }
+
+      .join {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 6mm;
+        border: var(--border);
+        padding: 5mm 6mm;
+      }
+
+      .join .qr {
+        width: 30mm;
+        height: 30mm;
+        border: var(--border);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8pt;
+        color: #555555;
+        text-align: center;
+      }
+
+      .join p {
+        font-size: 12pt;
+        font-weight: 700;
+        line-height: 1.5;
+      }
+
+      footer {
+        font-size: 9pt;
+        color: #555555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flyer">
+      <div class="logo">uslehne</div>
+
+      <h1 class="headline">Leihen und schenken ohne Geld.</h1>
+
+      <p class="intro">
+        Bohrmaschine, Fondue-Caquelon, Veloanhänger: Vieles steht bei deinen
+        Nachbar*innen ungenutzt herum. Auf uslehne.ch leihst du es aus oder
+        verschenkst, was du selbst nicht mehr brauchst.
+      </p>
+
+      <div class="steps">
+        <h2>So funktioniert's</h2>
+        <ol>
+          <li>Du trittst per Einladung bei und startest mit 20 Kudos.</li>
+          <li>Du fragst ein Angebot an. Die Anbieter*in meldet sich bei dir.</li>
+          <li>Leihen kostet Kudos, Verleihen bringt Kudos. Geld gibt's keins.</li>
+        </ol>
+      </div>
+
+      <div class="join">
+        <div class="qr">QR-Code<br />Einladungslink</div>
+        <p>Zugang nur per Einladung.<br />Scann den Code und tritt bei.</p>
+      </div>
+
+      <footer>uslehne.ch, Zürich</footer>
+    </div>
+  </body>
+</html>

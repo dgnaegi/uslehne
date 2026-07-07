@@ -2,17 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
-import {
-  IconX,
-  IconMenu,
-  IconRepeat,
-  IconBox,
-  IconLink,
-  IconAward,
-  IconLogOut,
-  IconShield,
-} from '../icons'
 import { usePendingRequests } from '../hooks/usePendingRequests'
+import { HeaderDesktopNav } from './HeaderDesktopNav'
+import { HeaderMobileMenu } from './HeaderMobileMenu'
 import {
   Nav,
   LogoGroup,
@@ -21,19 +13,8 @@ import {
   BackHome,
   SearchWrapper,
   SearchInput,
-  DesktopNav,
-  NavLink,
-  NavLinkWrapper,
-  NavButton,
   AboutBtn,
-  KudoBadge,
-  KontoWrapper,
-  DropdownMenu,
   GuestAuthBtn,
-  HamburgerWrapper,
-  HamburgerBtn,
-  NotifDot,
-  MobileMenu,
 } from './Header.styled'
 
 export function Header() {
@@ -44,10 +25,7 @@ export function Header() {
   const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const isOnFeed = location.pathname === '/offers'
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [kontoOpen, setKontoOpen] = useState(false)
   const [searchValue, setSearchValue] = useState(() => searchParams.get('q') ?? '')
-  const kontoRef = useRef<HTMLDivElement>(null)
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -67,21 +45,9 @@ export function Header() {
     }, 300)
   }
 
-  useEffect(() => {
-    function onClickOutside(e: MouseEvent) {
-      if (kontoRef.current && !kontoRef.current.contains(e.target as Node)) {
-        setKontoOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', onClickOutside)
-    return () => document.removeEventListener('mousedown', onClickOutside)
-  }, [])
-
   function handleLogout() {
     logout()
     navigate('/offers')
-    setMobileOpen(false)
-    setKontoOpen(false)
   }
 
   return (
@@ -99,8 +65,6 @@ export function Header() {
         </BackHome>
       )}
 
-      <AboutBtn as={Link} to="/ueber-uns" aria-label="Über uns">?</AboutBtn>
-
       {isOnFeed && (
         <SearchWrapper>
           <SearchInput
@@ -112,74 +76,14 @@ export function Header() {
         </SearchWrapper>
       )}
 
+      <AboutBtn as={Link} to="/ueber-uns" aria-label="Über uns">
+        ?
+      </AboutBtn>
+
       {user ? (
         <>
-          <DesktopNav>
-            {user.role === 'ADMIN' && (
-              <NavLink as={Link} to="/admin">
-                <IconShield size={14} /> Admin
-              </NavLink>
-            )}
-            <NavLinkWrapper>
-              <NavLink as={Link} to="/transactions">
-                {t('nav.transactions')}
-              </NavLink>
-              {pendingCount > 0 && <NotifDot />}
-            </NavLinkWrapper>
-            <NavLink as={Link} to="/my-offers">
-              {t('nav.myOffers')}
-            </NavLink>
-            <KontoWrapper ref={kontoRef}>
-              <NavButton onClick={() => setKontoOpen((o) => !o)}>
-                {t('nav.account')}
-                <KudoBadge>{user.kudosBalance} Kudos</KudoBadge>
-              </NavButton>
-              {kontoOpen && (
-                <DropdownMenu>
-                  <Link to="/invites" onClick={() => setKontoOpen(false)}>
-                    {t('nav.invites')}
-                  </Link>
-                  <Link to="/profile" onClick={() => setKontoOpen(false)}>
-                    {t('nav.profile')}
-                  </Link>
-                  <button onClick={handleLogout}>{t('nav.logout')}</button>
-                </DropdownMenu>
-              )}
-            </KontoWrapper>
-          </DesktopNav>
-
-          <HamburgerWrapper>
-            <HamburgerBtn onClick={() => setMobileOpen((o) => !o)} aria-label="Menü öffnen">
-              {mobileOpen ? <IconX size={20} /> : <IconMenu size={20} />}
-            </HamburgerBtn>
-            {pendingCount > 0 && <NotifDot />}
-          </HamburgerWrapper>
-
-          {mobileOpen && (
-            <MobileMenu>
-              {user.role === 'ADMIN' && (
-                <Link to="/admin" onClick={() => setMobileOpen(false)}>
-                  <IconShield size={18} /> Admin
-                </Link>
-              )}
-              <Link to="/transactions" onClick={() => setMobileOpen(false)}>
-                <IconRepeat size={18} /> {t('nav.transactions')}
-                {pendingCount > 0 && <NotifDot />}
-              </Link>
-              <Link to="/my-offers" onClick={() => setMobileOpen(false)}>
-                <IconBox size={18} /> {t('nav.myOffers')}
-              </Link>
-              <Link to="/invites" onClick={() => setMobileOpen(false)}>
-                <IconLink size={18} /> {t('nav.invites')}
-              </Link>
-              <Link to="/profile" onClick={() => setMobileOpen(false)}>
-                <IconAward size={18} /> {user.kudosBalance} Kudos
-              </Link>
-              <button onClick={handleLogout}>
-                <IconLogOut size={18} /> {t('nav.logout')}
-              </button>
-            </MobileMenu>
-          )}
+          <HeaderDesktopNav user={user} pendingCount={pendingCount} onLogout={handleLogout} />
+          <HeaderMobileMenu user={user} pendingCount={pendingCount} onLogout={handleLogout} />
         </>
       ) : (
         <GuestAuthBtn onClick={openAuthModal}>{t('nav.login')}</GuestAuthBtn>
