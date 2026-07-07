@@ -36,7 +36,7 @@ function buildContactUrl(type: string, value: string): string {
   }
 }
 
-const RATEABLE = new Set<Transaction['status']>(['ACCEPTED', 'COMPLETED'])
+const RATEABLE = new Set<Transaction['status']>(['COMPLETED', 'RETURNED'])
 
 const CONTACT_ICON: Record<string, ReactNode> = {
   EMAIL: <IconMail size={14} />,

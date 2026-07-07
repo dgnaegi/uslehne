@@ -11,7 +11,7 @@ const router = Router()
 
 const rateSchema = z.object({ stars: z.number().int().min(1).max(5) })
 
-// Both owner and requester can rate each other after exchange is accepted/completed
+// Both owner and requester can rate each other after the exchange is completed/returned
 router.post(
   '/transactions/:id/rate',
   requireAuth,
@@ -27,7 +27,7 @@ router.post(
         },
       })
       if (!tx) throw new AppError(ErrorCode.NOT_FOUND, 404)
-      if (!['ACCEPTED', 'COMPLETED'].includes(tx.status)) {
+      if (!['COMPLETED', 'RETURNED'].includes(tx.status)) {
         throw new AppError(ErrorCode.INVALID_TRANSACTION_STATUS, 409)
       }
 

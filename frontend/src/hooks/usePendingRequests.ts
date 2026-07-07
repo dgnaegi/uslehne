@@ -18,7 +18,11 @@ export function usePendingRequests(): number {
       try {
         const res = await transactionApi.list('incoming')
         if (!cancelled) {
-          setCount(res.transactions.filter((t) => t.status === 'PENDING').length)
+          setCount(
+            res.transactions.filter(
+              (t) => t.status === 'PENDING' || (t.status === 'ACCEPTED' && !t.ownerConfirmed),
+            ).length,
+          )
         }
       } catch {
         // silently ignore — badge is non-critical
