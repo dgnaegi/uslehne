@@ -45,11 +45,11 @@ export function MyOffersPage() {
           >
             <OfferRow>
               <OfferRowTitle>{offer.title}</OfferRowTitle>
+              <OfferRowMeta>
+                <Badge $type={offer.type}>{t(`common:offerType.${offer.type}`)}</Badge>
+                <span>{t(`common:status.${offer.status}`)}</span>
+              </OfferRowMeta>
               <OfferRowBottom>
-                <OfferRowMeta>
-                  <Badge $type={offer.type}>{t(`common:offerType.${offer.type}`)}</Badge>
-                  <span>{t(`common:status.${offer.status}`)}</span>
-                </OfferRowMeta>
                 <Button $variant="secondary" onClick={() => navigate(`/offers/${offer.id}/edit`)}>
                   {t('common:actions.edit')}
                 </Button>

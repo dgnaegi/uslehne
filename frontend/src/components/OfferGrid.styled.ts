@@ -16,6 +16,8 @@ export const Empty = styled.p`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 ${({ theme }) => theme.spacing.md};
+  text-align: center;
   color: ${({ theme }) => theme.colors.textMuted};
   font-weight: 600;
   font-size: 1.1rem;

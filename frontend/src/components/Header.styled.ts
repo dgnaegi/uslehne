@@ -213,6 +213,30 @@ export const GuestAuthBtn = styled.button`
   }
 `
 
+export const AboutBtn = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid ${({ theme }) => theme.colors.primary};
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: ${({ theme }) => theme.colors.primary};
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.1s,
+    color 0.1s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.accent};
+  }
+`
+
 export const HamburgerWrapper = styled.div`
   position: relative;
   display: flex;

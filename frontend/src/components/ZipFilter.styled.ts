@@ -12,21 +12,6 @@ export const FilterBar = styled.div<{ $compact?: boolean }>`
   border-bottom: ${({ theme }) => theme.border};
 `
 
-export const Tagline = styled.div`
-  width: 100%;
-  background: ${({ theme }) => theme.colors.accent};
-  border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
-  text-align: center;
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 4px ${({ theme }) => theme.spacing.md};
-  color: ${({ theme }) => theme.colors.primary};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
 
 export const MainRow = styled.div`
   display: flex;

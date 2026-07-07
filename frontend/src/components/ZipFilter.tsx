@@ -3,7 +3,6 @@ import type { OfferType } from '../api/types'
 import { IconX, IconPlus } from '../icons'
 import {
   FilterBar,
-  Tagline,
   MainRow,
   ChipsRow,
   Chip,
@@ -48,8 +47,7 @@ export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange, co
 
   return (
     <FilterBar $compact={compact}>
-      {!compact && <Tagline>uslehne.ch — unkommerziell jetzt &amp; für immer</Tagline>}
-      <MainRow>
+<MainRow>
         {showInput ? (
           <ZipInput
             ref={inputRef}

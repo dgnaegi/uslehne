@@ -13,6 +13,7 @@ import { InvitesPage } from './routes/InvitesPage'
 import { ProfilePage } from './routes/ProfilePage'
 import { UserProfilePage } from './routes/UserProfilePage'
 import { PrivacyPage } from './routes/PrivacyPage'
+import { UeberUnsPage } from './routes/UeberUnsPage'
 import { ImpressumPage } from './routes/ImpressumPage'
 import { ForgotPasswordPage } from './routes/ForgotPasswordPage'
 import { ResetPasswordPage } from './routes/ResetPasswordPage'
@@ -125,6 +126,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/ueber-uns" element={<UeberUnsPage />} />
         <Route path="/datenschutz" element={<PrivacyPage />} />
         <Route path="/impressum" element={<ImpressumPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
