@@ -77,7 +77,7 @@ export const transactionApi = {
   ) => api.post<{ transaction: Transaction }>(`/offers/${offerId}/request`, body),
   confirm: (id: string) =>
     api.post<{ ok: boolean; completed: boolean }>(`/transactions/${id}/confirm`, {}),
-  list: (role: 'incoming' | 'outgoing') =>
+  list: (role: 'incoming' | 'outgoing' | 'open' | 'closed') =>
     api.get<{ transactions: Transaction[] }>(`/transactions?role=${role}`),
   accept: (id: string) => api.post<void>(`/transactions/${id}/accept`, {}),
   decline: (id: string) => api.post<void>(`/transactions/${id}/decline`, {}),

@@ -91,28 +91,47 @@ router.get(
       const role = req.query.role as string | undefined
       const userId = req.user!.id
 
+      const sharedSelect = {
+        id: true,
+        status: true,
+        karma: true,
+        type: true,
+        message: true,
+        contactType: true,
+        contactValue: true,
+        ownerConfirmed: true,
+        requesterConfirmed: true,
+        ownerId: true,
+        requesterId: true,
+        createdAt: true,
+        decidedAt: true,
+        offer: { select: { title: true, type: true } },
+        requester: { select: { id: true, username: true } },
+        owner: { select: { id: true, username: true } },
+        ratings: { select: { id: true, stars: true, raterId: true } },
+      } as const
+
       if (role === 'incoming') {
         const rows = await db.transaction.findMany({
           where: { ownerId: userId },
           orderBy: { createdAt: 'desc' },
-          select: {
-            id: true,
-            status: true,
-            karma: true,
-            type: true,
-            message: true,
-            contactType: true,
-            contactValue: true,
-            ownerConfirmed: true,
-            requesterConfirmed: true,
-            ownerId: true,
-            requesterId: true,
-            createdAt: true,
-            decidedAt: true,
-            offer: { select: { title: true, type: true } },
-            requester: { select: { id: true, username: true } },
-            ratings: { select: { id: true, stars: true, raterId: true } },
+          select: sharedSelect,
+        })
+        return res.json({ transactions: rows })
+      }
+
+      const openStatuses = ['PENDING', 'ACCEPTED'] as const
+      const closedStatuses = ['DECLINED', 'CANCELLED', 'RETURNED', 'COMPLETED'] as const
+
+      if (role === 'open' || role === 'closed') {
+        const statuses = role === 'open' ? openStatuses : closedStatuses
+        const rows = await db.transaction.findMany({
+          where: {
+            OR: [{ ownerId: userId }, { requesterId: userId }],
+            status: { in: [...statuses] },
           },
+          orderBy: { createdAt: 'desc' },
+          select: sharedSelect,
         })
         return res.json({ transactions: rows })
       }
@@ -120,36 +139,9 @@ router.get(
       const rows = await db.transaction.findMany({
         where: { requesterId: userId },
         orderBy: { createdAt: 'desc' },
-        select: {
-          id: true,
-          status: true,
-          karma: true,
-          type: true,
-          message: true,
-          ownerConfirmed: true,
-          requesterConfirmed: true,
-          requesterId: true,
-          createdAt: true,
-          decidedAt: true,
-          ownerId: true,
-          offer: { select: { title: true, type: true } },
-          ratings: { select: { id: true, stars: true, raterId: true } },
-        },
+        select: sharedSelect,
       })
-
-      const ownerIds = [...new Set(rows.map((r) => r.ownerId))]
-      const owners = await db.user.findMany({
-        where: { id: { in: ownerIds } },
-        select: { id: true, username: true },
-      })
-      const ownerMap = new Map(owners.map((o) => [o.id, { id: o.id, username: o.username }]))
-
-      const transactions = rows.map(({ ownerId, ...r }) => ({
-        ...r,
-        ownerId,
-        owner: ownerMap.get(ownerId) ?? null,
-      }))
-      res.json({ transactions })
+      res.json({ transactions: rows })
     } catch (err) {
       next(err)
     }

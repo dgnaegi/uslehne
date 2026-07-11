@@ -2,13 +2,15 @@ import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Transaction } from '../api/types'
 import { transactionApi } from '../api/endpoints'
+import { useAuth } from '../auth/AuthContext'
 import { PageWrapper, PageTitle, ErrorMsg } from '../components/Layout.styled'
 import { TransactionCard } from '../components/TransactionCard'
 import { TabBar, Tab } from './TransactionsPage.styled'
 
 export function TransactionsPage() {
   const { t } = useTranslation(['transactions', 'common'])
-  const [tab, setTab] = useState<'incoming' | 'outgoing'>('incoming')
+  const { user } = useAuth()
+  const [tab, setTab] = useState<'open' | 'closed'>('open')
   const [txs, setTxs] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [actionError, setActionError] = useState('')
@@ -38,21 +40,26 @@ export function TransactionsPage() {
     <PageWrapper>
       <PageTitle>{t('transactions:title')}</PageTitle>
       <TabBar>
-        <Tab $active={tab === 'incoming'} onClick={() => setTab('incoming')}>
-          {t('transactions:incoming')}
+        <Tab $active={tab === 'open'} onClick={() => setTab('open')}>
+          {t('transactions:open')}
         </Tab>
-        <Tab $active={tab === 'outgoing'} onClick={() => setTab('outgoing')}>
-          {t('transactions:outgoing')}
+        <Tab $active={tab === 'closed'} onClick={() => setTab('closed')}>
+          {t('transactions:closed')}
         </Tab>
       </TabBar>
       {actionError && <ErrorMsg>{actionError}</ErrorMsg>}
       {loading ? (
         <p>{t('common:actions.loading')}</p>
       ) : txs.length === 0 ? (
-        <p>{tab === 'incoming' ? t('transactions:noIncoming') : t('transactions:noOutgoing')}</p>
+        <p>{tab === 'open' ? t('transactions:noOpen') : t('transactions:noClosed')}</p>
       ) : (
         txs.map((tx) => (
-          <TransactionCard key={tx.id} tx={tx} amOwner={tab === 'incoming'} onAction={doAction} />
+          <TransactionCard
+            key={tx.id}
+            tx={tx}
+            amOwner={tx.ownerId === user?.id}
+            onAction={doAction}
+          />
         ))
       )}
     </PageWrapper>
