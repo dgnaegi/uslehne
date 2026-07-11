@@ -61,6 +61,7 @@ model User {
   invitesCreated      Invite[]             @relation("InvitesCreated")
   inviteUsed          Invite?              @relation("InviteUsed")
   requests            Transaction[]        @relation("Requester")
+  ownedTransactions   Transaction[]        @relation("Owner")
   ledger              KarmaLedger[]
   ratingsGiven        Rating[]             @relation("RatingsGiven")
   ratingsReceived     Rating[]             @relation("RatingsReceived")
@@ -117,6 +118,7 @@ model Transaction {
   offerId      String
   requester    User              @relation("Requester", fields: [requesterId], references: [id])
   requesterId  String
+  owner        User              @relation("Owner", fields: [ownerId], references: [id])
   ownerId      String
   type         OfferType
   karma        Int

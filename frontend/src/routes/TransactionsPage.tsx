@@ -17,9 +17,13 @@ export function TransactionsPage() {
 
   const load = useCallback(() => {
     setLoading(true)
+    setActionError('')
     transactionApi
       .list(tab)
       .then(({ transactions }) => setTxs(transactions))
+      .catch((err: unknown) =>
+        setActionError(err instanceof Error ? err.message : 'Da ist etwas schiefgelaufen.'),
+      )
       .finally(() => setLoading(false))
   }, [tab])
 
