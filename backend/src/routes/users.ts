@@ -14,14 +14,14 @@ router.get('/users/:id', requireAuth, async (req: Request, res: Response, next: 
       select: {
         id: true,
         username: true,
-        kudosBalance: true,
+        karmaBalance: true,
         createdAt: true,
         ratingsReceived: { select: { stars: true } },
       },
     })
     if (!user) throw new AppError(ErrorCode.NOT_FOUND, 404)
 
-    const [offersGiven, offersTaken, kudoHistory] = await Promise.all([
+    const [offersGiven, offersTaken, karmaHistory] = await Promise.all([
       db.transaction.count({
         where: {
           ownerId: user.id,
@@ -36,7 +36,7 @@ router.get('/users/:id', requireAuth, async (req: Request, res: Response, next: 
         },
       }),
       isSelf
-        ? db.kudoLedger.findMany({
+        ? db.karmaLedger.findMany({
             where: { userId: user.id },
             select: { id: true, delta: true, reason: true, createdAt: true },
             orderBy: { createdAt: 'desc' },
@@ -55,13 +55,13 @@ router.get('/users/:id', requireAuth, async (req: Request, res: Response, next: 
       user: {
         id: user.id,
         username: user.username,
-        kudosBalance: user.kudosBalance,
+        karmaBalance: user.karmaBalance,
         createdAt: user.createdAt,
         avgStars,
         ratingCount: stars.length,
         offersGiven,
         offersTaken,
-        ...(kudoHistory !== undefined ? { kudoHistory } : {}),
+        ...(karmaHistory !== undefined ? { karmaHistory } : {}),
       },
     })
   } catch (err) {

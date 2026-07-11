@@ -12,7 +12,7 @@ import { offersRouter } from './routes/offers'
 import { offersMutateRouter } from './routes/offersMutate'
 import { transactionsRouter } from './routes/transactions'
 import { transactionActionsRouter } from './routes/transactionActions'
-import kudosRouter from './routes/kudos'
+import karmaRouter from './routes/kudos'
 import { usersRouter } from './routes/users'
 import { adminRouter } from './routes/admin'
 import passwordResetRouter from './routes/authPasswordReset'
@@ -43,7 +43,7 @@ app.use('/api/v1', offersRouter)
 app.use('/api/v1', offersMutateRouter)
 app.use('/api/v1', transactionsRouter)
 app.use('/api/v1', transactionActionsRouter)
-app.use('/api/v1', kudosRouter)
+app.use('/api/v1', karmaRouter)
 app.use('/api/v1', usersRouter)
 app.use('/api/v1', adminRouter)
 app.use('/api/v1', passwordResetRouter)

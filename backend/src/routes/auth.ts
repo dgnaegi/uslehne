@@ -54,14 +54,14 @@ router.post(
 
       const isSuper = inviteCode === SUPER_INVITE_CODE
       let inviteId: string | null = null
-      let inviteKudos = 10
+      let inviteKarma = 10
 
       if (!isSuper) {
         const invite = await db.invite.findUnique({ where: { code: inviteCode } })
         if (!invite) throw new AppError(ErrorCode.INVITE_NOT_FOUND, 404)
         if (invite.usedById !== null) throw new AppError(ErrorCode.INVITE_ALREADY_USED, 409)
         inviteId = invite.id
-        inviteKudos = invite.kudos
+        inviteKarma = invite.karma
       }
 
       const [existingEmail, existingUsername] = await Promise.all([
@@ -80,7 +80,7 @@ router.post(
             username,
             email,
             passwordHash,
-            kudosBalance: inviteKudos,
+            karmaBalance: inviteKarma,
             role: ADMIN_USERNAMES.includes(username) ? 'ADMIN' : 'USER',
           },
         })
@@ -90,8 +90,8 @@ router.post(
             data: { usedById: newUser.id, usedAt: new Date() },
           })
         }
-        await tx.kudoLedger.create({
-          data: { userId: newUser.id, delta: inviteKudos, reason: 'INVITE_BONUS' },
+        await tx.karmaLedger.create({
+          data: { userId: newUser.id, delta: inviteKarma, reason: 'INVITE_BONUS' },
         })
         return newUser
       })
@@ -107,7 +107,7 @@ router.post(
           id: user.id,
           username: user.username,
           email: user.email,
-          kudosBalance: user.kudosBalance,
+          karmaBalance: user.karmaBalance,
         },
       })
     } catch (err) {
@@ -135,7 +135,7 @@ router.post(
           id: user.id,
           username: user.username,
           email: user.email,
-          kudosBalance: user.kudosBalance,
+          karmaBalance: user.karmaBalance,
         },
       })
     } catch (err) {
@@ -153,7 +153,7 @@ router.get('/auth/me', requireAuth, async (req: Request, res: Response, next: Ne
         username: true,
         email: true,
         role: true,
-        kudosBalance: true,
+        karmaBalance: true,
         createdAt: true,
       },
     })

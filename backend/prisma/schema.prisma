@@ -55,13 +55,13 @@ model User {
   email               String               @unique
   passwordHash        String
   role                Role                 @default(USER)
-  kudosBalance        Int                  @default(0)
+  karmaBalance        Int                  @default(0)
   addresses           Address[]
   offers              Offer[]
   invitesCreated      Invite[]             @relation("InvitesCreated")
   inviteUsed          Invite?              @relation("InviteUsed")
   requests            Transaction[]        @relation("Requester")
-  ledger              KudoLedger[]
+  ledger              KarmaLedger[]
   ratingsGiven        Rating[]             @relation("RatingsGiven")
   ratingsReceived     Rating[]             @relation("RatingsReceived")
   passwordResetTokens PasswordResetToken[]
@@ -84,10 +84,11 @@ model Address {
   userId    String
   label     String?
   zip       String
-  city      String
+  city      String?
   offers    Offer[]
   createdAt DateTime @default(now())
 
+  @@unique([userId, zip])
   @@index([userId])
 }
 
@@ -118,7 +119,7 @@ model Transaction {
   requesterId  String
   ownerId      String
   type         OfferType
-  kudos        Int
+  karma        Int
   status            TransactionStatus @default(PENDING)
   message           String?
   contactType       ContactType
@@ -155,14 +156,14 @@ model Invite {
   code        String    @unique
   createdBy   User      @relation("InvitesCreated", fields: [createdById], references: [id])
   createdById String
-  kudos       Int       @default(10)
+  karma       Int       @default(10)
   usedBy      User?     @relation("InviteUsed", fields: [usedById], references: [id])
   usedById    String?   @unique
   usedAt      DateTime?
   createdAt   DateTime  @default(now())
 }
 
-model KudoLedger {
+model KarmaLedger {
   id            String       @id @default(cuid())
   user          User         @relation(fields: [userId], references: [id])
   userId        String

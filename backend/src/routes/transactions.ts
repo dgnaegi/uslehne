@@ -43,9 +43,9 @@ router.post(
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
 
-      const kudos = offer.type === 'LEND' ? 1 : 5
+      const karma = offer.type === 'LEND' ? 1 : 5
       const requester = await db.user.findUniqueOrThrow({ where: { id: req.user!.id } })
-      if (requester.kudosBalance < kudos) throw new AppError(ErrorCode.INSUFFICIENT_KUDOS, 402)
+      if (requester.karmaBalance < karma) throw new AppError(ErrorCode.INSUFFICIENT_KARMA, 402)
 
       const transaction = await db.transaction.create({
         data: {
@@ -53,7 +53,7 @@ router.post(
           requesterId: req.user!.id,
           ownerId: offer.ownerId,
           type: offer.type,
-          kudos,
+          karma,
           contactType: body.contactType,
           contactValue: body.contactValue,
           message: body.message,
@@ -98,7 +98,7 @@ router.get(
           select: {
             id: true,
             status: true,
-            kudos: true,
+            karma: true,
             type: true,
             message: true,
             contactType: true,
@@ -123,7 +123,7 @@ router.get(
         select: {
           id: true,
           status: true,
-          kudos: true,
+          karma: true,
           type: true,
           message: true,
           ownerConfirmed: true,

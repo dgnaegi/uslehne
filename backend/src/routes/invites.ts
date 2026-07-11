@@ -18,7 +18,7 @@ router.get('/invites', requireAuth, async (req: Request, res: Response, next: Ne
       select: {
         id: true,
         code: true,
-        kudos: true,
+        karma: true,
         usedAt: true,
         usedById: true,
         createdAt: true,
@@ -48,8 +48,8 @@ router.post(
 
       const code = randomBytes(8).toString('hex')
       const invite = await db.invite.create({
-        data: { code, createdById: userId, kudos: 10 },
-        select: { id: true, code: true, kudos: true, createdAt: true },
+        data: { code, createdById: userId, karma: 10 },
+        select: { id: true, code: true, karma: true, createdAt: true },
       })
       res.status(201).json({ invite })
     } catch (err) {
@@ -62,10 +62,10 @@ router.get('/invites/:code', async (req: Request, res: Response, next: NextFunct
   try {
     const invite = await db.invite.findUnique({
       where: { code: req.params.code },
-      select: { id: true, kudos: true, usedById: true },
+      select: { id: true, karma: true, usedById: true },
     })
     const valid = !!invite && invite.usedById === null
-    res.json({ valid, kudos: invite?.kudos ?? null })
+    res.json({ valid, karma: invite?.karma ?? null })
   } catch (err) {
     next(err)
   }

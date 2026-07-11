@@ -5,7 +5,7 @@ import { requireAuth } from '../middleware/requireAuth'
 const router = Router()
 
 export async function recomputeBalance(userId: string): Promise<number> {
-  const result = await db.kudoLedger.aggregate({
+  const result = await db.karmaLedger.aggregate({
     where: { userId },
     _sum: { delta: true },
   })
@@ -13,19 +13,19 @@ export async function recomputeBalance(userId: string): Promise<number> {
 }
 
 router.get(
-  '/kudos/ledger',
+  '/karma/ledger',
   requireAuth,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const limit = Math.min(parseInt(String(req.query.limit ?? '20'), 10), 100)
       const offset = parseInt(String(req.query.offset ?? '0'), 10)
-      const entries = await db.kudoLedger.findMany({
+      const entries = await db.karmaLedger.findMany({
         where: { userId: req.user!.id },
         orderBy: { createdAt: 'desc' },
         take: limit,
         skip: offset,
       })
-      const total = await db.kudoLedger.count({ where: { userId: req.user!.id } })
+      const total = await db.karmaLedger.count({ where: { userId: req.user!.id } })
       res.json({ entries, total, limit, offset })
     } catch (err) {
       next(err)

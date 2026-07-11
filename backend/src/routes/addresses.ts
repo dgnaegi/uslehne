@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import { z } from 'zod'
+import { Prisma } from '@prisma/client'
 import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
@@ -9,7 +10,7 @@ const router = Router()
 
 const createAddressSchema = z.object({
   zip: z.string().min(1),
-  city: z.string().min(1),
+  city: z.string().optional(),
   label: z.string().optional(),
 })
 
@@ -32,15 +33,14 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { zip, city, label } = req.body as z.infer<typeof createAddressSchema>
-      const cityLower = city.trim().toLowerCase()
-      if (cityLower !== 'zürich' && cityLower !== 'zurich') {
-        throw new AppError(ErrorCode.ADDRESS_CITY_NOT_ALLOWED, 422)
-      }
       const address = await db.address.create({
         data: { userId: req.user!.id, zip, city, label },
       })
       res.status(201).json({ address })
     } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+        return next(new AppError(ErrorCode.ADDRESS_DUPLICATE_ZIP, 409))
+      }
       next(err)
     }
   },

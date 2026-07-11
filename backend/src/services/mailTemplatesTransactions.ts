@@ -87,7 +87,7 @@ export function confirmReminderMail(opts: {
     ${h1('Übergabe bestätigen')}
     ${p(`Hallo ${esc(opts.username)},`)}
     ${p(`<strong>${esc(opts.otherUsername)}</strong> hat die Übergabe von <strong>«${esc(opts.offerTitle)}»</strong> bereits bestätigt.`)}
-    ${p('Bitte bestätige auch du, damit die Kudos verrechnet werden können.')}
+    ${p('Bitte bestätige auch du, damit das Karma verrechnet werden kann.')}
     ${ctaButton(TRANSACTIONS_URL, 'Jetzt bestätigen')}`
 
   return {

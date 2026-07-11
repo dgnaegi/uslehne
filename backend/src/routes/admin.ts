@@ -12,7 +12,7 @@ router.get(
   async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await db.user.findMany({
-        select: { id: true, username: true, email: true, role: true, kudosBalance: true, createdAt: true },
+        select: { id: true, username: true, email: true, role: true, karmaBalance: true, createdAt: true },
         orderBy: { createdAt: 'desc' },
       })
       res.json({ users })
@@ -48,7 +48,7 @@ router.delete(
           where: { OR: [{ raterId: id }, { ratedId: id }, { transactionId: { in: [...requesterTxIds, ...ownerTxIds] } }] },
         }),
         db.transaction.deleteMany({ where: { OR: [{ requesterId: id }, { offerId: { in: offerIds } }] } }),
-        db.kudoLedger.deleteMany({ where: { userId: id } }),
+        db.karmaLedger.deleteMany({ where: { userId: id } }),
         db.passwordResetToken.deleteMany({ where: { userId: id } }),
         db.invite.updateMany({ where: { usedById: id }, data: { usedById: null, usedAt: null } }),
         db.invite.deleteMany({ where: { createdById: id } }),

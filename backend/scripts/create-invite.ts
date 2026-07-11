@@ -1,7 +1,7 @@
 /**
  * Erstellt einen Admin-Invite mit Wunschcode (z.B. für Flyer).
  *
- *   npx tsx scripts/create-invite.ts <code> [kudos]
+ *   npx tsx scripts/create-invite.ts <code> [karma]
  *   npx tsx scripts/create-invite.ts Free4All 20
  *
  * Der Invite gehört dem ersten ADMIN-User. Existiert der Code schon,
@@ -13,10 +13,10 @@ const prisma = new PrismaClient()
 
 async function main(): Promise<void> {
   const code = process.argv[2]
-  const kudos = Number(process.argv[3] ?? 20)
+  const karma = Number(process.argv[3] ?? 20)
 
-  if (!code || Number.isNaN(kudos)) {
-    console.error('Usage: npx tsx scripts/create-invite.ts <code> [kudos]')
+  if (!code || Number.isNaN(karma)) {
+    console.error('Usage: npx tsx scripts/create-invite.ts <code> [karma]')
     process.exit(1)
   }
 
@@ -29,15 +29,15 @@ async function main(): Promise<void> {
   const existing = await prisma.invite.findUnique({ where: { code } })
   if (existing) {
     const status = existing.usedById ? 'bereits eingelöst' : 'noch offen'
-    console.log(`Invite «${code}» existiert schon (${status}, ${existing.kudos} Kudos).`)
+    console.log(`Invite «${code}» existiert schon (${status}, ${existing.karma} Karma).`)
     return
   }
 
   const invite = await prisma.invite.create({
-    data: { code, createdById: admin.id, kudos },
+    data: { code, createdById: admin.id, karma },
   })
   console.log(
-    `Invite erstellt: ${invite.code} (${invite.kudos} Kudos, Ersteller: ${admin.username})`,
+    `Invite erstellt: ${invite.code} (${invite.karma} Karma, Ersteller: ${admin.username})`,
   )
   console.log(`Link: https://uslehne.ch/register?invite=${invite.code}`)
 }

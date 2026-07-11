@@ -31,7 +31,7 @@ router.post(
   },
 )
 
-// Either party confirms the exchange happened. When both confirm → kudos booked + COMPLETED.
+// Either party confirms the exchange happened. When both confirm → karma booked + COMPLETED.
 router.post(
   '/transactions/:id/confirm',
   requireAuth,
@@ -58,8 +58,8 @@ router.post(
       if (bothConfirmed) {
         await db.$transaction(async (prisma: Prisma.TransactionClient) => {
           const requester = await prisma.user.findUniqueOrThrow({ where: { id: tx.requesterId } })
-          if (requester.kudosBalance < tx.kudos) {
-            throw new AppError(ErrorCode.INSUFFICIENT_KUDOS, 402)
+          if (requester.karmaBalance < tx.karma) {
+            throw new AppError(ErrorCode.INSUFFICIENT_KARMA, 402)
           }
           const borrowReason: LedgerReason = tx.type === 'LEND' ? 'BORROW_SPEND' : 'RECEIVE_SPEND'
           const earnReason: LedgerReason = tx.type === 'LEND' ? 'LEND_EARN' : 'GIVE_EARN'
@@ -67,17 +67,17 @@ router.post(
 
           await prisma.user.update({
             where: { id: tx.requesterId },
-            data: { kudosBalance: { decrement: tx.kudos } },
+            data: { karmaBalance: { decrement: tx.karma } },
           })
-          await prisma.kudoLedger.create({
-            data: { userId: tx.requesterId, delta: -tx.kudos, reason: borrowReason, transactionId: tx.id },
+          await prisma.karmaLedger.create({
+            data: { userId: tx.requesterId, delta: -tx.karma, reason: borrowReason, transactionId: tx.id },
           })
           await prisma.user.update({
             where: { id: tx.ownerId },
-            data: { kudosBalance: { increment: tx.kudos } },
+            data: { karmaBalance: { increment: tx.karma } },
           })
-          await prisma.kudoLedger.create({
-            data: { userId: tx.ownerId, delta: tx.kudos, reason: earnReason, transactionId: tx.id },
+          await prisma.karmaLedger.create({
+            data: { userId: tx.ownerId, delta: tx.karma, reason: earnReason, transactionId: tx.id },
           })
           await prisma.transaction.update({
             where: { id: tx.id },

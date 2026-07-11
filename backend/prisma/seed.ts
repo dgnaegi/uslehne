@@ -18,7 +18,7 @@ async function main() {
       email: 'admin@uslehne.ch',
       passwordHash: adminHash,
       role: Role.ADMIN,
-      kudosBalance: 999,
+      karmaBalance: 999,
     },
   })
 
@@ -42,7 +42,7 @@ async function main() {
         id: `seed-invite-${i}`,
         code: generateCode(),
         createdById: admin.id,
-        kudos: 20,
+        karma: 20,
       },
     })
   }
@@ -56,7 +56,7 @@ async function main() {
       email: 'demo@uslehne.ch',
       passwordHash: demoUserHash,
       role: Role.USER,
-      kudosBalance: 20,
+      karmaBalance: 20,
     },
   })
 
