@@ -17,7 +17,6 @@ import {
   InfoBlock,
   MetaRow,
   TypeBadge,
-  BackLink,
   ActionRow,
 } from './OfferDetailPage.styled'
 
@@ -79,7 +78,6 @@ export function OfferDetailPage() {
   return (
     <DetailWrapper>
       {offerJsonLd && <JsonLd json={offerJsonLd} />}
-      <BackLink onClick={() => navigate(-1)}>{t('common:actions.back')}</BackLink>
       <ImageBlock>
         {offer.imageRef.startsWith('data:image/svg') ? (
           <IconBox size={80} aria-hidden="true" />
