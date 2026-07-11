@@ -61,7 +61,7 @@ export const NavButton = styled.button`
   }
 `
 
-export const KudoBadge = styled.span`
+export const KarmaBadge = styled.span`
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.accent};
   font-weight: 800;

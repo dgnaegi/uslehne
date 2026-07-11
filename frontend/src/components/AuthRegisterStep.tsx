@@ -10,14 +10,14 @@ import { ModalTitle, EmailDisplay, InviteBonus, BackBtn } from './AuthModal.styl
 interface AuthRegisterStepProps {
   email: string
   initialInviteCode: string
-  inviteKudos: number | null
+  inviteKarma: number | null
   onBack: () => void
 }
 
 export function AuthRegisterStep({
   email,
   initialInviteCode,
-  inviteKudos,
+  inviteKarma,
   onBack,
 }: AuthRegisterStepProps) {
   const { t } = useTranslation('auth')
@@ -68,7 +68,7 @@ export function AuthRegisterStep({
             <Input value={inviteCode} onChange={(e) => setInviteCode(e.target.value)} required />
           </FormGroup>
         )}
-        {inviteKudos !== null && <InviteBonus>{t('inviteBonus', { kudos: inviteKudos })}</InviteBonus>}
+        {inviteKarma !== null && <InviteBonus>{t('inviteBonus', { karma: inviteKarma })}</InviteBonus>}
         {error && <ErrorMsg>{error}</ErrorMsg>}
         <Button type="submit" disabled={loading}>
           {t('registerButton')}

@@ -133,7 +133,7 @@ git subtree push --prefix frontend scalingo-frontend main
 | POST   | /api/v1/transactions/:id/return  | Mark as returned                 |
 | POST   | /api/v1/transactions/:id/rate    | Rate requester (1–5 stars)       |
 | GET    | /api/v1/users/:id              | Public user profile                |
-| GET    | /api/v1/kudos/ledger           | Karma history (own)                |
+| GET    | /api/v1/karma/ledger           | Karma history (own)                |
 | GET    | /api/v1/invites                | List own invites                   |
 | POST   | /api/v1/invites                | Create invite                      |
 | GET    | /api/v1/invites/:code          | Check invite code                  |

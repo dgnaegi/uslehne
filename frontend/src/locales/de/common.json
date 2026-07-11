@@ -1,8 +1,8 @@
 {
   "appName": "uslehne",
   "tagline": "Teilen statt besitzen.",
-  "currency": "Kudo",
-  "currencyPlural": "Kudos",
+  "currency": "Karma",
+  "currencyPlural": "Karma",
   "nav": {
     "offers": "Angebote",
     "myOffers": "Meine Angebote",

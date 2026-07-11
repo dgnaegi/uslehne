@@ -23,7 +23,7 @@ Bevorzugte Formen — in dieser Reihenfolge:
 
 | ✓ | ✗ |
 |---|---|
-| „Die eingeladene Person erhält 20 Kudos." | „Der Eingeladene erhält 20 Kudos." |
+| „Die eingeladene Person erhält 20 Karma." | „Der Eingeladene erhält 20 Karma." |
 | „Nutzer*innen in Zürich" | „Nutzer in Zürich" |
 | „Anbieter*in" | „Anbieter" |
 
@@ -39,15 +39,15 @@ Bevorzugte Formen — in dieser Reihenfolge:
 
 ---
 
-## Kudo / Kudos
+## Karma
 
 - Immer grossgeschrieben
-- Singular: **1 Kudo** — Plural: **5 Kudos**
+- Singular und Plural: **Karma** (unveränderlich)
 
 | ✓ | ✗ |
 |---|---|
-| „Kostet 1 Kudo" | „Kostet 1 Kudos" |
-| „Du erhältst 5 Kudos" | „Du erhältst 5 kudo" |
+| „Kostet 1 Karma" | „Kostet 1 Kudos" |
+| „Du erhältst 5 Karma" | „Du erhältst 5 karma" |
 
 ---
 

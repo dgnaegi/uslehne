@@ -37,6 +37,7 @@ export const theme = {
     filterBar: 90,
     mobileMenu: 99,
     header: 100,
+    fab: 110,
     overlay: 200,
     modal: 1000,
   },

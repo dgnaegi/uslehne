@@ -63,7 +63,7 @@ export function InvitesPage() {
               </InviteCode>
               <InviteStatus $used={!!invite.usedById}>
                 {invite.usedById ? t('invites:used') : t('invites:unused')} —{' '}
-                {t('invites:kudosNote', { kudos: invite.kudos })}
+                {t('invites:karmaNote', { karma: invite.karma })}
               </InviteStatus>
             </div>
             <InviteActions>

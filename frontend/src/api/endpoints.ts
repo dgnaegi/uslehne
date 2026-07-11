@@ -30,7 +30,7 @@ export const authApi = {
 
 export const addressApi = {
   list: () => api.get<{ addresses: Address[] }>('/addresses'),
-  create: (body: { zip: string; city: string; label?: string }) =>
+  create: (body: { zip: string; city?: string; label?: string }) =>
     api.post<{ address: Address }>('/addresses', body),
   delete: (id: string) => api.delete<void>(`/addresses/${id}`),
 }
@@ -93,13 +93,13 @@ export const userApi = {
 export const inviteApi = {
   list: () => api.get<{ invites: Invite[] }>('/invites'),
   create: () => api.post<{ invite: Invite }>('/invites', {}),
-  check: (code: string) => api.get<{ valid: boolean; kudos: number | null }>(`/invites/${code}`),
+  check: (code: string) => api.get<{ valid: boolean; karma: number | null }>(`/invites/${code}`),
 }
 
-export const kudosApi = {
+export const karmaApi = {
   ledger: (limit = 20, offset = 0) =>
     api.get<{ entries: LedgerEntry[]; total: number }>(
-      `/kudos/ledger?limit=${limit}&offset=${offset}`,
+      `/karma/ledger?limit=${limit}&offset=${offset}`,
     ),
 }
 

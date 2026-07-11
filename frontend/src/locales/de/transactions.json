@@ -5,6 +5,8 @@
   "noIncoming": "Noch keine Anfragen eingegangen. Sobald jemand dein Angebot anfrägt, erscheint es hier.",
   "noOutgoing": "Du hast noch keine Anfrage gestellt. Schau dir die Angebote an.",
   "contactLabel": "Kontakt",
+  "contactNowLabel": "Nimm jetzt Kontakt auf",
+  "contactNowButton": "Jetzt kontaktieren",
   "messageLabel": "Nachricht",
   "acceptButton": "Anfrage annehmen",
   "declineButton": "Anfrage ablehnen",

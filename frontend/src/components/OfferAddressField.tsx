@@ -10,7 +10,7 @@ interface OfferAddressFieldProps {
   addresses: Address[]
   showInlineCreateOnly: boolean
   selectProps: UseFormRegisterReturn
-  onAddressCreated: (id: string) => void
+  onAddressCreated: (address: Address) => void
 }
 
 export function OfferAddressField({
@@ -26,7 +26,7 @@ export function OfferAddressField({
     <FormGroup>
       <Label>{t('address')}</Label>
       {showInlineCreateOnly ? (
-        <AddressInlineCreate onCreated={onAddressCreated} />
+        <AddressInlineCreate onCreated={(addr) => onAddressCreated(addr)} />
       ) : (
         <>
           <SelectRow>
@@ -35,7 +35,7 @@ export function OfferAddressField({
               {addresses.map((a) => (
                 <option key={a.id} value={a.id}>
                   {a.label ? `${a.label} — ` : ''}
-                  {a.zip} {a.city}
+                  {[a.zip, a.city].filter(Boolean).join(' ')}
                 </option>
               ))}
             </Select>
@@ -49,9 +49,9 @@ export function OfferAddressField({
           </SelectRow>
           {showAddressForm && (
             <AddressInlineCreate
-              onCreated={(newId) => {
+              onCreated={(newAddress) => {
                 setShowAddressForm(false)
-                onAddressCreated(newId)
+                onAddressCreated(newAddress)
               }}
             />
           )}

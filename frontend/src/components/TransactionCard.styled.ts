@@ -40,6 +40,23 @@ export const TxContact = styled.p`
   letter-spacing: 0.02em;
 `
 
+export const TxContactBox = styled.div`
+  border: ${({ theme }) => theme.border};
+  border-left: 4px solid ${({ theme }) => theme.colors.accent};
+  background: ${({ theme }) => theme.colors.pastelYellow};
+  padding: ${({ theme }) => theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
+`
+
+export const TxContactBoxLabel = styled.p`
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin-bottom: ${({ theme }) => theme.spacing.xs};
+`
+
 export const TxContactLink = styled.a`
   display: inline-flex;
   align-items: center;
@@ -53,6 +70,26 @@ export const TxContactLink = styled.a`
 
   &:hover {
     color: ${({ theme }) => theme.colors.textMuted};
+  }
+`
+
+export const TxContactAction = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+  background: ${({ theme }) => theme.colors.primary};
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: ${({ theme }) => theme.border};
+
+  &:hover {
+    opacity: 0.85;
   }
 `
 

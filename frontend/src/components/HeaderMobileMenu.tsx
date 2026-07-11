@@ -52,7 +52,7 @@ export function HeaderMobileMenu({ user, pendingCount, onLogout }: HeaderMobileM
             <IconLink size={18} /> {t('nav.invites')}
           </Link>
           <Link to="/profile" onClick={() => setOpen(false)}>
-            <IconAward size={18} /> {user.kudosBalance} Kudos
+            <IconAward size={18} /> {user.karmaBalance} Karma
           </Link>
           <button onClick={onLogout}>
             <IconLogOut size={18} /> {t('nav.logout')}

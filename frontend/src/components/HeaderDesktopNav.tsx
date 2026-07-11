@@ -9,7 +9,7 @@ import {
   NavLink,
   NavLinkWrapper,
   NavButton,
-  KudoBadge,
+  KarmaBadge,
   KontoWrapper,
   DropdownMenu,
 } from './HeaderDesktopNav.styled'
@@ -54,7 +54,7 @@ export function HeaderDesktopNav({ user, pendingCount, onLogout }: HeaderDesktop
       <KontoWrapper ref={kontoRef}>
         <NavButton onClick={() => setKontoOpen((o) => !o)}>
           {t('nav.account')}
-          <KudoBadge>{user.kudosBalance} Kudos</KudoBadge>
+          <KarmaBadge>{user.karmaBalance} Karma</KarmaBadge>
         </NavButton>
         {kontoOpen && (
           <DropdownMenu>

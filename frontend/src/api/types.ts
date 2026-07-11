@@ -22,7 +22,7 @@ export interface User {
   username: string
   email: string
   role: Role
-  kudosBalance: number
+  karmaBalance: number
   createdAt: string
 }
 
@@ -31,7 +31,7 @@ export interface Address {
   userId: string
   label?: string
   zip: string
-  city: string
+  city?: string
 }
 
 export interface Offer {
@@ -44,7 +44,7 @@ export interface Offer {
   status: OfferStatus
   imageRef: string
   addressId: string
-  address: { zip: string; city: string }
+  address: { zip: string; city?: string }
   createdAt: string
   updatedAt: string
 }
@@ -63,7 +63,7 @@ export interface Transaction {
   ownerId: string
   owner?: { id: string; username: string }
   type: OfferType
-  kudos: number
+  karma: number
   status: TransactionStatus
   message?: string
   contactType?: ContactType
@@ -78,7 +78,7 @@ export interface Transaction {
 export interface Invite {
   id: string
   code: string
-  kudos: number
+  karma: number
   usedAt?: string
   usedById?: string
   createdAt: string
@@ -95,13 +95,13 @@ export interface LedgerEntry {
 export interface UserProfile {
   id: string
   username: string
-  kudosBalance: number
+  karmaBalance: number
   createdAt: string
   avgStars: number | null
   ratingCount: number
   offersGiven: number
   offersTaken: number
-  kudoHistory?: Array<{
+  karmaHistory?: Array<{
     id: string
     delta: number
     reason: LedgerReason
@@ -115,11 +115,11 @@ export interface AdminOffer {
   type: OfferType
   status: OfferStatus
   owner: { id: string; username: string }
-  address: { zip: string; city: string }
+  address: { zip: string; city?: string }
   createdAt: string
 }
 
 export interface AuthResponse {
   token: string
-  user: Pick<User, 'id' | 'username' | 'email' | 'kudosBalance'>
+  user: Pick<User, 'id' | 'username' | 'email' | 'karmaBalance'>
 }

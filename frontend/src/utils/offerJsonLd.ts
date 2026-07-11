@@ -18,7 +18,7 @@ export function buildOfferJsonLd(offer: Offer): string {
       priceCurrency: 'CHF',
       availability,
       itemCondition: 'https://schema.org/UsedCondition',
-      name: `${offer.title} – ${actionWord} in ${offer.address.city}`,
+      name: `${offer.title} – ${actionWord} in ${offer.address.city ?? offer.address.zip}`,
       areaServed: { '@type': 'Country', name: 'CH' },
       seller: { '@type': 'Person', name: offer.owner.username },
     },

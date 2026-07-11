@@ -16,9 +16,9 @@ Geprüft gegen [UX_WRITING.md](./UX_WRITING.md) und [TYPOGRAFIE.md](./TYPOGRAFIE
 | Headline | Leihen und schenken ohne Geld. |
 | Intro | Bohrmaschine, Fondue-Caquelon, Veloanhänger: Vieles steht bei deinen Nachbar*innen ungenutzt herum. Auf uslehne.ch leihst du es aus oder verschenkst, was du selbst nicht mehr brauchst. |
 | Abschnittstitel | So funktioniert's |
-| Schritt 1 | Du trittst per Einladung bei und startest mit 20 Kudos. |
+| Schritt 1 | Du trittst per Einladung bei und startest mit 20 Karma. |
 | Schritt 2 | Du fragst ein Angebot an. Die Anbieter*in meldet sich bei dir. |
-| Schritt 3 | Leihen kostet Kudos, Verleihen bringt Kudos. Geld gibt's keins. |
+| Schritt 3 | Leihen kostet Karma, Verleihen bringt Karma. Geld gibt's keins. |
 | Zugang | Zugang nur per Einladung. Scann den Code und tritt bei. |
 | QR | *(Einladungslink als QR-Code, siehe Hinweis unten)* |
 | Footer | uslehne.ch, Zürich |

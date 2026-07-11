@@ -33,6 +33,7 @@ export function OfferFormPage() {
   const navigate = useNavigate()
   const [addresses, setAddresses] = useState<Address[]>([])
   const [imageDataUrl, setImageDataUrl] = useState('')
+  const [pendingAddressId, setPendingAddressId] = useState<string | null>(null)
   const {
     register,
     handleSubmit,
@@ -57,11 +58,17 @@ export function OfferFormPage() {
     }
   }, [id, isEdit, reset])
 
-  function handleAddressCreated(newId: string) {
-    addressApi.list().then(({ addresses: a }) => {
-      setAddresses(a)
-      setValue('addressId', newId)
-    })
+  // Set addressId after the Select has mounted (addresses state updated first)
+  useEffect(() => {
+    if (pendingAddressId) {
+      setValue('addressId', pendingAddressId)
+      setPendingAddressId(null)
+    }
+  }, [pendingAddressId, addresses, setValue])
+
+  function handleAddressCreated(newAddress: Address) {
+    setAddresses((prev) => [...prev, newAddress])
+    setPendingAddressId(newAddress.id)
   }
 
   async function onSubmit(values: FormValues) {
@@ -109,7 +116,7 @@ export function OfferFormPage() {
         </FormGroup>
         <OfferAddressField
           addresses={addresses}
-          showInlineCreateOnly={!hasAddresses && !isEdit}
+          showInlineCreateOnly={!hasAddresses}
           selectProps={register('addressId', { required: true })}
           onAddressCreated={handleAddressCreated}
         />

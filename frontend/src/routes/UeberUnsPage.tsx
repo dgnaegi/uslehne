@@ -22,14 +22,14 @@ export function UeberUnsPage() {
       </Section>
 
       <Section>
-        <SectionTitle>Kudos</SectionTitle>
+        <SectionTitle>Karma</SectionTitle>
         <P>
-          Auf uslehne gibt es keine Franken. Stattdessen Kudos: eine interne Währung, bewusst vom
-          Marktwert des Objekts entkoppelt. Für eine Bohrmaschine brauchst du gleich viele Kudos
+          Auf uslehne gibt es keine Franken. Stattdessen Karma: eine interne Währung, bewusst vom
+          Marktwert des Objekts entkoppelt. Für eine Bohrmaschine brauchst du gleich viel Karma
           wie für ein Buch.
         </P>
         <P>
-          Wer viel verleiht und verschenkt, sammelt Kudos und kann selbst mehr anfragen. Vertrauen
+          Wer viel verleiht und verschenkt, sammelt Karma und kann selbst mehr anfragen. Vertrauen
           durch Gegenseitigkeit, ohne Preisschild.
         </P>
       </Section>
@@ -42,7 +42,7 @@ export function UeberUnsPage() {
           warte auf die Bestätigung.
         </P>
         <P>
-          Für Ausleihen bestätigen beide Seiten den Austausch. Danach gibt's Kudos und die
+          Für Ausleihen bestätigen beide Seiten den Austausch. Danach gibt's Karma und die
           Möglichkeit, sich gegenseitig zu bewerten.
         </P>
       </Section>

@@ -55,7 +55,7 @@ export function UserProfilePage() {
         </StatCard>
         <StatCard>
           <StatLabel>Karma</StatLabel>
-          <StatValue>{profile.kudosBalance}</StatValue>
+          <StatValue>{profile.karmaBalance}</StatValue>
         </StatCard>
         <StatCard>
           <StatLabel>Verschenkt</StatLabel>
@@ -67,14 +67,14 @@ export function UserProfilePage() {
         </StatCard>
       </StatsGrid>
 
-      {profile.kudoHistory !== undefined && (
+      {profile.karmaHistory !== undefined && (
         <>
           <SectionTitle>Karma-Verlauf</SectionTitle>
-          {profile.kudoHistory.length === 0 ? (
+          {profile.karmaHistory.length === 0 ? (
             <EmptyNote>Noch keine Karma-Aktivität.</EmptyNote>
           ) : (
             <HistoryList>
-              {profile.kudoHistory.map((entry) => (
+              {profile.karmaHistory.map((entry) => (
                 <HistoryItem key={entry.id}>
                   <HistoryDelta $positive={entry.delta > 0}>
                     {entry.delta > 0 ? '+' : ''}

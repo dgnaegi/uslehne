@@ -71,7 +71,7 @@ export function PrivacyPage() {
             <strong>Transaktionen:</strong> Anfragen zwischen Nutzenden inkl. optionaler Nachricht
           </li>
           <li>
-            <strong>Kudo-Ledger:</strong> Kontobewegungen der plattforminternen Währung
+            <strong>Karma-Verlauf:</strong> Kontobewegungen der plattforminternen Währung
           </li>
           <li>
             <strong>Einladungen:</strong> Einladungscodes und deren Nutzung

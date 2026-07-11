@@ -16,7 +16,7 @@ Schreib wie jemand, der einer Kolleg*in erklärt, was gerade passiert. Kein Supp
 
 ## Satzbau
 
-Kurze Sätze. Aktiv. Ohne Füllwörter. Kontraktionen ('s, 's) dort, wo sie natürlich klingen. Kein Fachjargon, ausser der Begriff ist geläufig (z.B. „Kudos").
+Kurze Sätze. Aktiv. Ohne Füllwörter. Kontraktionen ('s, 's) dort, wo sie natürlich klingen. Kein Fachjargon, ausser der Begriff ist geläufig (z.B. „Karma").
 
 | ✓ | ✗ |
 |---|---|
@@ -36,7 +36,7 @@ Zustand + Handlung. Keine Schuldzuweisung, keine technischen Codes, kein „leid
 | „Dieser Inhalt existiert nicht mehr." | „Nicht gefunden." |
 | „Da ist etwas schiefgelaufen. Lade die Seite neu." | „Etwas ist schiefgelaufen. Bitte Seite neu laden oder uns kontaktieren." |
 | „Bitte alle Felder prüfen." | „Ungültige Eingabe." |
-| „Du hast nicht genug Kudos für diese Anfrage." | „Nicht genügend Kudos." |
+| „Du hast nicht genug Karma für diese Anfrage." | „Nicht genügend Karma." |
 
 ## Buttons & CTAs
 

@@ -65,10 +65,10 @@ export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange, co
         )}
         <TypeFilterGroup>
           <TypeBtn $active={offerType === 'LEND'} onClick={() => handleTypeClick('LEND')}>
-            Verleihen
+            leihen
           </TypeBtn>
           <TypeBtn $active={offerType === 'GIVE'} onClick={() => handleTypeClick('GIVE')}>
-            Schenken
+            schenken
           </TypeBtn>
         </TypeFilterGroup>
       </MainRow>

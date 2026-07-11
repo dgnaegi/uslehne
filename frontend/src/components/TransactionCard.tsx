@@ -15,7 +15,10 @@ import {
   TxTitle,
   TxMeta,
   TxContact,
+  TxContactBox,
+  TxContactBoxLabel,
   TxContactLink,
+  TxContactAction,
   TxActions,
   RateRow,
 } from './TransactionCard.styled'
@@ -64,7 +67,7 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
       <TxMeta>
         <span>{t(`transactions:status.${tx.status}`)}</span>
         <span>
-          {tx.kudos} {t('common:currencyPlural', { ns: 'common' })}
+          {tx.karma} {t('common:currencyPlural', { ns: 'common' })}
         </span>
         {amOwner && tx.requester && (
           <Link to={`/users/${tx.requesterId}`}>@{tx.requester.username}</Link>
@@ -72,18 +75,51 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
         {!amOwner && tx.owner && <Link to={`/users/${tx.ownerId}`}>@{tx.owner.username}</Link>}
       </TxMeta>
       {amOwner && tx.contactType && tx.contactValue && (
-        <TxContact>
-          {t('transactions:contactLabel')}:{' '}
-          <TxContactLink
-            href={buildContactUrl(tx.contactType, tx.contactValue)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
-          </TxContactLink>
-        </TxContact>
+        tx.status === 'ACCEPTED' ? (
+          <TxContactBox>
+            <TxContactBoxLabel>{t('transactions:contactNowLabel')}</TxContactBoxLabel>
+            <TxContactLink
+              href={buildContactUrl(tx.contactType, tx.contactValue)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
+            </TxContactLink>
+            {tx.message && (
+              <TxContact style={{ marginTop: 8 }}>
+                {t('transactions:messageLabel')}: {tx.message}
+              </TxContact>
+            )}
+            <TxContactAction
+              href={buildContactUrl(tx.contactType, tx.contactValue)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />}
+              {t('transactions:contactNowButton')}
+            </TxContactAction>
+          </TxContactBox>
+        ) : (
+          <>
+            <TxContact>
+              {t('transactions:contactLabel')}:{' '}
+              <TxContactLink
+                href={buildContactUrl(tx.contactType, tx.contactValue)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
+              </TxContactLink>
+            </TxContact>
+            {tx.message && (
+              <TxContact>
+                {t('transactions:messageLabel')}: {tx.message}
+              </TxContact>
+            )}
+          </>
+        )
       )}
-      {tx.message && (
+      {!(amOwner && tx.contactType && tx.contactValue) && tx.message && (
         <TxContact>
           {t('transactions:messageLabel')}: {tx.message}
         </TxContact>

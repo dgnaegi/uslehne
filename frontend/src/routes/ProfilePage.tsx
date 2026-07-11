@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LedgerEntry } from '../api/types'
-import { kudosApi } from '../api/endpoints'
+import { karmaApi } from '../api/endpoints'
 import { REASON_LABEL, fmtDate } from '../utils/ledger'
 import { useAuth } from '../auth/AuthContext'
 import { PageWrapper, PageTitle } from '../components/Layout.styled'
@@ -21,7 +21,7 @@ export function ProfilePage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    kudosApi
+    karmaApi
       .ledger()
       .then(({ entries: e }) => setEntries(e))
       .finally(() => setLoading(false))
@@ -39,7 +39,7 @@ export function ProfilePage() {
         </ProfileRow>
         <ProfileRow>
           <span>{t('currencyPlural')}</span>
-          <strong>{user.kudosBalance}</strong>
+          <strong>{user.karmaBalance}</strong>
         </ProfileRow>
         <ProfileRow>
           <span>Rolle</span>

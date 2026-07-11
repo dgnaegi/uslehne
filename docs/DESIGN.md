@@ -38,7 +38,7 @@ The visual language of uslehne is rooted in the **International Typographic Styl
 - Hover inversions (black → yellow text, or yellow → black fill)
 - Chip/badge backgrounds (LEND type)
 - Tagline bar background
-- KudoBadge (yellow text on black)
+- KarmaBadge (yellow text on black)
 - Focus rings (as hard-offset shadow)
 
 **Never** use yellow as a decorative fill, background wash, or text color on a white surface.

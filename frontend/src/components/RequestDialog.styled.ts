@@ -15,8 +15,9 @@ export const Overlay = styled.div`
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  overflow-y: auto;
   z-index: ${({ theme }) => theme.zIndex.overlay};
   padding: ${({ theme }) => theme.spacing.md};
   animation: ${overlayIn} 0.18s ease both;

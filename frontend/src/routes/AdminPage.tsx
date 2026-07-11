@@ -99,7 +99,7 @@ export function AdminPage() {
                 <AdminCell>
                   <RoleBadge $admin={u.role === 'ADMIN'}>{u.role}</RoleBadge>
                 </AdminCell>
-                <AdminCell>{u.kudosBalance} Kudos</AdminCell>
+                <AdminCell>{u.karmaBalance} Karma</AdminCell>
               </AdminRow>
             </SwipeToDelete>
           ))}
@@ -117,7 +117,7 @@ export function AdminPage() {
                 </AdminCell>
                 <AdminCell>@{o.owner.username}</AdminCell>
                 <AdminCell>
-                  {o.address.zip} {o.address.city}
+                  {[o.address.zip, o.address.city].filter(Boolean).join(' ')}
                 </AdminCell>
                 <AdminCell>{o.type === 'LEND' ? 'Leihen' : 'Schenken'}</AdminCell>
                 <AdminCell>{o.status}</AdminCell>

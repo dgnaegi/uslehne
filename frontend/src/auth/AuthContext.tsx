@@ -5,7 +5,7 @@ import { authApi } from '../api/endpoints'
 interface AuthContextValue {
   user: User | null
   token: string | null
-  login: (token: string, user: Pick<User, 'id' | 'username' | 'email' | 'kudosBalance'>) => void
+  login: (token: string, user: Pick<User, 'id' | 'username' | 'email' | 'karmaBalance'>) => void
   logout: () => void
   refreshUser: () => Promise<void>
   isLoading: boolean
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   function login(
     newToken: string,
-    newUser: Pick<User, 'id' | 'username' | 'email' | 'kudosBalance'>,
+    newUser: Pick<User, 'id' | 'username' | 'email' | 'karmaBalance'>,
   ) {
     localStorage.setItem('token', newToken)
     setToken(newToken)

@@ -18,7 +18,7 @@ export const Fab = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 150;
+  z-index: ${({ theme }) => theme.zIndex.fab};
   transition: background 0.15s ease-out;
 
   &:hover {
@@ -35,7 +35,7 @@ export const Overlay = styled.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 149;
+  z-index: ${({ theme }) => theme.zIndex.fab - 1};
   display: flex;
   align-items: center;
   justify-content: center;

@@ -16,9 +16,9 @@ Der finale Claim/Wording wird separat festgelegt; im Code als i18n-Key `tagline`
 ### Im MVP enthalten
 1. **Account** erstellen: username, email, passwort, Adresse (aktuell nur **Stadt Zürich** erlaubt).
 2. **Angebote** erstellen & bearbeiten: Bild, Beschreibung, Adresse auswählen, Typ (Verleihen/Verschenken).
-3. **Kudo-System** (Punkte heissen **„Kudo“**, Plural **„Kudos“**; geschlossener Kreislauf, siehe §5).
-4. **Transaktionen**: Anfrage (mit Kontaktangabe) → Bestätigung durch Anbieter → Kudo-Buchung.
-5. **Einladungslinks**: nur der Eingeladene erhält 20 Kudos; Registrierung nur per Einladung.
+3. **Karma-System** (Punkte heissen **„Karma”**; geschlossener Kreislauf, siehe §5).
+4. **Transaktionen**: Anfrage (mit Kontaktangabe) → Bestätigung durch Anbieter → Karma-Buchung.
+5. **Einladungslinks**: nur der Eingeladene erhält 20 Karma; Registrierung nur per Einladung.
 6. **i18n** für alle statischen Texte (Deutsch als einzige aktive Sprache, Struktur für weitere).
 
 ### Bewusst NICHT im MVP (später)
@@ -26,7 +26,7 @@ Der finale Claim/Wording wird separat festgelegt; im Code als i18n-Key `tagline`
 - E-Mail-Versand (Verifikation, Benachrichtigungen).
 - Artikel-**Suche** und Filter über Volltext.
 - Öffentlicher Sign-up (Button existiert in der UI, ist aber deaktiviert — siehe §8).
-- Kauf von Kudos gegen Geld.
+- Kauf von Karma gegen Geld.
 
 ---
 
@@ -34,10 +34,10 @@ Der finale Claim/Wording wird separat festgelegt; im Code als i18n-Key `tagline`
 
 | Thema | Entscheidung |
 |-------|--------------|
-| Transaktionsablauf | Interessent stellt **Anfrage** (inkl. **Kontaktangabe**: Telefon **oder** E-Mail); **Anbieter bestätigt**; **dann** werden Kudos verbucht. |
+| Transaktionsablauf | Interessent stellt **Anfrage** (inkl. **Kontaktangabe**: Telefon **oder** E-Mail); **Anbieter bestätigt**; **dann** wird Karma verbucht. |
 | Bildspeicher | **Base64 in der DB** vorerst, aber hinter einer **austauschbaren Storage-Abstraktion** (später S3). |
-| Einladung | Nur **Eingeladener** bekommt 20 Kudos. USER darf **max. 3** Links erstellen, ADMIN unbegrenzt. |
-| Währung | Die Punkteinheit heisst **„Kudo“** (Plural „Kudos“). **Nicht käuflich**, Saldo **≥ 0**. |
+| Einladung | Nur **Eingeladener** bekommt 20 Karma. USER darf **max. 3** Links erstellen, ADMIN unbegrenzt. |
+| Währung | Die Punkteinheit heisst **„Karma”**. **Nicht käuflich**, Saldo **≥ 0**. |
 
 ### Empfohlener Tech-Stack (Ergänzungen zum bestehenden Stack)
 - **Backend:** `zod` (Validierung), `bcrypt` (Passwort-Hash), `jsonwebtoken` (JWT), `cuid` via Prisma.
@@ -48,9 +48,9 @@ Der finale Claim/Wording wird separat festgelegt; im Code als i18n-Key `tagline`
 
 ## 3. Datenmodell (Prisma)
 
-Erweitert `backend/prisma/schema.prisma`. **`kudosBalance` ist ein gecachter Saldo**; das
-`KudoLedger` ist die nachvollziehbare Wahrheit (Saldo = Summe aller `delta`).
-Code verwendet durchgängig den Begriff **Kudo(s)**; user-facing Label über i18n-Key `currency`.
+Erweitert `backend/prisma/schema.prisma`. **`karmaBalance` ist ein gecachter Saldo**; das
+`KarmaLedger` ist die nachvollziehbare Wahrheit (Saldo = Summe aller `delta`).
+Code verwendet durchgängig den Begriff **Karma**; user-facing Label über i18n-Key `currency`.
 
 ```prisma
 enum Role          { USER ADMIN }
@@ -66,13 +66,13 @@ model User {
   email         String   @unique
   passwordHash  String
   role          Role     @default(USER)
-  kudosBalance  Int      @default(0)          // gecachter Kudo-Saldo, nie < 0
+  karmaBalance  Int      @default(0)          // gecachter Karma-Saldo, nie < 0
   addresses     Address[]
   offers        Offer[]
   invitesCreated Invite[] @relation("InvitesCreated")
   inviteUsed    Invite?  @relation("InviteUsed")
   requests      Transaction[] @relation("Requester")
-  ledger        KudoLedger[]
+  ledger        KarmaLedger[]
   createdAt     DateTime @default(now())
 }
 
@@ -112,7 +112,7 @@ model Transaction {
   requesterId String
   ownerId     String                           // denormalisiert (Anbieter)
   type        OfferType                         // kopiert vom Offer
-  kudos       Int                              // 1 (LEND) oder 5 (GIVE)
+  karma       Int                              // 1 (LEND) oder 5 (GIVE)
   status      TransactionStatus @default(PENDING)
   message     String?                          // optionale Notiz des Interessenten
   contactType ContactType                      // PHONE | EMAIL — Pflicht bei Anfrage
@@ -127,18 +127,18 @@ model Invite {
   code        String   @unique                 // im Link enthalten
   createdBy   User     @relation("InvitesCreated", fields: [createdById], references: [id])
   createdById String
-  kudos       Int      @default(20)             // beim Einlösen dem Eingeladenen gutgeschrieben
+  karma       Int      @default(20)             // beim Einlösen dem Eingeladenen gutgeschrieben
   usedBy      User?    @relation("InviteUsed", fields: [usedById], references: [id])
   usedById    String?  @unique
   usedAt      DateTime?
   createdAt   DateTime @default(now())
 }
 
-model KudoLedger {
+model KarmaLedger {
   id            String       @id @default(cuid())
   user          User         @relation(fields: [userId], references: [id])
   userId        String
-  delta         Int                              // +/- Kudos
+  delta         Int                              // +/- Karma
   reason        LedgerReason
   transactionId String?                          // Verknüpfung zur Transaction
   createdAt     DateTime     @default(now())
@@ -160,7 +160,7 @@ Start-Invites + Beispiel-Offers für lokale Entwicklung.
                      accept            decline            cancel (requester)
                         │                 │                   │
                         ▼                 ▼                   ▼
-                 Kudos buchen         DECLINED            CANCELLED
+                 Karma buchen         DECLINED            CANCELLED
                         │
           ┌─────────────┴─────────────┐
        type=GIVE                   type=LEND
@@ -180,34 +180,34 @@ Start-Invites + Beispiel-Offers für lokale Entwicklung.
 
 **Regeln beim `accept`:**
 1. Nur der **Anbieter** der zugehörigen Offer darf akzeptieren; Status muss `PENDING` sein.
-2. Saldo-Prüfung: `requester.kudosBalance >= kudos`, sonst Fehler `INSUFFICIENT_KUDOS`.
+2. Saldo-Prüfung: `requester.karmaBalance >= karma`, sonst Fehler `INSUFFICIENT_KARMA`.
 3. In **einer DB-Transaktion** (`prisma.$transaction`):
-   - `requester.kudosBalance -= kudos`, Ledger-Eintrag (`BORROW_SPEND`/`RECEIVE_SPEND`).
-   - `owner.kudosBalance += kudos`, Ledger-Eintrag (`LEND_EARN`/`GIVE_EARN`).
+   - `requester.karmaBalance -= karma`, Ledger-Eintrag (`BORROW_SPEND`/`RECEIVE_SPEND`).
+   - `owner.karmaBalance += karma`, Ledger-Eintrag (`LEND_EARN`/`GIVE_EARN`).
    - Tx-Status setzen; Offer-Status auf `LENT` (LEND) bzw. `GIVEN` (GIVE).
    - **Alle anderen `PENDING`-Anfragen** zur selben Offer auf `DECLINED` setzen.
-4. **Kudos sind erhalten** (geschlossener Kreislauf): Anbieter gewinnt genau so viel, wie der
-   Interessent ausgibt. Neue Kudos entstehen nur durch `INVITE_BONUS` und `ADMIN_ADJUST`.
+4. **Karma ist erhalten** (geschlossener Kreislauf): Anbieter gewinnt genau so viel, wie der
+   Interessent ausgibt. Neues Karma entsteht nur durch `INVITE_BONUS` und `ADMIN_ADJUST`.
 
 Die **verbindliche** Saldo-Prüfung erfolgt erneut beim `accept`.
 
 ---
 
-## 5. Kudo-System
+## 5. Karma-System
 
-Die Punkteinheit heisst **„Kudo“** (Singular) / **„Kudos“** (Plural) — überall user-facing so
+Die Punkteinheit heisst **„Karma”** (Singular und Plural) — überall user-facing so
 benennen (i18n-Key `currency`).
 
-| Aktion | Anbieter | Interessent | `kudos` |
+| Aktion | Anbieter | Interessent | `karma` |
 |--------|:--------:|:-----------:|:-------:|
 | Verleihen / Mieten (`LEND`) | **+1** | **−1** | 1 |
 | Verschenken / Geschenk erhalten (`GIVE`) | **+5** | **−5** | 5 |
 | Einladung eingelöst | — | **+20** (Eingeladener) | 20 |
 
-- Startsaldo eines neuen Accounts = **20 Kudos** (aus dem eingelösten Invite, via `INVITE_BONUS`).
+- Startsaldo eines neuen Accounts = **20 Karma** (aus dem eingelösten Invite, via `INVITE_BONUS`).
 - **Saldo nie < 0**: jede ausgebende Aktion ist nur mit ausreichend Guthaben möglich.
-- Kudos sind **nicht käuflich** (kein Geldfluss im MVP).
-- `kudosBalance` am User ist Cache; bei Inkonsistenz aus `KudoLedger` neu berechenbar
+- Karma ist **nicht käuflich** (kein Geldfluss im MVP).
+- `karmaBalance` am User ist Cache; bei Inkonsistenz aus `KarmaLedger` neu berechenbar
   (Hilfsfunktion `recomputeBalance(userId)` vorsehen).
 
 ---
@@ -226,7 +226,7 @@ benennen (i18n-Key `currency`).
   - Statische Seiten (Landing/Claim).
 - **Auth erforderlich** (sonst 401 → Frontend leitet auf Login/Register):
   - **Anfragen/Mieten** (`POST /offers/:id/request`) und alle Transaktions-Aktionen.
-  - Angebote erstellen/bearbeiten/löschen, eigene Adressen, Invites, Kudo-Ledger, `/me`.
+  - Angebote erstellen/bearbeiten/löschen, eigene Adressen, Invites, Karma-Verlauf, `/me`.
 - Konkret: Wer als Gast auf „Anfragen/Mieten" klickt, wird zu Login/Registrierung geführt
   (nach erfolgreichem Login zurück zur Offer). Registrierung bleibt invite-only.
 
@@ -263,7 +263,7 @@ export interface ImageStorage {
 - **Invite prüfen** (`GET /invites/:code`): public, liefert `valid: boolean` (existiert &
   unbenutzt). Frontend nutzt das, um die Registrierung freizuschalten.
 - **Registrierung** verbraucht den Invite atomar: Invite als `used` markieren, User anlegen,
-  20 Kudos gutschreiben (`INVITE_BONUS`), Adresse anlegen (Zürich-Validierung).
+  20 Karma gutschreiben (`INVITE_BONUS`), Adresse anlegen (Zürich-Validierung).
 - **Öffentlicher Sign-up-Button:** in der UI **sichtbar**, aber via Feature-Flag
   `VITE_PUBLIC_SIGNUP=false` **deaktiviert**. Ohne gültigen Invite-Code zeigt das
   Registrierungsformular die Meldung `registration.inviteOnly` und der Submit ist gesperrt.
@@ -297,7 +297,7 @@ Spalte **Auth**: `–` = öffentlich (kein Login nötig), `✓` = Login nötig (
 |---|---|:--:|---|
 | POST | `/auth/register` | – | username, email, password, inviteCode, address{street,zip,city} |
 | POST | `/auth/login` | – | email/username + password → JWT |
-| GET  | `/auth/me` | ✓ | aktueller User inkl. `kudosBalance` |
+| GET  | `/auth/me` | ✓ | aktueller User inkl. `karmaBalance` |
 
 **Addresses**
 | GET | `/addresses` | ✓ | eigene Adressen |
@@ -315,7 +315,7 @@ Spalte **Auth**: `–` = öffentlich (kein Login nötig), `✓` = Login nötig (
 **Transactions** (alle Auth-pflichtig)
 | POST | `/offers/:id/request` | ✓ | Anfrage/Mieten — **Pflicht:** `contactType`+`contactValue`, optional `message` |
 | GET | `/transactions` | ✓ | `?role=incoming` (als Anbieter) \| `outgoing` (als Interessent) |
-| POST | `/transactions/:id/accept` | ✓ | Anbieter bestätigt → Kudo-Buchung |
+| POST | `/transactions/:id/accept` | ✓ | Anbieter bestätigt → Karma-Buchung |
 | POST | `/transactions/:id/decline` | ✓ | Anbieter lehnt ab |
 | POST | `/transactions/:id/cancel` | ✓ | Interessent zieht Anfrage zurück (nur PENDING) |
 | POST | `/transactions/:id/return` | ✓ | Rückgabe bei LEND bestätigen → Offer wieder verfügbar |
@@ -325,8 +325,8 @@ Spalte **Auth**: `–` = öffentlich (kein Login nötig), `✓` = Login nötig (
 | POST | `/invites` | ✓ | Link erstellen (Limit 3 für USER) |
 | GET | `/invites/:code` | – | Gültigkeit prüfen (für Registrierung) |
 
-**Kudos**
-| GET | `/kudos/ledger` | ✓ | eigene Kudo-Historie (paginiert) |
+**Karma**
+| GET | `/karma/ledger` | ✓ | eigene Karma-Historie (paginiert) |
 
 Bestehende `GET /health` (–) bleibt.
 
@@ -336,7 +336,7 @@ Bestehende `GET /health` (–) bleibt.
 
 - **Backend** gibt maschinenlesbare Codes zurück, Default-Message auf Deutsch:
   ```json
-  { "error": { "code": "INSUFFICIENT_KUDOS", "message": "Nicht genügend Kudos." } }
+  { "error": { "code": "INSUFFICIENT_KARMA", "message": "Nicht genügend Karma." } }
   ```
   Zentrale Code-Liste in `backend/src/errors.ts`. Der `errorHandler` mappt geworfene
   `AppError(code, status)` auf dieses Format.
@@ -358,7 +358,7 @@ Routing mit `react-router-dom`. **Browsen ist öffentlich** — kein globaler Au
 - **Aktions-Gate:** Der „Anfragen/Mieten"-Button ist für Gäste sichtbar; Klick ohne Login
   leitet auf `/login?redirect=/offers/:id` und kehrt nach Login zur Offer zurück.
 
-Header zeigt für eingeloggte User den **Kudo-Saldo**, für Gäste **Login/Registrieren**.
+Header zeigt für eingeloggte User den **Karma-Saldo**, für Gäste **Login/Registrieren**.
 
 ```
 src/
@@ -374,8 +374,8 @@ src/
 │   ├── MyOffersPage.(tsx|styled.ts)
 │   ├── TransactionsPage.(tsx|styled.ts)    # eingehend (inkl. Kontakt) / ausgehend, Aktionen
 │   ├── InvitesPage.(tsx|styled.ts)         # Links erstellen + Status
-│   └── ProfilePage.(tsx|styled.ts)         # Kudo-Saldo + Ledger
-└── components/                # OfferCard, ImageUpload, KudoBadge, RequestDialog, Header, ...
+│   └── ProfilePage.(tsx|styled.ts)         # Karma-Saldo + Ledger
+└── components/                # OfferCard, ImageUpload, KarmaBadge, RequestDialog, Header, ...
 ```
 - **Bild-Upload-Component:** Datei wählen → clientseitig verkleinern → Base64 → an API.
 - Jede Komponente: `Foo.tsx` (Logik) + `Foo.styled.ts` (Styling), je ≤ 150 Zeilen.
@@ -395,21 +395,21 @@ Reihenfolge = Abhängigkeit. Jede Phase endet mit grünem `lint` + `build`.
 **Phase 1 — Auth & Invites**
 - 1.1 `bcrypt`/JWT-Utils, `requireAuth`/`requireAdmin`.
 - 1.2 Invite-Routen (erstellen mit Limit, prüfen).
-- 1.3 Registrierung (Invite-Einlösung + 20 Kudos + Adresse/Zürich-Validierung), Login, `/me`.
+- 1.3 Registrierung (Invite-Einlösung + 20 Karma + Adresse/Zürich-Validierung), Login, `/me`.
 
 **Phase 2 — Angebote**
 - 2.1 Address-Routen.
 - 2.2 Offer-CRUD inkl. Bild über `imageStorage`, Ownership-Checks.
 
-**Phase 3 — Transaktionen & Kudos**
+**Phase 3 — Transaktionen & Karma**
 - 3.1 Anfrage erstellen (Kontakt-Pflicht + Validierung, Vorab-Saldoprüfung).
-- 3.2 accept/decline/cancel/return mit Kudo-Buchung in DB-Transaktion + Ledger (§4/§5).
-- 3.3 `/kudos/ledger`, `recomputeBalance`-Helper.
+- 3.2 accept/decline/cancel/return mit Karma-Buchung in DB-Transaktion + Ledger (§4/§5).
+- 3.3 `/karma/ledger`, `recomputeBalance`-Helper.
 
 **Phase 4 — Frontend Basis**
 - 4.1 i18n-Setup + `api`-Wrapper + `AuthContext`.
 - 4.2 Login/Register (mit `?invite=`-Handling, deaktivierter öffentlicher Sign-up).
-- 4.3 Header mit Kudo-Saldo, Routing/Guards.
+- 4.3 Header mit Karma-Saldo, Routing/Guards.
 
 **Phase 5 — Frontend Features**
 - 5.1 Offers-Liste/Detail + Typ-Filter.
@@ -420,7 +420,7 @@ Reihenfolge = Abhängigkeit. Jede Phase endet mit grünem `lint` + `build`.
 **Phase 6 — Abschluss**
 - 6.1 `.env.example` aktualisieren (`JWT_SECRET`, `IMAGE_STORAGE`, `VITE_PUBLIC_SIGNUP`).
 - 6.2 README/CLAUDE.md-API-Tabelle aktualisieren.
-- 6.3 Smoke-Test des End-to-End-Flows (Invite → Register → Offer → Request → Accept → Kudos).
+- 6.3 Smoke-Test des End-to-End-Flows (Invite → Register → Offer → Request → Accept → Karma).
 
 ---
 

@@ -41,17 +41,17 @@ export function OfferDetailPage() {
   const actionWord = offer?.type === 'LEND' ? 'Ausleihen' : 'Verschenken'
   usePageMeta(
     offer
-      ? `${offer.title} – ${actionWord} in ${offer.address.city} | uslehne`
+      ? `${offer.title} – ${actionWord} in ${offer.address.city ?? offer.address.zip} | uslehne`
       : 'uslehne – Ausleihen & Verschenken in der Schweiz',
     offer
-      ? `${offer.description.slice(0, 150)} – Kostenlos ${actionWord.toLowerCase()} in ${offer.address.city} (${offer.address.zip}) auf uslehne.ch.`
+      ? `${offer.description.slice(0, 150)} – Kostenlos ${actionWord.toLowerCase()} in ${[offer.address.zip, offer.address.city].filter(Boolean).join(' ')} auf uslehne.ch.`
       : undefined,
   )
   const offerJsonLd = useMemo(() => (offer ? buildOfferJsonLd(offer) : null), [offer])
 
   if (!offer) return null
 
-  const kudos = offer.type === 'LEND' ? 1 : 5
+  const karma = offer.type === 'LEND' ? 1 : 5
   const isOwner = user?.id === offer.ownerId
 
   function handleRequest() {
@@ -100,8 +100,8 @@ export function OfferDetailPage() {
         <MetaRow>
           <span>
             {offer.type === 'LEND'
-              ? t('offers:kudosCost', { count: kudos })
-              : t('offers:kudosEarn', { count: kudos })}
+              ? t('offers:karmaCost', { count: karma })
+              : t('offers:karmaEarn', { count: karma })}
           </span>
         </MetaRow>
         <ActionRow>

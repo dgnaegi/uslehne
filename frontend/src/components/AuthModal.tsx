@@ -19,7 +19,7 @@ export function AuthModal() {
   const [step, setStep] = useState<Step>('email')
   const [email, setEmail] = useState('')
   const inviteCode = urlParams.get('invite') ?? ''
-  const [inviteKudos, setInviteKudos] = useState<number | null>(null)
+  const [inviteKarma, setInviteKarma] = useState<number | null>(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -43,8 +43,8 @@ export function AuthModal() {
     try {
       const { exists } = await authApi.checkEmail(email)
       if (!exists && inviteCode) {
-        const { kudos } = await inviteApi.check(inviteCode)
-        setInviteKudos(kudos)
+        const { karma } = await inviteApi.check(inviteCode)
+        setInviteKarma(karma)
       }
       setStep(exists ? 'login' : 'register')
     } catch (err) {
@@ -95,7 +95,7 @@ export function AuthModal() {
           <AuthRegisterStep
             email={email}
             initialInviteCode={inviteCode}
-            inviteKudos={inviteKudos}
+            inviteKarma={inviteKarma}
             onBack={goBack}
           />
         )}
