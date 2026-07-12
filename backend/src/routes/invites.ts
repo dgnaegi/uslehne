@@ -48,7 +48,7 @@ router.post(
 
       const code = randomBytes(8).toString('hex')
       const invite = await db.invite.create({
-        data: { code, createdById: userId, karma: 10 },
+        data: { code, createdById: userId, karma: 3 },
         select: { id: true, code: true, karma: true, createdAt: true },
       })
       res.status(201).json({ invite })
