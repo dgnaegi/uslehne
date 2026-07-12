@@ -124,17 +124,18 @@ export const CreateBtn = styled.span`
   flex-shrink: 0;
   width: 32px;
   height: 32px;
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.accent};
-  font-size: 1.5rem;
-  font-weight: 700;
+  background: ${({ theme }) => theme.colors.surface};
+  border: ${({ theme }) => theme.border};
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 1.25rem;
+  font-weight: 400;
   line-height: 1;
   text-decoration: none;
   cursor: pointer;
   transition: opacity 0.1s;
 
   &:hover {
-    opacity: 0.75;
+    opacity: 0.6;
   }
 `
 
