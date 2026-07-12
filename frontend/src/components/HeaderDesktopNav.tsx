@@ -42,6 +42,9 @@ export function HeaderDesktopNav({ user, pendingCount, onLogout }: HeaderDesktop
           <IconShield size={14} /> Admin
         </NavLink>
       )}
+      <NavLink as={Link} to="/ueber-uns">
+        {t('nav.information')}
+      </NavLink>
       <NavLinkWrapper>
         <NavLink as={Link} to="/transactions">
           {t('nav.transactions')}

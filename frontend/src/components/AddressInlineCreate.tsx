@@ -9,7 +9,6 @@ interface Props {
 
 export function AddressInlineCreate({ onCreated }: Props) {
   const [zip, setZip] = useState('')
-  const [city, setCity] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -20,10 +19,7 @@ export function AddressInlineCreate({ onCreated }: Props) {
     }
     setSaving(true)
     try {
-      const { address } = await addressApi.create({
-        zip: zip.trim(),
-        ...(city.trim() ? { city: city.trim() } : {}),
-      })
+      const { address } = await addressApi.create({ zip: zip.trim() })
       onCreated(address)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Fehler beim Speichern.')
@@ -40,15 +36,6 @@ export function AddressInlineCreate({ onCreated }: Props) {
           onChange={(e) => setZip(e.target.value)}
           placeholder="3005"
           maxLength={10}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Ort (optional)</Label>
-        <Input
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          placeholder="Bern"
-          maxLength={100}
         />
       </FormGroup>
       {error && <ErrorMsg>{error}</ErrorMsg>}

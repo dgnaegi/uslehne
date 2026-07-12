@@ -124,7 +124,7 @@ export function OfferFormPage() {
         {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
         <FormActions>
           <Button type="submit" disabled={isSubmitting || (!hasAddresses && !isEdit)}>
-            {t('common:actions.save')}
+            {isEdit ? t('common:actions.save') : t('offers:createOffer')}
           </Button>
           <Button $variant="secondary" type="button" onClick={() => navigate(-1)}>
             {t('common:actions.cancel')}

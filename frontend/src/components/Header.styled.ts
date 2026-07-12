@@ -116,19 +116,25 @@ export const GuestAuthBtn = styled.button`
   }
 `
 
-export const AboutBtn = styled.span`
+export const CreateBtn = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-left: auto;
-  color: ${({ theme }) => theme.colors.primary};
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.accent};
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
   text-decoration: none;
   cursor: pointer;
-  flex-shrink: 0;
   transition: opacity 0.1s;
 
   &:hover {
-    opacity: 0.6;
+    opacity: 0.75;
   }
 `
 

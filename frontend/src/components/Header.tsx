@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-do
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
 import { usePendingRequests } from '../hooks/usePendingRequests'
-import { IconInfo } from '../icons'
 import { HeaderDesktopNav } from './HeaderDesktopNav'
 import { HeaderMobileMenu } from './HeaderMobileMenu'
 import {
@@ -14,7 +13,7 @@ import {
   BackHome,
   SearchWrapper,
   SearchInput,
-  AboutBtn,
+  CreateBtn,
   GuestAuthBtn,
 } from './Header.styled'
 
@@ -77,9 +76,9 @@ export function Header() {
         </SearchWrapper>
       )}
 
-      <AboutBtn as={Link} to="/ueber-uns" aria-label="Über uns">
-        <IconInfo size={22} />
-      </AboutBtn>
+      <CreateBtn as={Link} to="/offers/create" aria-label="Angebot erstellen">
+        +
+      </CreateBtn>
 
       {user ? (
         <>

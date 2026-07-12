@@ -35,7 +35,7 @@ export function OfferAddressField({
               {addresses.map((a) => (
                 <option key={a.id} value={a.id}>
                   {a.label ? `${a.label} — ` : ''}
-                  {[a.zip, a.city].filter(Boolean).join(' ')}
+                  {a.zip}
                 </option>
               ))}
             </Select>

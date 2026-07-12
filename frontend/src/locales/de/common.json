@@ -12,7 +12,8 @@
     "profile": "Profil",
     "login": "Anmelden",
     "register": "Registrieren",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "information": "Informationen"
   },
   "actions": {
     "save": "Speichern",

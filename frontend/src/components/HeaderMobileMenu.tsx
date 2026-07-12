@@ -11,6 +11,7 @@ import {
   IconAward,
   IconLogOut,
   IconShield,
+  IconInfo,
 } from '../icons'
 import { NotifDot } from './Header.styled'
 import { HamburgerWrapper, HamburgerBtn, MobileMenu } from './HeaderMobileMenu.styled'
@@ -41,6 +42,9 @@ export function HeaderMobileMenu({ user, pendingCount, onLogout }: HeaderMobileM
               <IconShield size={18} /> Admin
             </Link>
           )}
+          <Link to="/ueber-uns" onClick={() => setOpen(false)}>
+            <IconInfo size={18} /> {t('nav.information')}
+          </Link>
           <Link to="/transactions" onClick={() => setOpen(false)}>
             <IconRepeat size={18} /> {t('nav.transactions')}
             {pendingCount > 0 && <NotifDot />}

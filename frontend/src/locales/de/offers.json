@@ -11,7 +11,7 @@
   "offerTitle": "Titel",
   "description": "Beschreibung",
   "type": "Typ",
-  "address": "PLZ-Gebiet",
+  "address": "Postleitzahl",
   "image": "Bild",
   "requestButton": "Anfragen",
   "requestButtonGuest": "Anmelden zum Anfragen",
