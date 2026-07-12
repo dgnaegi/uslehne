@@ -108,9 +108,6 @@ Each app is a separate Scalingo application. Backend requires the **PostgreSQL**
 # Deploy backend (run from repo root)
 git subtree push --prefix backend scalingo-backend main
 
-# Run migrations (after every deploy that adds a migration):
-scalingo --region osc-fr1 --app uslehne run npm run db:migrate
-
 # Deploy frontend
 git subtree push --prefix frontend scalingo-frontend main
 ```

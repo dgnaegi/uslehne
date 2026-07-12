@@ -8,12 +8,14 @@
     "myOffers": "Meine Angebote",
     "transactions": "Anfragen",
     "invites": "Einladungen",
-    "account": "Konto",
-    "profile": "Profil",
     "login": "Anmelden",
     "register": "Registrieren",
     "logout": "Abmelden",
-    "information": "Informationen"
+    "information": "Informationen",
+    "search": "Suchen…",
+    "createOffer": "Angebot erstellen",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schliessen"
   },
   "actions": {
     "save": "Speichern",

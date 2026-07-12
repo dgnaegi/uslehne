@@ -31,16 +31,18 @@ export function Header() {
     setSearchValue(searchParams.get('q') ?? '')
   }, [searchParams])
 
+  useEffect(() => {
+    return () => {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+    }
+  }, [location.pathname])
+
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const val = e.target.value
     setSearchValue(val)
     if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
     searchTimerRef.current = setTimeout(() => {
-      if (isOnFeed) {
-        setSearchParams(val.trim() ? { q: val.trim() } : {}, { replace: true })
-      } else {
-        navigate(val.trim() ? `/offers?q=${encodeURIComponent(val.trim())}` : '/offers')
-      }
+      setSearchParams(val.trim() ? { q: val.trim() } : {}, { replace: true })
     }, 300)
   }
 
@@ -68,14 +70,14 @@ export function Header() {
         <SearchWrapper>
           <SearchInput
             type="search"
-            placeholder="Suchen…"
+            placeholder={t('nav.search')}
             value={searchValue}
             onChange={handleSearchChange}
           />
         </SearchWrapper>
       )}
 
-      <CreateBtn as={Link} to="/offers/new" aria-label="Angebot erstellen">
+      <CreateBtn as={Link} to="/offers/new" aria-label={t('nav.createOffer')}>
         +
       </CreateBtn>
 
