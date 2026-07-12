@@ -76,7 +76,7 @@ export function Header() {
         </SearchWrapper>
       )}
 
-      <CreateBtn as={Link} to="/offers/create" aria-label="Angebot erstellen">
+      <CreateBtn as={Link} to="/offers/new" aria-label="Angebot erstellen">
         +
       </CreateBtn>
 
