@@ -13,7 +13,7 @@ import { welcomeMail } from '../services/mailTemplates'
 
 const router = Router()
 
-const SUPER_INVITE_CODES = ['Free4All', 'Schlachthof']
+const SUPER_INVITE_CODES = ['Free4All', 'Schlachthof', 'FamSenn']
 
 const registerSchema = z.object({
   username: z
