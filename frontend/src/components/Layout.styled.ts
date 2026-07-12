@@ -1,12 +1,18 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import type { OfferType } from '../api/types'
 import { media } from '../theme'
+
+const pageIn = keyframes`
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+`
 
 export const PageWrapper = styled.main`
   max-width: ${({ theme }) => theme.maxWidth};
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing.xl};
   padding-top: calc(${({ theme }) => theme.headerHeight} + ${({ theme }) => theme.spacing.lg});
+  animation: ${pageIn} 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 
   ${media.maxSm} {
     padding: ${({ theme }) => theme.spacing.md};
@@ -39,9 +45,14 @@ export const Button = styled.button<{ $variant?: 'primary' | 'secondary' | 'dang
   color: ${({ theme, $variant }) => ($variant === 'danger' ? '#ffffff' : theme.colors.primary)};
   transition:
     background 0.15s ease-out,
-    color 0.15s ease-out;
+    color 0.15s ease-out,
+    transform 0.1s ease-out;
   text-decoration: none;
   display: inline-block;
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
 
   &:hover:not(:disabled) {
     background: ${({ theme, $variant }) =>

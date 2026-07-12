@@ -1,5 +1,10 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import type { OfferType } from '../api/types'
+
+const fadeUp = keyframes`
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+`
 
 export const DetailWrapper = styled.main`
   max-width: 860px;
@@ -32,11 +37,17 @@ export const BackLink = styled.button`
     content: '←';
     font-size: 1rem;
     line-height: 1;
+    display: inline-block;
+    transition: transform 0.18s ease-out;
   }
 
   &:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+
+  &:hover::before {
+    transform: translateX(-4px);
   }
 `
 
@@ -61,6 +72,13 @@ export const ImageBlock = styled.div`
     height: 100%;
     object-fit: cover;
     cursor: zoom-in;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  @media (hover: hover) {
+    &:hover img {
+      transform: scale(1.03);
+    }
   }
 `
 
@@ -68,6 +86,7 @@ export const InfoBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.md};
+  animation: ${fadeUp} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s both;
 `
 
 export const MetaRow = styled.div`

@@ -1,4 +1,11 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const starPop = keyframes`
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35); }
+  70%  { transform: scale(1.1); }
+  100% { transform: scale(1.2); }
+`
 
 export const Row = styled.div`
   display: inline-flex;

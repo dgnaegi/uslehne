@@ -1,6 +1,11 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { media } from '../theme'
 import { NotifDot } from './Header.styled'
+
+const dropIn = keyframes`
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+`
 
 export const DesktopNav = styled.nav`
   display: none;
@@ -86,6 +91,7 @@ export const DropdownMenu = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: ${dropIn} 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 
   a,
   button {
