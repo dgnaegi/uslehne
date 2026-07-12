@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const DEFAULT_TITLE = 'uslehne – Ausleihen & Verschenken in der Schweiz'
+const DEFAULT_TITLE = 'uslehne.ch'
 
 export function usePageMeta(title: string, description?: string): void {
   useEffect(() => {

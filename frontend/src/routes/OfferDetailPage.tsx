@@ -40,8 +40,8 @@ export function OfferDetailPage() {
   const actionWord = offer?.type === 'LEND' ? 'Ausleihen' : 'Verschenken'
   usePageMeta(
     offer
-      ? `${offer.title} – ${actionWord} in ${offer.address.city ?? offer.address.zip} | uslehne`
-      : 'uslehne – Ausleihen & Verschenken in der Schweiz',
+      ? `${offer.title} – ${actionWord} in ${offer.address.city ?? offer.address.zip} | uslehne.ch`
+      : 'uslehne.ch',
     offer
       ? `${offer.description.slice(0, 150)} – Kostenlos ${actionWord.toLowerCase()} in ${[offer.address.zip, offer.address.city].filter(Boolean).join(' ')} auf uslehne.ch.`
       : undefined,

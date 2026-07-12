@@ -36,6 +36,27 @@ export const AdminCell = styled.div`
   }
 `
 
+export const DeleteBtn = styled.button`
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.danger};
+  opacity: 0.6;
+  transition: opacity 0.15s;
+  padding: 0;
+  margin-left: auto;
+
+  &:hover {
+    opacity: 1;
+  }
+`
+
 export const RoleBadge = styled.span<{ $admin?: boolean }>`
   font-size: 0.7rem;
   font-weight: 700;

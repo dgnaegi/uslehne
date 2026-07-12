@@ -6,8 +6,9 @@ import { adminApi } from '../api/endpoints'
 import { PageWrapper, PageTitle } from '../components/Layout.styled'
 import { ErrorMsg } from '../components/Form.styled'
 import { TabBar, Tab } from './TransactionsPage.styled'
-import { AdminTable, AdminRow, AdminCell, RoleBadge } from './AdminPage.styled'
+import { AdminTable, AdminRow, AdminCell, RoleBadge, DeleteBtn } from './AdminPage.styled'
 import { SwipeToDelete } from '../components/SwipeToDelete'
+import { IconX } from '../icons/IconX'
 
 export function AdminPage() {
   const { user } = useAuth()
@@ -101,6 +102,17 @@ export function AdminPage() {
                   <RoleBadge $admin={u.role === 'ADMIN'}>{u.role}</RoleBadge>
                 </AdminCell>
                 <AdminCell>{u.karmaBalance} Karma</AdminCell>
+                {u.id !== user.id && (
+                  <DeleteBtn
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      deleteUser(u.id, u.username)
+                    }}
+                    aria-label="Benutzer löschen"
+                  >
+                    <IconX size={16} />
+                  </DeleteBtn>
+                )}
               </AdminRow>
             </SwipeToDelete>
           ))}
@@ -120,6 +132,15 @@ export function AdminPage() {
                 <AdminCell>{[o.address.zip, o.address.city].filter(Boolean).join(' ')}</AdminCell>
                 <AdminCell>{o.type === 'LEND' ? 'Leihen' : 'Schenken'}</AdminCell>
                 <AdminCell>{o.status}</AdminCell>
+                <DeleteBtn
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    deleteOffer(o.id, o.title)
+                  }}
+                  aria-label="Angebot löschen"
+                >
+                  <IconX size={16} />
+                </DeleteBtn>
               </AdminRow>
             </SwipeToDelete>
           ))}

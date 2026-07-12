@@ -19,8 +19,8 @@ export function OffersPage() {
 
   usePageMeta(
     query
-      ? `${query} – Angebote in der Schweiz | uslehne`
-      : 'Angebote ausleihen & verschenken in der Schweiz | uslehne',
+      ? `${query} – Angebote in der Schweiz | uslehne.ch`
+      : 'Angebote ausleihen & verschenken in der Schweiz | uslehne.ch',
     'Gegenstände ausleihen und kostenlos erhalten in deiner Nachbarschaft. Werkzeug, Kinderwagen, Elektronik und mehr – teilen statt kaufen auf uslehne.ch.',
   )
 
