@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-do
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
 import { usePendingRequests } from '../hooks/usePendingRequests'
-import { HeaderDesktopNav } from './HeaderDesktopNav'
 import { HeaderMobileMenu } from './HeaderMobileMenu'
 import {
   Nav,
@@ -81,10 +80,7 @@ export function Header() {
       </CreateBtn>
 
       {user ? (
-        <>
-          <HeaderDesktopNav user={user} pendingCount={pendingCount} onLogout={handleLogout} />
-          <HeaderMobileMenu user={user} pendingCount={pendingCount} onLogout={handleLogout} />
-        </>
+        <HeaderMobileMenu user={user} pendingCount={pendingCount} onLogout={handleLogout} />
       ) : (
         <GuestAuthBtn onClick={openAuthModal}>{t('nav.login')}</GuestAuthBtn>
       )}

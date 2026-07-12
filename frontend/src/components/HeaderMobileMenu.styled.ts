@@ -1,5 +1,4 @@
 import styled, { keyframes } from 'styled-components'
-import { media } from '../theme'
 import { NotifDot } from './Header.styled'
 
 const slideDown = keyframes`
@@ -12,10 +11,6 @@ export const HamburgerWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-
-  ${media.sm} {
-    display: none;
-  }
 `
 
 export const HamburgerBtn = styled.button`
