@@ -122,9 +122,8 @@ export const CreateBtn = styled.span`
   justify-content: center;
   margin-left: auto;
   flex-shrink: 0;
+  padding: ${({ theme }) => theme.spacing.xs};
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.75rem;
-  font-weight: 400;
   line-height: 1;
   text-decoration: none;
   cursor: pointer;

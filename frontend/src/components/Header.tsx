@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
+import { IconPlus } from '../icons'
 import { usePendingRequests } from '../hooks/usePendingRequests'
 import { HeaderMobileMenu } from './HeaderMobileMenu'
 import {
@@ -78,7 +79,7 @@ export function Header() {
       )}
 
       <CreateBtn as={Link} to="/offers/new" aria-label={t('nav.createOffer')}>
-        +
+        <IconPlus size={20} />
       </CreateBtn>
 
       {user ? (
