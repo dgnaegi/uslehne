@@ -122,12 +122,8 @@ export const CreateBtn = styled.span`
   justify-content: center;
   margin-left: auto;
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  background: ${({ theme }) => theme.colors.surface};
-  border: ${({ theme }) => theme.border};
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.25rem;
+  font-size: 1.75rem;
   font-weight: 400;
   line-height: 1;
   text-decoration: none;
