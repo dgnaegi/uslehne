@@ -3,7 +3,11 @@ import { APP_URL, FONT, BLACK, MUTED, layout, ctaButton } from './mailTemplates'
 const TRANSACTIONS_URL = `${APP_URL}/transactions`
 
 function esc(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 }
 
 function contactLabel(type: string): string {
@@ -60,7 +64,10 @@ export function offerAcceptedMail(opts: {
 
   return {
     subject: `Anfrage bestätigt – «${opts.offerTitle}»`,
-    html: layout(body, `${opts.ownerUsername} hat deine Anfrage bestätigt. Besprecht die nächsten Schritte.`),
+    html: layout(
+      body,
+      `${opts.ownerUsername} hat deine Anfrage bestätigt. Besprecht die nächsten Schritte.`,
+    ),
   }
 }
 
@@ -112,6 +119,9 @@ export function ratingReceivedMail(opts: {
 
   return {
     subject: `Du hast eine Bewertung erhalten – ${starStr}`,
-    html: layout(body, `${opts.raterUsername} hat dir ${starStr} für «${opts.offerTitle}» gegeben.`),
+    html: layout(
+      body,
+      `${opts.raterUsername} hat dir ${starStr} für «${opts.offerTitle}» gegeben.`,
+    ),
   }
 }

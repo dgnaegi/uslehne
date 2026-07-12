@@ -1,12 +1,14 @@
+import { OfferCategory } from '@prisma/client'
 import { db } from '../db'
-import { offerPublicSelect } from './offers'
+import { offerPublicSelect } from './offerSchemas'
 
 export async function searchOffers(opts: {
   q: string
   typeFilter?: 'LEND' | 'GIVE'
+  categoryFilter?: OfferCategory
   zips?: string[]
 }) {
-  const { q, typeFilter, zips } = opts
+  const { q, typeFilter, categoryFilter, zips } = opts
 
   const offers = await db.offer.findMany({
     where: {
@@ -16,6 +18,7 @@ export async function searchOffers(opts: {
         { description: { contains: q, mode: 'insensitive' } },
       ],
       ...(typeFilter ? { type: typeFilter } : {}),
+      ...(categoryFilter ? { category: categoryFilter } : {}),
       ...(zips?.length ? { address: { zip: { in: zips } } } : {}),
     },
     select: offerPublicSelect,

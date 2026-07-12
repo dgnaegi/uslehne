@@ -50,7 +50,11 @@ export const StepDot = styled.div<{ $state: StepState }>`
   align-items: center;
   justify-content: center;
   animation: ${({ $state }) =>
-    $state === 'active' ? css`${activePulse} 2s ease-out infinite` : 'none'};
+    $state === 'active'
+      ? css`
+          ${activePulse} 2s ease-out infinite
+        `
+      : 'none'};
 `
 
 export const StepLine = styled.div<{ $done: boolean }>`

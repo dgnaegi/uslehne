@@ -131,7 +131,7 @@ scalingo --region osc-fr1 --app uslehne run npm run db:migrate
 | Method | Path                           | Description                        |
 |--------|--------------------------------|------------------------------------|
 | GET    | /api/v1/health                 | Health + DB check                  |
-| GET    | /api/v1/offers                 | List offers (cursor, limit, zip)   |
+| GET    | /api/v1/offers                 | List offers (cursor, limit, zip, type, category, q) |
 | GET    | /api/v1/offers/:id             | Get offer by id                    |
 | POST   | /api/v1/offers                 | Create offer                       |
 | PATCH  | /api/v1/offers/:id             | Update offer                       |

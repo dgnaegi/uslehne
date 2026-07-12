@@ -1,5 +1,16 @@
 export type Role = 'USER' | 'ADMIN'
 export type OfferType = 'LEND' | 'GIVE'
+export const OFFER_CATEGORIES = [
+  'KLEIDUNG',
+  'MOEBEL',
+  'HAUSHALT',
+  'ELEKTROGERAETE',
+  'KINDER',
+  'BUECHER',
+  'HOBBY',
+  'ANDERE',
+] as const
+export type OfferCategory = (typeof OFFER_CATEGORIES)[number]
 export type OfferStatus = 'AVAILABLE' | 'LENT' | 'GIVEN' | 'ARCHIVED'
 export type TransactionStatus =
   | 'PENDING'
@@ -42,6 +53,7 @@ export interface Offer {
   title: string
   description: string
   type: OfferType
+  category: OfferCategory
   status: OfferStatus
   imageRef: string
   addressId: string

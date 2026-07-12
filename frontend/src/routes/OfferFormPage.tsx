@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import type { Address } from '../api/types'
+import type { Address, OfferCategory } from '../api/types'
+import { OFFER_CATEGORIES } from '../api/types'
 import { offerApi, addressApi } from '../api/endpoints'
 import { OfferAddressField } from '../components/OfferAddressField'
 import { OfferImageField } from '../components/OfferImageField'
@@ -21,6 +22,7 @@ interface FormValues {
   title: string
   description: string
   type: 'LEND' | 'GIVE'
+  category: OfferCategory
   addressId: string
 }
 
@@ -49,6 +51,7 @@ export function OfferFormPage() {
           title: offer.title,
           description: offer.description,
           type: offer.type,
+          category: offer.category,
           addressId: offer.addressId,
         })
         setImageDataUrl(offer.imageRef)
@@ -110,6 +113,17 @@ export function OfferFormPage() {
             <option value="">{t('offers:selectType')}</option>
             <option value="LEND">{t('common:offerType.LEND')}</option>
             <option value="GIVE">{t('common:offerType.GIVE')}</option>
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label>{t('offers:category')}</Label>
+          <Select {...register('category', { required: true })}>
+            <option value="">{t('offers:selectCategory')}</option>
+            {OFFER_CATEGORIES.map((c) => (
+              <option key={c} value={c}>
+                {t(`offers:categories.${c}`)}
+              </option>
+            ))}
           </Select>
         </FormGroup>
         <OfferAddressField

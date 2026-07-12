@@ -70,7 +70,12 @@ router.post(
             data: { karmaBalance: { decrement: tx.karma } },
           })
           await prisma.karmaLedger.create({
-            data: { userId: tx.requesterId, delta: -tx.karma, reason: borrowReason, transactionId: tx.id },
+            data: {
+              userId: tx.requesterId,
+              delta: -tx.karma,
+              reason: borrowReason,
+              transactionId: tx.id,
+            },
           })
           await prisma.user.update({
             where: { id: tx.ownerId },

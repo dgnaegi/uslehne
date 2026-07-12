@@ -12,7 +12,14 @@ router.get(
   async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await db.user.findMany({
-        select: { id: true, username: true, email: true, role: true, karmaBalance: true, createdAt: true },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          role: true,
+          karmaBalance: true,
+          createdAt: true,
+        },
         orderBy: { createdAt: 'desc' },
       })
       res.json({ users })
@@ -40,14 +47,25 @@ router.delete(
       ).map((t) => t.id)
 
       const ownerTxIds = (
-        await db.transaction.findMany({ where: { offerId: { in: offerIds } }, select: { id: true } })
+        await db.transaction.findMany({
+          where: { offerId: { in: offerIds } },
+          select: { id: true },
+        })
       ).map((t) => t.id)
 
       await db.$transaction([
         db.rating.deleteMany({
-          where: { OR: [{ raterId: id }, { ratedId: id }, { transactionId: { in: [...requesterTxIds, ...ownerTxIds] } }] },
+          where: {
+            OR: [
+              { raterId: id },
+              { ratedId: id },
+              { transactionId: { in: [...requesterTxIds, ...ownerTxIds] } },
+            ],
+          },
         }),
-        db.transaction.deleteMany({ where: { OR: [{ requesterId: id }, { offerId: { in: offerIds } }] } }),
+        db.transaction.deleteMany({
+          where: { OR: [{ requesterId: id }, { offerId: { in: offerIds } }] },
+        }),
         db.karmaLedger.deleteMany({ where: { userId: id } }),
         db.passwordResetToken.deleteMany({ where: { userId: id } }),
         db.invite.updateMany({ where: { usedById: id }, data: { usedById: null, usedAt: null } }),

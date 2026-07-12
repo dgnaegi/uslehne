@@ -38,6 +38,7 @@ export const addressApi = {
 export const offerApi = {
   list: (params?: {
     type?: 'LEND' | 'GIVE'
+    category?: string
     cursor?: string
     limit?: number
     zips?: string[]
@@ -45,6 +46,7 @@ export const offerApi = {
   }) => {
     const qs = new URLSearchParams()
     if (params?.type) qs.set('type', params.type)
+    if (params?.category) qs.set('category', params.category)
     if (params?.cursor) qs.set('cursor', params.cursor)
     if (params?.limit) qs.set('limit', String(params.limit))
     if (params?.zips?.length) qs.set('zip', params.zips.join(','))
@@ -60,12 +62,19 @@ export const offerApi = {
     title: string
     description: string
     type: string
+    category: string
     addressId: string
     image: string
   }) => api.post<{ offer: Offer }>('/offers', body),
   update: (
     id: string,
-    body: { title?: string; description?: string; image?: string; status?: string },
+    body: {
+      title?: string
+      description?: string
+      category?: string
+      image?: string
+      status?: string
+    },
   ) => api.patch<{ offer: Offer }>(`/offers/${id}`, body),
   delete: (id: string) => api.delete<void>(`/offers/${id}`),
 }

@@ -13,6 +13,7 @@
   "INVALID_CREDENTIALS": "E-Mail oder Passwort falsch.",
   "INVALID_TRANSACTION_STATUS": "Diese Aktion ist im aktuellen Status nicht möglich.",
   "OFFER_NOT_AVAILABLE": "Das Angebot ist nicht mehr verfügbar.",
+  "ALREADY_REQUESTED": "Du hast dieses Angebot bereits angefragt.",
   "ADDRESS_IN_USE": "Diese Adresse wird noch von einem Angebot verwendet.",
   "GENERIC": "Da ist etwas schiefgelaufen. Lade die Seite neu. Wenn's weiter passiert, schreib uns.",
   "RESET_TOKEN_INVALID": "Dieser Link ist ungültig oder wurde bereits verwendet.",

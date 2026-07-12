@@ -1,10 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
-import type { Offer, OfferType } from '../api/types'
+import type { Offer, OfferCategory, OfferType } from '../api/types'
 import { offerApi } from '../api/endpoints'
 
 const PAGE_SIZE = 10
 
-export function useOfferFeed(zips: string[], query?: string, offerType?: OfferType | null) {
+export function useOfferFeed(
+  zips: string[],
+  query?: string,
+  offerType?: OfferType | null,
+  category?: OfferCategory | null,
+) {
   const zipsKey = zips.join(',')
   const [offers, setOffers] = useState<Offer[]>([])
   const [nextCursor, setNextCursor] = useState<string | null>(null)
@@ -21,13 +26,14 @@ export function useOfferFeed(zips: string[], query?: string, offerType?: OfferTy
         zips: zipList.length ? zipList : undefined,
         q: query || undefined,
         type: offerType || undefined,
+        category: category || undefined,
       })
       .then(({ offers: o, nextCursor: nc }) => {
         setOffers(o)
         setNextCursor(nc)
       })
       .finally(() => setLoading(false))
-  }, [zipsKey, query, offerType])
+  }, [zipsKey, query, offerType, category])
 
   const loadMore = useCallback(() => {
     if (!nextCursor || loadingMore) return
@@ -40,13 +46,14 @@ export function useOfferFeed(zips: string[], query?: string, offerType?: OfferTy
         zips: zipList.length ? zipList : undefined,
         q: query || undefined,
         type: offerType || undefined,
+        category: category || undefined,
       })
       .then(({ offers: o, nextCursor: nc }) => {
         setOffers((prev) => [...prev, ...o])
         setNextCursor(nc)
       })
       .finally(() => setLoadingMore(false))
-  }, [nextCursor, loadingMore, zipsKey, query, offerType])
+  }, [nextCursor, loadingMore, zipsKey, query, offerType, category])
 
   return { offers, loading, loadMore, hasMore: nextCursor !== null }
 }

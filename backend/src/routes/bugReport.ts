@@ -7,7 +7,11 @@ import { AppError, ErrorCode } from '../errors'
 const router = Router()
 
 function escapeHtml(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 }
 
 router.post('/bug-report', requireAuth, async (req, res, next) => {

@@ -31,15 +31,22 @@ router.post(
       }
       if (offer.ownerId === req.user!.id) throw new AppError(ErrorCode.OWN_OFFER, 403)
 
-      const existingPending = await db.transaction.findFirst({
-        where: { offerId: offer.id, status: { in: ['PENDING', 'ACCEPTED'] } },
+      const ownOpenRequest = await db.transaction.findFirst({
+        where: {
+          offerId: offer.id,
+          requesterId: req.user!.id,
+          status: { in: ['PENDING', 'ACCEPTED'] },
+        },
       })
-      if (existingPending) throw new AppError(ErrorCode.OFFER_NOT_AVAILABLE, 409)
+      if (ownOpenRequest) throw new AppError(ErrorCode.ALREADY_REQUESTED, 409)
 
       if (body.contactType === 'EMAIL' && !EMAIL_RE.test(body.contactValue)) {
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
-      if (['SMS', 'WHATSAPP', 'SIGNAL'].includes(body.contactType) && !PHONE_RE.test(body.contactValue)) {
+      if (
+        ['SMS', 'WHATSAPP', 'SIGNAL'].includes(body.contactType) &&
+        !PHONE_RE.test(body.contactValue)
+      ) {
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
 

@@ -17,6 +17,17 @@ enum OfferType {
   GIVE
 }
 
+enum OfferCategory {
+  KLEIDUNG
+  MOEBEL
+  HAUSHALT
+  ELEKTROGERAETE
+  KINDER
+  BUECHER
+  HOBBY
+  ANDERE
+}
+
 enum OfferStatus {
   AVAILABLE
   LENT
@@ -101,6 +112,7 @@ model Offer {
   title        String
   description  String
   type         OfferType
+  category     OfferCategory
   status       OfferStatus   @default(AVAILABLE)
   imageRef     String
   address      Address       @relation(fields: [addressId], references: [id])

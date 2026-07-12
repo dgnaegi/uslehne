@@ -1,50 +1,28 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import { z } from 'zod'
-import { OfferType } from '@prisma/client'
+import { OfferCategory, OfferType } from '@prisma/client'
 import { db } from '../db'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
 import { imageStorage, withImageUrl } from '../storage/imageStorage'
 import { searchOffers } from './offerSearch'
+import { createOfferSchema, offerCategories, offerPublicSelect } from './offerSchemas'
 
 const router = Router()
-
-export const createOfferSchema = z.object({
-  title: z.string().min(1).max(80),
-  description: z.string().min(1).max(2000),
-  type: z.enum(['LEND', 'GIVE']),
-  addressId: z.string().min(1),
-  image: z.string().min(1),
-})
-
-export const patchOfferSchema = z.object({
-  title: z.string().min(1).max(80).optional(),
-  description: z.string().min(1).max(2000).optional(),
-  image: z.string().optional(),
-  status: z.enum(['ARCHIVED']).optional(),
-})
-
-export const offerPublicSelect = {
-  id: true,
-  ownerId: true,
-  addressId: true,
-  title: true,
-  description: true,
-  type: true,
-  status: true,
-  imageRef: true,
-  createdAt: true,
-  updatedAt: true,
-  owner: { select: { username: true } },
-  address: { select: { zip: true, city: true } },
-}
 
 router.get('/offers', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const typeParam = req.query.type as string | undefined
     const typeFilter: OfferType | undefined =
       typeParam === 'LEND' || typeParam === 'GIVE' ? typeParam : undefined
+
+    const categoryParam = req.query.category as string | undefined
+    const categoryFilter: OfferCategory | undefined = (
+      offerCategories as readonly string[]
+    ).includes(categoryParam ?? '')
+      ? (categoryParam as OfferCategory)
+      : undefined
 
     const zipParam = req.query.zip as string | undefined
     const zips = zipParam
@@ -56,7 +34,7 @@ router.get('/offers', async (req: Request, res: Response, next: NextFunction) =>
 
     const rawQ = (req.query.q as string | undefined)?.trim().slice(0, 80)
     if (rawQ) {
-      const offers = await searchOffers({ q: rawQ, typeFilter, zips })
+      const offers = await searchOffers({ q: rawQ, typeFilter, categoryFilter, zips })
       return res.json({ offers: offers.map(withImageUrl), nextCursor: null })
     }
 
@@ -67,6 +45,7 @@ router.get('/offers', async (req: Request, res: Response, next: NextFunction) =>
       where: {
         status: 'AVAILABLE',
         ...(typeFilter !== undefined ? { type: typeFilter } : {}),
+        ...(categoryFilter !== undefined ? { category: categoryFilter } : {}),
         ...(zips && zips.length > 0 ? { address: { zip: { in: zips } } } : {}),
       },
       select: offerPublicSelect,
@@ -129,6 +108,7 @@ router.post(
           title: body.title,
           description: body.description,
           type: body.type,
+          category: body.category,
           addressId: body.addressId,
           imageRef,
         },

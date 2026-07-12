@@ -1,5 +1,7 @@
 import { useState, useRef } from 'react'
-import type { OfferType } from '../api/types'
+import { useTranslation } from 'react-i18next'
+import type { OfferCategory, OfferType } from '../api/types'
+import { OFFER_CATEGORIES } from '../api/types'
 import { IconX, IconPlus } from '../icons'
 import {
   FilterBar,
@@ -9,15 +11,16 @@ import {
   ChipRemove,
   ZipInput,
   AddButton,
-  TypeFilterGroup,
-  TypeBtn,
 } from './ZipFilter.styled'
+import { TypeFilterGroup, TypeBtn, CategorySelect } from './ZipFilterControls.styled'
 
 interface Props {
   zips: string[]
   onZipsChange: (zips: string[]) => void
   offerType: OfferType | null
   onOfferTypeChange: (type: OfferType | null) => void
+  category: OfferCategory | null
+  onCategoryChange: (category: OfferCategory | null) => void
   compact?: boolean
 }
 
@@ -26,8 +29,11 @@ export function ZipFilter({
   onZipsChange,
   offerType,
   onOfferTypeChange,
+  category,
+  onCategoryChange,
   compact = false,
 }: Props) {
+  const { t } = useTranslation('offers')
   const [inputVal, setInputVal] = useState('')
   const [showInput, setShowInput] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -70,6 +76,19 @@ export function ZipFilter({
           </AddButton>
         )}
         <TypeFilterGroup>
+          <CategorySelect
+            $active={category !== null}
+            value={category ?? ''}
+            onChange={(e) => onCategoryChange((e.target.value as OfferCategory) || null)}
+            aria-label={t('category')}
+          >
+            <option value="">{t('filterAllCategories')}</option>
+            {OFFER_CATEGORIES.map((c) => (
+              <option key={c} value={c}>
+                {t(`categories.${c}`)}
+              </option>
+            ))}
+          </CategorySelect>
           <TypeBtn $active={offerType === 'LEND'} onClick={() => handleTypeClick('LEND')}>
             leihen
           </TypeBtn>

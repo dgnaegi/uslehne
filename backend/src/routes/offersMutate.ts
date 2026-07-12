@@ -5,7 +5,7 @@ import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode, assertFound, assertOwns } from '../errors'
 import { imageStorage, withImageUrl } from '../storage/imageStorage'
-import { patchOfferSchema, offerPublicSelect } from './offers'
+import { patchOfferSchema, offerPublicSelect } from './offerSchemas'
 
 const router = Router()
 
@@ -26,6 +26,7 @@ router.patch(
         data: {
           ...(body.title !== undefined ? { title: body.title } : {}),
           ...(body.description !== undefined ? { description: body.description } : {}),
+          ...(body.category !== undefined ? { category: body.category } : {}),
           ...(imageRef !== undefined ? { imageRef } : {}),
           ...(body.status !== undefined ? { status: body.status } : {}),
         },
