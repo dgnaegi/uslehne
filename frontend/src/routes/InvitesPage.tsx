@@ -4,7 +4,7 @@ import type { Invite } from '../api/types'
 import { inviteApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
 import { PageWrapper, PageTitle, Button, ErrorMsg } from '../components/Layout.styled'
-import { InviteCard, InviteCode, InviteStatus, InviteActions, TopBar } from './InvitesPage.styled'
+import { InviteCard, InviteCode, InviteStatus, InviteActions, TopBar, InfoText } from './InvitesPage.styled'
 
 const getInviteBase = () => `${window.location.origin}/register?invite=`
 
@@ -48,6 +48,7 @@ export function InvitesPage() {
           {atLimit ? t('invites:limitReached') : t('invites:createInvite')}
         </Button>
       </TopBar>
+      <InfoText>{t('invites:info')}</InfoText>
       {error && <ErrorMsg>{error}</ErrorMsg>}
       {loading ? (
         <p>{t('common:actions.loading')}</p>

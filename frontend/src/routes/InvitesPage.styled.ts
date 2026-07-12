@@ -37,3 +37,9 @@ export const InviteStatus = styled.p<{ $used: boolean }>`
 export const InviteActions = styled.div`
   flex-shrink: 0;
 `
+
+export const InfoText = styled.p`
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+`

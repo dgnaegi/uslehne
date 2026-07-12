@@ -1,6 +1,7 @@
 {
   "title": "Einladungen",
   "createInvite": "Einladungslink erstellen",
+  "info": "Du kannst bis zu 3 Einladungslinks erstellen. Wenn jemand deinen Link nutzt, erhältst du 1 Karma.",
   "noInvites": "Noch keine Links erstellt. Erstell einen für deine Nachbar*innen.",
   "limitReached": "Du hast das Maximum von 3 Links erreicht.",
   "copyLink": "Link kopieren",

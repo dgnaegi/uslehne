@@ -28,6 +28,32 @@ export const P = styled.p`
   margin-bottom: ${({ theme }) => theme.spacing.sm};
 `
 
+export const KarmaList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: ${({ theme }) => theme.spacing.sm} 0;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+`
+
+export const KarmaRow = styled.li<{ $positive?: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.text};
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  span:last-child {
+    font-weight: 700;
+    color: ${({ $positive, theme }) => ($positive ? theme.colors.success : theme.colors.error)};
+  }
+`
+
 export const Tag = styled.span`
   display: inline-block;
   font-size: 0.7rem;

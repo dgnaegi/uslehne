@@ -78,7 +78,7 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 }
 
 function App() {
-  const { isAuthModalOpen } = useAuth()
+  const { isAuthModalOpen, user } = useAuth()
   const location = useLocation()
   const showFooter = location.pathname !== '/offers'
 
@@ -165,7 +165,7 @@ function App() {
         </Routes>
       </Suspense>
       {showFooter && <AppFooter />}
-      <BugReportButton />
+      {user && <BugReportButton />}
     </>
   )
 }

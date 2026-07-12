@@ -1,5 +1,5 @@
 import { PageWrapper, PageTitle } from '../components/Layout.styled'
-import { Lead, Section, SectionTitle, P, Tag } from './UeberUnsPage.styled'
+import { Lead, Section, SectionTitle, P, Tag, KarmaList, KarmaRow } from './UeberUnsPage.styled'
 
 export function UeberUnsPage() {
   return (
@@ -12,12 +12,11 @@ export function UeberUnsPage() {
       </Lead>
 
       <Section>
-        <Tag>Kein Startup</Tag>
+        <Tag>Keine kommerziellen Interessen</Tag>
         <P>
-          Wir sind Daniel und Rahel, aus Zürich. Keine Investor*innen, kein Risikokapital. Dank
-          KI-unterstützter Entwicklung sind gemeinnützige Applikationen heute ohne finanzielle
-          Unterstützung machbar. Was früher ein ganzes Entwicklerteam gebraucht hätte, können heute
-          zwei Menschen mit einer Idee aufbauen.
+          Wir sind Daniel und Rahel, aus Zürich. uslehne ist ein Projekt ohne finanzielle Absichten,
+          und das soll so bleiben. Dank KI-unterstützter Entwicklung lässt sich so etwas heute zu
+          zweit aufbauen und betreiben, ohne dass dahinter ein Geschäftsmodell stecken muss.
         </P>
       </Section>
 
@@ -32,6 +31,14 @@ export function UeberUnsPage() {
           Wer viel verleiht und verschenkt, sammelt Karma und kann selbst mehr anfragen. Vertrauen
           durch Gegenseitigkeit, ohne Preisschild.
         </P>
+        <KarmaList>
+          <KarmaRow $positive><span>Registrierung via Einladung</span><span>+10</span></KarmaRow>
+          <KarmaRow $positive><span>Jemanden einladen</span><span>+1</span></KarmaRow>
+          <KarmaRow $positive><span>Etwas verleihen</span><span>+1</span></KarmaRow>
+          <KarmaRow><span>Etwas ausleihen</span><span>-1</span></KarmaRow>
+          <KarmaRow $positive><span>Etwas verschenken</span><span>+5</span></KarmaRow>
+          <KarmaRow><span>Etwas erhalten</span><span>-5</span></KarmaRow>
+        </KarmaList>
       </Section>
 
       <Section>

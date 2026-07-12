@@ -43,7 +43,7 @@ router.post(
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
 
-      const karma = offer.type === 'LEND' ? 1 : 5
+      const karma = offer.type === 'LEND' ? 1 : 2
       const requester = await db.user.findUniqueOrThrow({ where: { id: req.user!.id } })
       if (requester.karmaBalance < karma) throw new AppError(ErrorCode.INSUFFICIENT_KARMA, 402)
 

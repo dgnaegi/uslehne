@@ -13,7 +13,7 @@ import { welcomeMail } from '../services/mailTemplates'
 
 const router = Router()
 
-const SUPER_INVITE_CODE = 'Free4All'
+const SUPER_INVITE_CODES = ['Free4All', 'Schlachthof']
 
 const registerSchema = z.object({
   username: z
@@ -52,9 +52,9 @@ router.post(
     try {
       const { username, email, password, inviteCode } = req.body as z.infer<typeof registerSchema>
 
-      const isSuper = inviteCode === SUPER_INVITE_CODE
+      const isSuper = SUPER_INVITE_CODES.includes(inviteCode)
       let inviteId: string | null = null
-      let inviteKarma = 10
+      let inviteKarma = 3
 
       if (!isSuper) {
         const invite = await db.invite.findUnique({ where: { code: inviteCode } })
@@ -85,9 +85,17 @@ router.post(
           },
         })
         if (inviteId) {
-          await tx.invite.update({
+          const usedInvite = await tx.invite.update({
             where: { id: inviteId },
             data: { usedById: newUser.id, usedAt: new Date() },
+            select: { createdById: true },
+          })
+          await tx.karmaLedger.create({
+            data: { userId: usedInvite.createdById, delta: 1, reason: 'INVITE_REWARD' },
+          })
+          await tx.user.update({
+            where: { id: usedInvite.createdById },
+            data: { karmaBalance: { increment: 1 } },
           })
         }
         await tx.karmaLedger.create({
