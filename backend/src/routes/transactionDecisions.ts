@@ -32,6 +32,10 @@ router.post(
           where: { offerId: tx.offerId, id: { not: tx.id }, status: 'PENDING' },
           data: { status: 'DECLINED' },
         }),
+        db.offer.update({
+          where: { id: tx.offerId },
+          data: { status: 'LENT' },
+        }),
       ])
 
       const owner = await db.user.findUnique({

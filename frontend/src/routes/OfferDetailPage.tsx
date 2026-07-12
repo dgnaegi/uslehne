@@ -50,7 +50,7 @@ export function OfferDetailPage() {
 
   if (!offer) return null
 
-  const karma = offer.type === 'LEND' ? 1 : 5
+  const karma = offer.type === 'LEND' ? 1 : 2
   const isOwner = user?.id === offer.ownerId
 
   function handleRequest() {

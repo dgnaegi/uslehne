@@ -2,6 +2,7 @@ import type { LedgerReason } from '../api/types'
 
 export const REASON_LABEL: Record<LedgerReason, string> = {
   INVITE_BONUS: 'Einladungsbonus',
+  INVITE_REWARD: 'Einladungsbelohnung',
   LEND_EARN: 'Verleihen',
   BORROW_SPEND: 'Ausleihen',
   GIVE_EARN: 'Verschenken',

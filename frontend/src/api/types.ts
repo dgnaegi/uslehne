@@ -11,6 +11,7 @@ export type TransactionStatus =
 export type ContactType = 'SMS' | 'WHATSAPP' | 'SIGNAL' | 'EMAIL'
 export type LedgerReason =
   | 'INVITE_BONUS'
+  | 'INVITE_REWARD'
   | 'LEND_EARN'
   | 'BORROW_SPEND'
   | 'GIVE_EARN'

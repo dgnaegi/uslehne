@@ -16,12 +16,17 @@ export function usePendingRequests(): number {
 
     async function fetch() {
       try {
-        const res = await transactionApi.list('incoming')
+        const res = await transactionApi.list('open')
         if (!cancelled) {
           setCount(
-            res.transactions.filter(
-              (t) => t.status === 'PENDING' || (t.status === 'ACCEPTED' && !t.ownerConfirmed),
-            ).length,
+            res.transactions.filter((t) => {
+              const amOwner = t.ownerId === user!.id
+              if (amOwner) {
+                return t.status === 'PENDING' || (t.status === 'ACCEPTED' && !t.ownerConfirmed)
+              } else {
+                return t.status === 'ACCEPTED' && !t.requesterConfirmed
+              }
+            }).length,
           )
         }
       } catch {
