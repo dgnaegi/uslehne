@@ -121,11 +121,7 @@ git subtree push --prefix backend scalingo main
 git subtree push --prefix frontend scalingo main
 ```
 
-First deploy only — run DB migrations on the server:
-
-```bash
-scalingo --region osc-fr1 --app uslehne run -- npm --prefix backend run db:migrate
-```
+DB migrations run automatically on every backend deploy via the `postdeploy` hook in `backend/Procfile`. If the migration fails, the deploy is rejected and the old version keeps running. See CLAUDE.md for details.
 
 ---
 

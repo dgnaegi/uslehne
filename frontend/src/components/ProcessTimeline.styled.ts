@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 
 const activePulse = keyframes`
   0%   { box-shadow: 0 0 0 0 rgba(255, 214, 0, 0.7); }
@@ -50,7 +50,7 @@ export const StepDot = styled.div<{ $state: StepState }>`
   align-items: center;
   justify-content: center;
   animation: ${({ $state }) =>
-    $state === 'active' ? `${activePulse} 2s ease-out infinite` : 'none'};
+    $state === 'active' ? css`${activePulse} 2s ease-out infinite` : 'none'};
 `
 
 export const StepLine = styled.div<{ $done: boolean }>`

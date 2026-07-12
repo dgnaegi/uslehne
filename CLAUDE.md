@@ -112,6 +112,20 @@ git subtree push --prefix backend scalingo-backend main
 git subtree push --prefix frontend scalingo-frontend main
 ```
 
+### Migrations on deploy
+
+Migrations run automatically: the backend `Procfile` defines `postdeploy: npm run db:migrate`, so no manual migration step is needed after deploying.
+
+Despite the name, Scalingo's `postdeploy` hook behaves like a pre-release step: build, start new containers (no traffic yet), run the hook, and only on success switch routing to the new version. If the migration fails, the deploy is rejected with `hook-error` and the old version keeps running. There is no separate predeploy hook on Scalingo.
+
+Caveat: while the migration runs, the old code still serves traffic against the new schema. Breaking schema changes (dropping or renaming columns) should therefore be done in two deploys (expand/contract): first add the new column with code that handles both, remove the old one in a later deploy.
+
+To run migrations manually anyway:
+
+```bash
+scalingo --region osc-fr1 --app uslehne run npm run db:migrate
+```
+
 ## API Routes
 
 | Method | Path                           | Description                        |
