@@ -86,7 +86,7 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
               {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
             </TxContactLink>
             {tx.message && (
-              <TxContact style={{ marginTop: 8 }}>
+              <TxContact $mt>
                 {t('transactions:messageLabel')}: {tx.message}
               </TxContact>
             )}
@@ -134,7 +134,7 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
         <RateRow>
           {hasRated ? (
             <>
-              <span>Bewertet:</span>
+              <span>{t('transactions:ratedLabel')}:</span>
               <StarRating
                 value={tx.ratings.find((r) => r.raterId === myId)?.stars ?? null}
                 readOnly
@@ -142,9 +142,9 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
             </>
           ) : (
             <>
-              <span>Bewerten:</span>
+              <span>{t('transactions:rateLabel')}:</span>
               <StarRating value={pendingStars} onChange={setPendingStars} />
-              {pendingStars && <Button onClick={submitRating}>Bewertung abgeben</Button>}
+              {pendingStars && <Button onClick={submitRating}>{t('transactions:submitRating')}</Button>}
             </>
           )}
         </RateRow>

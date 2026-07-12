@@ -1,6 +1,6 @@
 import { APP_URL, FONT, BLACK, MUTED, layout, ctaButton } from './mailTemplates'
 
-const TRANSACTIONS_URL = `${APP_URL}/transaktionen`
+const TRANSACTIONS_URL = `${APP_URL}/transactions`
 
 function esc(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -108,7 +108,7 @@ export function ratingReceivedMail(opts: {
     ${h1('Neue Bewertung')}
     ${p(`Hallo ${esc(opts.username)},`)}
     ${p(`<strong>${esc(opts.raterUsername)}</strong> hat dir für <strong>«${esc(opts.offerTitle)}»</strong> ${muted}${starStr}</span> gegeben.`)}
-    ${ctaButton(APP_URL, 'Mein Profil ansehen')}`
+    ${ctaButton(`${APP_URL}/profile`, 'Mein Profil ansehen')}`
 
   return {
     subject: `Du hast eine Bewertung erhalten – ${starStr}`,

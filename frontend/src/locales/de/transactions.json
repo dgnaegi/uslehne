@@ -38,6 +38,9 @@
     "messagePlaceholderGive": "Warum möchtest du den Gegenstand haben? Was planst du damit?",
     "success": "Anfrage gesendet. Die Anbieter*in meldet sich bald bei dir."
   },
+  "ratedLabel": "Bewertet",
+  "rateLabel": "Bewerten",
+  "submitRating": "Bewertung abgeben",
   "status": {
     "PENDING": "Ausstehend",
     "ACCEPTED": "Bestätigt",

@@ -1,42 +1,15 @@
 import { useNavigate } from 'react-router-dom'
-import { PageWrapper, PageTitle, Button } from '../components/Layout.styled'
-import styled from 'styled-components'
-
-const Section = styled.section`
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-`
-
-const H2 = styled.h2`
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
-  margin-top: ${({ theme }) => theme.spacing.lg};
-`
-
-const P = styled.p`
-  color: ${({ theme }) => theme.colors.text};
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
-  max-width: 680px;
-`
-
-const Ul = styled.ul`
-  padding-left: ${({ theme }) => theme.spacing.lg};
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
-  max-width: 680px;
-
-  li {
-    margin-bottom: ${({ theme }) => theme.spacing.xs};
-  }
-`
+import { PageWrapper, PageTitle } from '../components/Layout.styled'
+import { BackButton, Section, H2, P, Ul } from './PrivacyPage.styled'
 
 export function PrivacyPage() {
   const navigate = useNavigate()
 
   return (
     <PageWrapper>
-      <Button $variant="secondary" onClick={() => navigate(-1)} style={{ marginBottom: '24px' }}>
+      <BackButton $variant="secondary" onClick={() => navigate(-1)}>
         ← Zurück
-      </Button>
+      </BackButton>
       <PageTitle>Datenschutzerklärung</PageTitle>
       <P>
         Wir nehmen den Schutz deiner Daten ernst — fast so ernst wie das Ausleihen von

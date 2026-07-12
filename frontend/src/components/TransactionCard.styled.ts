@@ -33,9 +33,10 @@ export const TxMeta = styled.div`
   flex-wrap: wrap;
 `
 
-export const TxContact = styled.p`
+export const TxContact = styled.p<{ $mt?: boolean }>`
   font-size: 0.88rem;
   font-weight: 600;
+  margin-top: ${({ theme, $mt }) => ($mt ? theme.spacing.sm : '0')};
   margin-bottom: ${({ theme }) => theme.spacing.xs};
   letter-spacing: 0.02em;
 `
