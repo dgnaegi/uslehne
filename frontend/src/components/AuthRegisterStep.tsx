@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { authApi } from '../api/endpoints'
 import { apiMsg } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
-import { FormGroup, Label, Input, Button, ErrorMsg } from './Layout.styled'
+import { Button } from './Layout.styled'
+import { FormGroup, Label, Input, ErrorMsg } from './Form.styled'
 import { PasswordField } from './PasswordField'
 import { ModalTitle, EmailDisplay, InviteBonus, BackBtn } from './AuthModal.styled'
 
@@ -68,7 +69,9 @@ export function AuthRegisterStep({
             <Input value={inviteCode} onChange={(e) => setInviteCode(e.target.value)} required />
           </FormGroup>
         )}
-        {inviteKarma !== null && <InviteBonus>{t('inviteBonus', { karma: inviteKarma })}</InviteBonus>}
+        {inviteKarma !== null && (
+          <InviteBonus>{t('inviteBonus', { karma: inviteKarma })}</InviteBonus>
+        )}
         {error && <ErrorMsg>{error}</ErrorMsg>}
         <Button type="submit" disabled={loading}>
           {t('registerButton')}

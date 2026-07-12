@@ -3,8 +3,16 @@ import { useTranslation } from 'react-i18next'
 import type { Invite } from '../api/types'
 import { inviteApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
-import { PageWrapper, PageTitle, Button, ErrorMsg } from '../components/Layout.styled'
-import { InviteCard, InviteCode, InviteStatus, InviteActions, TopBar, InfoText } from './InvitesPage.styled'
+import { PageWrapper, PageTitle, Button } from '../components/Layout.styled'
+import { ErrorMsg } from '../components/Form.styled'
+import {
+  InviteCard,
+  InviteCode,
+  InviteStatus,
+  InviteActions,
+  TopBar,
+  InfoText,
+} from './InvitesPage.styled'
 
 const getInviteBase = () => `${window.location.origin}/register?invite=`
 

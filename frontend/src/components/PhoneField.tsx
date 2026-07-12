@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { ContactType } from '../api/types'
-import { Select, FormGroup, Label, Input, Button, SelectRow, AddIconButton } from './Layout.styled'
+import { Button } from './Layout.styled'
+import { Select, FormGroup, Label, Input, SelectRow, AddIconButton } from './Form.styled'
 import { InlineForm, TypeButtons, TypeButton } from './PhoneField.styled'
 import { IconPlus, IconMinus } from '../icons'
 
@@ -22,7 +23,11 @@ function loadContacts(userId: string): SavedContact[] {
   }
 }
 
-function initContacts(userId: string, selectedType: ContactType, selectedValue: string): SavedContact[] {
+function initContacts(
+  userId: string,
+  selectedType: ContactType,
+  selectedValue: string,
+): SavedContact[] {
   const loaded = loadContacts(userId)
   if (!selectedValue) return loaded
   const exists = loaded.some((c) => c.type === selectedType && c.value === selectedValue)

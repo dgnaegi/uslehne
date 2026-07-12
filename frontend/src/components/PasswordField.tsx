@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FormGroup, Label, Input } from './Layout.styled'
+import { FormGroup, Label, Input } from './Form.styled'
 import { IconEye, IconEyeOff } from '../icons'
 import { PasswordWrapper, EyeBtn } from './PasswordField.styled'
 

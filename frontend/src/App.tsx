@@ -1,14 +1,16 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route, Navigate, useSearchParams, useNavigate, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from './auth/AuthContext'
 import { Header } from './components/Header'
 import { AuthModal } from './components/AuthModal'
-import { AuthPrompt, Button } from './components/Layout.styled'
 import { AppFooter } from './components/AppFooter'
 import { BugReportButton } from './components/BugReportButton'
+import { PrivateRoute } from './components/PrivateRoute'
+import { RegisterRedirect } from './components/RegisterRedirect'
 
-const OffersPage = lazy(() => import('./routes/OffersPage').then((m) => ({ default: m.OffersPage })))
+const OffersPage = lazy(() =>
+  import('./routes/OffersPage').then((m) => ({ default: m.OffersPage })),
+)
 const OfferDetailPage = lazy(() =>
   import('./routes/OfferDetailPage').then((m) => ({ default: m.OfferDetailPage })),
 )
@@ -45,37 +47,7 @@ const ForgotPasswordPage = lazy(() =>
 const ResetPasswordPage = lazy(() =>
   import('./routes/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage })),
 )
-const AdminPage = lazy(() =>
-  import('./routes/AdminPage').then((m) => ({ default: m.AdminPage })),
-)
-
-function RegisterRedirect() {
-  const [params] = useSearchParams()
-  const invite = params.get('invite')
-  const navigate = useNavigate()
-  const { openAuthModal } = useAuth()
-
-  useEffect(() => {
-    openAuthModal()
-    navigate(invite ? `/offers?invite=${invite}` : '/offers', { replace: true })
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  return null
-}
-
-function PrivateRoute({ children }: { children: React.ReactNode }) {
-  const { user, isLoading, openAuthModal } = useAuth()
-  if (isLoading) return null
-  if (!user) {
-    return (
-      <AuthPrompt>
-        <p>Bitte melde dich an.</p>
-        <Button onClick={openAuthModal}>Anmelden</Button>
-      </AuthPrompt>
-    )
-  }
-  return <>{children}</>
-}
+const AdminPage = lazy(() => import('./routes/AdminPage').then((m) => ({ default: m.AdminPage })))
 
 function App() {
   const { isAuthModalOpen, user } = useAuth()

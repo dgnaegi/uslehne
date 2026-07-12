@@ -24,20 +24,38 @@ export function UeberUnsPage() {
         <SectionTitle>Karma</SectionTitle>
         <P>
           Auf uslehne gibt es keine Franken. Stattdessen Karma: eine interne Währung, bewusst vom
-          Marktwert des Objekts entkoppelt. Für eine Bohrmaschine brauchst du gleich viel Karma
-          wie für ein Buch.
+          Marktwert des Objekts entkoppelt. Für eine Bohrmaschine brauchst du gleich viel Karma wie
+          für ein Buch.
         </P>
         <P>
           Wer viel verleiht und verschenkt, sammelt Karma und kann selbst mehr anfragen. Vertrauen
           durch Gegenseitigkeit, ohne Preisschild.
         </P>
         <KarmaList>
-          <KarmaRow $positive><span>Registrierung via Einladung</span><span>+10</span></KarmaRow>
-          <KarmaRow $positive><span>Jemanden einladen</span><span>+1</span></KarmaRow>
-          <KarmaRow $positive><span>Etwas verleihen</span><span>+1</span></KarmaRow>
-          <KarmaRow><span>Etwas ausleihen</span><span>-1</span></KarmaRow>
-          <KarmaRow $positive><span>Etwas verschenken</span><span>+5</span></KarmaRow>
-          <KarmaRow><span>Etwas erhalten</span><span>-5</span></KarmaRow>
+          <KarmaRow $positive>
+            <span>Registrierung via Einladung</span>
+            <span>+10</span>
+          </KarmaRow>
+          <KarmaRow $positive>
+            <span>Jemanden einladen</span>
+            <span>+1</span>
+          </KarmaRow>
+          <KarmaRow $positive>
+            <span>Etwas verleihen</span>
+            <span>+1</span>
+          </KarmaRow>
+          <KarmaRow>
+            <span>Etwas ausleihen</span>
+            <span>-1</span>
+          </KarmaRow>
+          <KarmaRow $positive>
+            <span>Etwas verschenken</span>
+            <span>+5</span>
+          </KarmaRow>
+          <KarmaRow>
+            <span>Etwas erhalten</span>
+            <span>-5</span>
+          </KarmaRow>
         </KarmaList>
       </Section>
 

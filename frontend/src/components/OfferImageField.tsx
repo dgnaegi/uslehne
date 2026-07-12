@@ -1,14 +1,10 @@
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { resizeImage } from '../utils/imageResize'
-import { FormGroup, Label } from './Layout.styled'
+import { FormGroup, Label } from './Form.styled'
 import { AspectRatioHint } from './AspectRatioHint'
 import { IconRepeat } from '../icons'
-import {
-  ImagePreview,
-  ImagePreviewWrapper,
-  ReplaceImageButton,
-} from './OfferImageField.styled'
+import { ImagePreview, ImagePreviewWrapper, ReplaceImageButton } from './OfferImageField.styled'
 
 interface OfferImageFieldProps {
   value: string

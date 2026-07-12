@@ -3,7 +3,7 @@ import type { UseFormRegisterReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import type { Address } from '../api/types'
 import { AddressInlineCreate } from './AddressInlineCreate'
-import { FormGroup, Label, Select, SelectRow, AddIconButton } from './Layout.styled'
+import { FormGroup, Label, Select, SelectRow, AddIconButton } from './Form.styled'
 import { IconPlus } from '../icons'
 
 interface OfferAddressFieldProps {

@@ -70,7 +70,8 @@ export function OfferCard({ offer, onSwipeRight }: Props) {
         <CardTitle>{offer.title}</CardTitle>
         <CardMeta>
           <CardZip>
-            <IconMapPin size={14} /> {[offer.address.zip, offer.address.city].filter(Boolean).join(' ')}
+            <IconMapPin size={14} />{' '}
+            {[offer.address.zip, offer.address.city].filter(Boolean).join(' ')}
           </CardZip>
           <CardOwner>@{offer.owner.username}</CardOwner>
         </CardMeta>

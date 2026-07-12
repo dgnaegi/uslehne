@@ -6,18 +6,16 @@ import type { Address } from '../api/types'
 import { offerApi, addressApi } from '../api/endpoints'
 import { OfferAddressField } from '../components/OfferAddressField'
 import { OfferImageField } from '../components/OfferImageField'
+import { PageWrapper, PageTitle, Button } from '../components/Layout.styled'
 import {
-  PageWrapper,
-  PageTitle,
   FormGroup,
   FormActions,
   Label,
   Input,
   Textarea,
   Select,
-  Button,
   ErrorMsg,
-} from '../components/Layout.styled'
+} from '../components/Form.styled'
 
 interface FormValues {
   title: string

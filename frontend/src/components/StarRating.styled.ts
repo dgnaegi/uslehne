@@ -31,7 +31,8 @@ export const Star = styled.button<{ $filled: boolean; $interactive: boolean }>`
   }
 
   &:hover {
-    animation: ${({ $interactive }) => ($interactive ? `${starPop} 0.22s ease-out forwards` : 'none')};
+    animation: ${({ $interactive }) =>
+      $interactive ? `${starPop} 0.22s ease-out forwards` : 'none'};
   }
 
   &:active {

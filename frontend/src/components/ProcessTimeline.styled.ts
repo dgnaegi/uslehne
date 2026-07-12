@@ -49,7 +49,8 @@ export const StepDot = styled.div<{ $state: StepState }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: ${({ $state }) => ($state === 'active' ? `${activePulse} 2s ease-out infinite` : 'none')};
+  animation: ${({ $state }) =>
+    $state === 'active' ? `${activePulse} 2s ease-out infinite` : 'none'};
 `
 
 export const StepLine = styled.div<{ $done: boolean }>`

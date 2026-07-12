@@ -74,8 +74,10 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
         )}
         {!amOwner && tx.owner && <Link to={`/users/${tx.ownerId}`}>@{tx.owner.username}</Link>}
       </TxMeta>
-      {amOwner && tx.contactType && tx.contactValue && (
-        tx.status === 'ACCEPTED' ? (
+      {amOwner &&
+        tx.contactType &&
+        tx.contactValue &&
+        (tx.status === 'ACCEPTED' ? (
           <TxContactBox>
             <TxContactBoxLabel>{t('transactions:contactNowLabel')}</TxContactBoxLabel>
             <TxContactLink
@@ -117,8 +119,7 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
               </TxContact>
             )}
           </>
-        )
-      )}
+        ))}
       {!(amOwner && tx.contactType && tx.contactValue) && tx.message && (
         <TxContact>
           {t('transactions:messageLabel')}: {tx.message}
@@ -144,7 +145,9 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
             <>
               <span>{t('transactions:rateLabel')}:</span>
               <StarRating value={pendingStars} onChange={setPendingStars} />
-              {pendingStars && <Button onClick={submitRating}>{t('transactions:submitRating')}</Button>}
+              {pendingStars && (
+                <Button onClick={submitRating}>{t('transactions:submitRating')}</Button>
+              )}
             </>
           )}
         </RateRow>

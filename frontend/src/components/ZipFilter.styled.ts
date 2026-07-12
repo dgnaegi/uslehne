@@ -12,7 +12,6 @@ export const FilterBar = styled.div<{ $compact?: boolean }>`
   border-bottom: ${({ theme }) => theme.border};
 `
 
-
 export const MainRow = styled.div`
   display: flex;
   align-items: center;
@@ -136,8 +135,7 @@ export const TypeBtn = styled.button<{ $active: boolean }>`
 
   @media (hover: hover) {
     &:hover {
-      background: ${({ theme, $active }) =>
-        $active ? theme.colors.primary : theme.colors.accent};
+      background: ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.accent)};
       border-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
     }

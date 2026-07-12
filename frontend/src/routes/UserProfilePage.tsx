@@ -22,7 +22,6 @@ import {
   EmptyNote,
 } from './UserProfilePage.styled'
 
-
 export function UserProfilePage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()

@@ -4,7 +4,13 @@ import { useTranslation } from 'react-i18next'
 import type { Offer } from '../api/types'
 import { offerApi } from '../api/endpoints'
 import { PageWrapper, PageTitle, Button, Badge } from '../components/Layout.styled'
-import { OfferRow, OfferRowTitle, OfferRowMeta, OfferRowBottom, TopBar } from './MyOffersPage.styled'
+import {
+  OfferRow,
+  OfferRowTitle,
+  OfferRowMeta,
+  OfferRowBottom,
+  TopBar,
+} from './MyOffersPage.styled'
 import { SwipeToDelete } from '../components/SwipeToDelete'
 
 export function MyOffersPage() {

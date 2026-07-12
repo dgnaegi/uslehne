@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import type { User, AdminOffer } from '../api/types'
 import { adminApi } from '../api/endpoints'
-import { PageWrapper, PageTitle, ErrorMsg } from '../components/Layout.styled'
+import { PageWrapper, PageTitle } from '../components/Layout.styled'
+import { ErrorMsg } from '../components/Form.styled'
 import { TabBar, Tab } from './TransactionsPage.styled'
 import { AdminTable, AdminRow, AdminCell, RoleBadge } from './AdminPage.styled'
 import { SwipeToDelete } from '../components/SwipeToDelete'
@@ -116,9 +117,7 @@ export function AdminPage() {
                   <strong>{o.title}</strong>
                 </AdminCell>
                 <AdminCell>@{o.owner.username}</AdminCell>
-                <AdminCell>
-                  {[o.address.zip, o.address.city].filter(Boolean).join(' ')}
-                </AdminCell>
+                <AdminCell>{[o.address.zip, o.address.city].filter(Boolean).join(' ')}</AdminCell>
                 <AdminCell>{o.type === 'LEND' ? 'Leihen' : 'Schenken'}</AdminCell>
                 <AdminCell>{o.status}</AdminCell>
               </AdminRow>

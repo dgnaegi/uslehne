@@ -21,7 +21,13 @@ interface Props {
   compact?: boolean
 }
 
-export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange, compact = false }: Props) {
+export function ZipFilter({
+  zips,
+  onZipsChange,
+  offerType,
+  onOfferTypeChange,
+  compact = false,
+}: Props) {
   const [inputVal, setInputVal] = useState('')
   const [showInput, setShowInput] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -47,7 +53,7 @@ export function ZipFilter({ zips, onZipsChange, offerType, onOfferTypeChange, co
 
   return (
     <FilterBar $compact={compact}>
-<MainRow>
+      <MainRow>
         {showInput ? (
           <ZipInput
             ref={inputRef}

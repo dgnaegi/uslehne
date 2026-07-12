@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import type { Address } from '../api/types'
 import { addressApi } from '../api/endpoints'
-import { FormGroup, Label, Input, Button, ErrorMsg } from './Layout.styled'
+import { Button } from './Layout.styled'
+import { FormGroup, Label, Input, ErrorMsg } from './Form.styled'
 
 interface Props {
   onCreated: (address: Address) => void
