@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { filterControlCss } from './FilterControl.styled'
 
 export const FilterBar = styled.div<{ $compact?: boolean }>`
   position: ${({ $compact }) => ($compact ? 'static' : 'fixed')};
@@ -104,5 +105,24 @@ export const AddButton = styled.button`
   &:active {
     opacity: 0.6;
     background: none;
+  }
+`
+
+export const TypeFilterGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.xs};
+  margin-left: auto;
+  flex-shrink: 0;
+`
+
+export const TypeBtn = styled.button<{ $active: boolean }>`
+  ${filterControlCss}
+
+  &:active {
+    background: ${({ theme, $active }) => ($active ? theme.colors.primary : 'none')};
+    border-color: ${({ theme, $active }) =>
+      $active ? theme.colors.primary : theme.colors.textMuted};
+    color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.textMuted)};
   }
 `

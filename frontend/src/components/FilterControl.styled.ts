@@ -1,14 +1,7 @@
-import styled, { css } from 'styled-components'
+import { css } from 'styled-components'
 
-export const TypeFilterGroup = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-  margin-left: auto;
-  flex-shrink: 0;
-`
-
-const controlCss = css<{ $active: boolean }>`
+// Shared look for filter-bar controls: flat, 2px border, bold uppercase
+export const filterControlCss = css<{ $active: boolean }>`
   background: ${({ theme, $active }) => ($active ? theme.colors.primary : 'none')};
   border: 2px solid
     ${({ theme, $active }) => ($active ? theme.colors.primary : theme.colors.textMuted)};
@@ -32,23 +25,5 @@ const controlCss = css<{ $active: boolean }>`
       border-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.text)};
     }
-  }
-`
-
-export const CategorySelect = styled.select<{ $active: boolean }>`
-  ${controlCss}
-  appearance: none;
-  max-width: 140px;
-  text-overflow: ellipsis;
-`
-
-export const TypeBtn = styled.button<{ $active: boolean }>`
-  ${controlCss}
-
-  &:active {
-    background: ${({ theme, $active }) => ($active ? theme.colors.primary : 'none')};
-    border-color: ${({ theme, $active }) =>
-      $active ? theme.colors.primary : theme.colors.textMuted};
-    color: ${({ theme, $active }) => ($active ? theme.colors.accent : theme.colors.textMuted)};
   }
 `

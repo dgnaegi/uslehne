@@ -11,8 +11,10 @@ import {
   ChipRemove,
   ZipInput,
   AddButton,
+  TypeFilterGroup,
+  TypeBtn,
 } from './ZipFilter.styled'
-import { TypeFilterGroup, TypeBtn, CategorySelect } from './ZipFilterControls.styled'
+import { Dropdown } from './Dropdown'
 
 interface Props {
   zips: string[]
@@ -76,19 +78,13 @@ export function ZipFilter({
           </AddButton>
         )}
         <TypeFilterGroup>
-          <CategorySelect
-            $active={category !== null}
-            value={category ?? ''}
-            onChange={(e) => onCategoryChange((e.target.value as OfferCategory) || null)}
-            aria-label={t('category')}
-          >
-            <option value="">{t('filterAllCategories')}</option>
-            {OFFER_CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {t(`categories.${c}`)}
-              </option>
-            ))}
-          </CategorySelect>
+          <Dropdown
+            label={t('category')}
+            clearLabel={t('filterAllCategories')}
+            options={OFFER_CATEGORIES.map((c) => ({ value: c, label: t(`categories.${c}`) }))}
+            value={category}
+            onChange={(v) => onCategoryChange(v as OfferCategory | null)}
+          />
           <TypeBtn $active={offerType === 'LEND'} onClick={() => handleTypeClick('LEND')}>
             leihen
           </TypeBtn>

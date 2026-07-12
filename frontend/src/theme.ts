@@ -35,6 +35,7 @@ export const theme = {
   zIndex: {
     base: 0,
     filterBar: 90,
+    dropdown: 95,
     mobileMenu: 99,
     header: 100,
     fab: 110,
