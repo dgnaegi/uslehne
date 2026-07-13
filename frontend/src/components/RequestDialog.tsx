@@ -8,6 +8,7 @@ import { Button } from './Layout.styled'
 import { FormGroup, Label, Textarea, ErrorMsg } from './Form.styled'
 import { Overlay, DialogBox, DialogTitle, ButtonRow, FieldHint } from './RequestDialog.styled'
 import { PhoneField } from './PhoneField'
+import { saveContact } from '../utils/savedContacts'
 import { ProcessTimeline } from './ProcessTimeline'
 
 interface Props {
@@ -54,6 +55,7 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
         contactValue: values.contactValue,
         message: values.message,
       })
+      saveContact(user!.id, values.contactType, values.contactValue)
       setSuccess(true)
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : t('errors:GENERIC', { ns: 'errors' })
@@ -98,7 +100,9 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
                   setValue('contactValue', value, { shouldValidate: true })
                 }}
               />
-              {errors.contactValue && <ErrorMsg>Bitte Kontakt wählen.</ErrorMsg>}
+              {errors.contactValue && (
+                <ErrorMsg>{t('transactions:requestDialog.contactRequired')}</ErrorMsg>
+              )}
             </FormGroup>
             <FormGroup>
               <Label>{t('transactions:requestDialog.message')}</Label>

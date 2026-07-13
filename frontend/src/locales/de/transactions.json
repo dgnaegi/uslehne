@@ -31,6 +31,7 @@
     "message": "Nachricht (optional)",
     "messageHint": "Eine Nachricht erhöht deine Chancen, das Angebot zu kriegen.",
     "submit": "Anfrage senden",
+    "contactRequired": "Bitte Kontakt angeben.",
     "phonePlaceholder": "+41 79 123 45 67",
     "emailPlaceholder": "deine@email.ch",
     "useSaved": "Gespeicherte Nummer verwenden",

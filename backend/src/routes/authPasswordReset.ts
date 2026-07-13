@@ -81,7 +81,12 @@ router.post(
 
       const passwordHash = await hashPassword(password)
       await db.$transaction([
-        db.user.update({ where: { id: record.userId }, data: { passwordHash } }),
+        // tokenVersion erhöhen: alle bestehenden Logins werden ungültig,
+        // falls das Konto kompromittiert war.
+        db.user.update({
+          where: { id: record.userId },
+          data: { passwordHash, tokenVersion: { increment: 1 } },
+        }),
         db.passwordResetToken.update({ where: { id: record.id }, data: { usedAt: new Date() } }),
       ])
 

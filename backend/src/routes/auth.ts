@@ -104,7 +104,7 @@ router.post(
         return newUser
       })
 
-      const token = signToken({ sub: user.id, role: user.role })
+      const token = signToken({ sub: user.id, role: user.role, tv: user.tokenVersion })
 
       const { subject, html } = welcomeMail({ username: user.username })
       sendMailSilent({ to: user.email, subject, html })
@@ -136,7 +136,7 @@ router.post(
       if (!user) throw new AppError(ErrorCode.INVALID_CREDENTIALS, 401)
       const valid = await verifyPassword(password, user.passwordHash)
       if (!valid) throw new AppError(ErrorCode.INVALID_CREDENTIALS, 401)
-      const token = signToken({ sub: user.id, role: user.role })
+      const token = signToken({ sub: user.id, role: user.role, tv: user.tokenVersion })
       res.json({
         token,
         user: {

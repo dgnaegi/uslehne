@@ -30,9 +30,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authApi
       .me()
       .then(({ user: u }) => setUser(u))
-      .catch(() => {
-        localStorage.removeItem('token')
-        setToken(null)
+      .catch((err: unknown) => {
+        // Nur bei 401 ist der Token wirklich ungültig. Netzwerkfehler oder
+        // 5xx (z.B. während eines Deploys) dürfen die Session nicht beenden.
+        if ((err as { status?: number }).status === 401) {
+          localStorage.removeItem('token')
+          setToken(null)
+        }
       })
       .finally(() => setIsLoading(false))
   }, [token])
