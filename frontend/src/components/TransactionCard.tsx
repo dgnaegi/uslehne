@@ -6,7 +6,6 @@ import {
   IconMail,
   IconMessageSquare,
   IconSmartphone,
-  IconShield,
   IconPhone,
   IconSend,
 } from '../icons'
@@ -36,8 +35,6 @@ const CONTACT_ICON: Record<string, ReactNode> = {
   EMAIL: <IconMail size={14} />,
   SMS: <IconMessageSquare size={14} />,
   WHATSAPP: <IconSmartphone size={14} />,
-  SIGNAL: <IconShield size={14} />,
-  SIGNAL_USERNAME: <IconShield size={14} />,
   TELEGRAM: <IconSend size={14} />,
 }
 

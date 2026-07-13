@@ -14,7 +14,7 @@ const PHONE_RE = /\d.*\d.*\d.*\d.*\d.*\d.*\d/
 const USERNAME_RE = /^@?[a-zA-Z0-9_.]{3,32}$/
 
 const requestSchema = z.object({
-  contactType: z.enum(['SMS', 'WHATSAPP', 'SIGNAL', 'SIGNAL_USERNAME', 'TELEGRAM', 'EMAIL']),
+  contactType: z.enum(['SMS', 'WHATSAPP', 'TELEGRAM', 'EMAIL']),
   contactValue: z.string().min(1),
   message: z.string().optional(),
 })
@@ -45,15 +45,12 @@ router.post(
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
       if (
-        ['SMS', 'WHATSAPP', 'SIGNAL'].includes(body.contactType) &&
+        ['SMS', 'WHATSAPP'].includes(body.contactType) &&
         !PHONE_RE.test(body.contactValue)
       ) {
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
-      if (
-        ['SIGNAL_USERNAME', 'TELEGRAM'].includes(body.contactType) &&
-        !USERNAME_RE.test(body.contactValue)
-      ) {
+      if (body.contactType === 'TELEGRAM' && !USERNAME_RE.test(body.contactValue)) {
         throw new AppError(ErrorCode.CONTACT_INVALID, 422)
       }
 

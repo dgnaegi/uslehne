@@ -6,8 +6,6 @@ function contactLabel(type: string): string {
   const map: Record<string, string> = {
     SMS: 'SMS',
     WHATSAPP: 'WhatsApp',
-    SIGNAL: 'Signal',
-    SIGNAL_USERNAME: 'Signal',
     TELEGRAM: 'Telegram',
     EMAIL: 'E-Mail',
   }

@@ -9,13 +9,11 @@ import { IconPlus, IconMinus } from '../icons'
 const CONTACT_TYPE_OPTIONS: { type: ContactType; label: string }[] = [
   { type: 'SMS', label: 'SMS' },
   { type: 'WHATSAPP', label: 'WhatsApp' },
-  { type: 'SIGNAL', label: 'Signal' },
-  { type: 'SIGNAL_USERNAME', label: 'Signal (Benutzername)' },
   { type: 'TELEGRAM', label: 'Telegram' },
   { type: 'EMAIL', label: 'E-Mail' },
 ]
 
-const USERNAME_TYPES: ContactType[] = ['SIGNAL_USERNAME', 'TELEGRAM']
+const USERNAME_TYPES: ContactType[] = ['TELEGRAM']
 
 function typeLabel(type: ContactType): string {
   return CONTACT_TYPE_OPTIONS.find((o) => o.type === type)?.label ?? type

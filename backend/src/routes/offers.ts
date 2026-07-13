@@ -43,7 +43,7 @@ router.get('/offers', async (req: Request, res: Response, next: NextFunction) =>
 
     const rows = await db.offer.findMany({
       where: {
-        status: 'AVAILABLE',
+        status: { in: ['AVAILABLE', 'LENT'] },
         ...(typeFilter !== undefined ? { type: typeFilter } : {}),
         ...(categoryFilter !== undefined ? { category: categoryFilter } : {}),
         ...(zips && zips.length > 0 ? { address: { zip: { in: zips } } } : {}),

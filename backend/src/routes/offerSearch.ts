@@ -12,7 +12,7 @@ export async function searchOffers(opts: {
 
   const offers = await db.offer.findMany({
     where: {
-      status: 'AVAILABLE',
+      status: { in: ['AVAILABLE', 'LENT'] },
       OR: [
         { title: { contains: q, mode: 'insensitive' } },
         { description: { contains: q, mode: 'insensitive' } },

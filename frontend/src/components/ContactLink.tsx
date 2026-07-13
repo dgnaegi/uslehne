@@ -8,7 +8,7 @@ interface Props {
   icon: ReactNode
 }
 
-// Zeigt den Kontakt als Link; ohne baubare URL (Signal-Benutzername) als Text.
+// Zeigt den Kontakt als Link; Telegram ohne vorangestelltes @ als Text.
 export function ContactLink({ type, value, icon }: Props) {
   const url = buildContactUrl(type, value)
   if (!url) {

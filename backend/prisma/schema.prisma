@@ -57,8 +57,6 @@ enum LedgerReason {
 enum ContactType {
   SMS
   WHATSAPP
-  SIGNAL
-  SIGNAL_USERNAME
   TELEGRAM
   EMAIL
 }
