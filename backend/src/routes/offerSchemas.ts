@@ -23,6 +23,7 @@ export const createOfferSchema = z.object({
 export const patchOfferSchema = z.object({
   title: z.string().min(1).max(80).optional(),
   description: z.string().min(1).max(2000).optional(),
+  type: z.enum(['LEND', 'GIVE']).optional(),
   category: z.enum(offerCategories).optional(),
   image: z.string().optional(),
   status: z.enum(['ARCHIVED']).optional(),

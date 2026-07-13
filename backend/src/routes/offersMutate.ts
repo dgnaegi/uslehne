@@ -27,6 +27,7 @@ router.patch(
         data: {
           ...(body.title !== undefined ? { title: body.title } : {}),
           ...(body.description !== undefined ? { description: body.description } : {}),
+          ...(body.type !== undefined ? { type: body.type } : {}),
           ...(body.category !== undefined ? { category: body.category } : {}),
           ...(imageRef !== undefined ? { imageRef } : {}),
           ...(body.status !== undefined ? { status: body.status } : {}),

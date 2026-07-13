@@ -7,6 +7,7 @@ import { offerApi } from '../api/endpoints'
 import { useAuth } from '../auth/AuthContext'
 import { Button } from '../components/Layout.styled'
 import { RequestDialog } from '../components/RequestDialog'
+import { ConfirmDialog } from '../components/ConfirmDialog'
 import { ImageLightbox } from '../components/ImageLightbox'
 import { JsonLd } from '../components/JsonLd'
 import { usePageMeta } from '../hooks/usePageMeta'
@@ -28,6 +29,7 @@ export function OfferDetailPage() {
   const [offer, setOffer] = useState<Offer | null>(null)
   const [showDialog, setShowDialog] = useState(false)
   const [showLightbox, setShowLightbox] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -70,7 +72,7 @@ export function OfferDetailPage() {
 
   async function handleDelete() {
     if (!id) return
-    if (!window.confirm(t('offers:deleteConfirm'))) return
+    setShowDeleteConfirm(false)
     await offerApi.delete(id)
     navigate('/my-offers')
   }
@@ -116,7 +118,7 @@ export function OfferDetailPage() {
               <Button $variant="secondary" onClick={handleArchive}>
                 {t('offers:archiveButton')}
               </Button>
-              <Button $variant="danger" onClick={handleDelete}>
+              <Button $variant="danger" onClick={() => setShowDeleteConfirm(true)}>
                 {t('offers:deleteButton')}
               </Button>
             </>
@@ -135,6 +137,16 @@ export function OfferDetailPage() {
           src={offer.imageRef}
           alt={offer.title}
           onClose={() => setShowLightbox(false)}
+        />
+      )}
+      {showDeleteConfirm && (
+        <ConfirmDialog
+          title={t('offers:deleteTitle')}
+          message={t('offers:deleteConfirm')}
+          confirmLabel={t('common:actions.delete')}
+          danger
+          onConfirm={handleDelete}
+          onCancel={() => setShowDeleteConfirm(false)}
         />
       )}
     </DetailWrapper>

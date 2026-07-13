@@ -6,9 +6,15 @@ import { adminApi } from '../api/endpoints'
 import { PageWrapper, PageTitle } from '../components/Layout.styled'
 import { ErrorMsg } from '../components/Form.styled'
 import { TabBar, Tab } from './TransactionsPage.styled'
-import { AdminTable, AdminRow, AdminCell, RoleBadge, DeleteBtn } from './AdminPage.styled'
-import { SwipeToDelete } from '../components/SwipeToDelete'
-import { IconX } from '../icons/IconX'
+import { ConfirmDialog } from '../components/ConfirmDialog'
+import { AdminUserList } from './AdminUserList'
+import { AdminOfferList } from './AdminOfferList'
+
+interface PendingDelete {
+  kind: 'user' | 'offer'
+  id: string
+  name: string
+}
 
 export function AdminPage() {
   const { user } = useAuth()
@@ -19,6 +25,7 @@ export function AdminPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<PendingDelete | null>(null)
 
   useEffect(() => {
     if (user && user.role !== 'ADMIN') navigate('/offers', { replace: true })
@@ -46,21 +53,18 @@ export function AdminPage() {
     load()
   }, [load])
 
-  async function deleteUser(id: string, username: string) {
-    if (!confirm(`Benutzer "${username}" wirklich löschen?`)) return
+  async function confirmDelete() {
+    if (!pendingDelete) return
+    const { kind, id } = pendingDelete
+    setPendingDelete(null)
     try {
-      await adminApi.deleteUser(id)
-      setUsers((prev) => prev.filter((u) => u.id !== id))
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Fehler')
-    }
-  }
-
-  async function deleteOffer(id: string, title: string) {
-    if (!confirm(`Angebot "${title}" wirklich löschen?`)) return
-    try {
-      await adminApi.deleteOffer(id)
-      setOffers((prev) => prev.filter((o) => o.id !== id))
+      if (kind === 'user') {
+        await adminApi.deleteUser(id)
+        setUsers((prev) => prev.filter((u) => u.id !== id))
+      } else {
+        await adminApi.deleteOffer(id)
+        setOffers((prev) => prev.filter((o) => o.id !== id))
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Fehler')
     }
@@ -83,68 +87,30 @@ export function AdminPage() {
       {loading ? (
         <p>Laden…</p>
       ) : tab === 'users' ? (
-        <AdminTable>
-          {users.map((u) => (
-            <SwipeToDelete
-              key={u.id}
-              disabled={u.id === user.id}
-              onDelete={() => deleteUser(u.id, u.username)}
-            >
-              <AdminRow
-                $expanded={expandedId === u.id}
-                onClick={() => setExpandedId(expandedId === u.id ? null : u.id)}
-              >
-                <AdminCell>
-                  <strong>@{u.username}</strong>
-                </AdminCell>
-                <AdminCell>{u.email}</AdminCell>
-                <AdminCell>
-                  <RoleBadge $admin={u.role === 'ADMIN'}>{u.role}</RoleBadge>
-                </AdminCell>
-                <AdminCell>{u.karmaBalance} Karma</AdminCell>
-                {u.id !== user.id && (
-                  <DeleteBtn
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      deleteUser(u.id, u.username)
-                    }}
-                    aria-label="Benutzer löschen"
-                  >
-                    <IconX size={16} />
-                  </DeleteBtn>
-                )}
-              </AdminRow>
-            </SwipeToDelete>
-          ))}
-        </AdminTable>
+        <AdminUserList
+          users={users}
+          currentUserId={user.id}
+          expandedId={expandedId}
+          onToggle={setExpandedId}
+          onDelete={(u) => setPendingDelete({ kind: 'user', id: u.id, name: `@${u.username}` })}
+        />
       ) : (
-        <AdminTable>
-          {offers.map((o) => (
-            <SwipeToDelete key={o.id} onDelete={() => deleteOffer(o.id, o.title)}>
-              <AdminRow
-                $expanded={expandedId === o.id}
-                onClick={() => setExpandedId(expandedId === o.id ? null : o.id)}
-              >
-                <AdminCell>
-                  <strong>{o.title}</strong>
-                </AdminCell>
-                <AdminCell>@{o.owner.username}</AdminCell>
-                <AdminCell>{[o.address.zip, o.address.city].filter(Boolean).join(' ')}</AdminCell>
-                <AdminCell>{o.type === 'LEND' ? 'Leihen' : 'Schenken'}</AdminCell>
-                <AdminCell>{o.status}</AdminCell>
-                <DeleteBtn
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    deleteOffer(o.id, o.title)
-                  }}
-                  aria-label="Angebot löschen"
-                >
-                  <IconX size={16} />
-                </DeleteBtn>
-              </AdminRow>
-            </SwipeToDelete>
-          ))}
-        </AdminTable>
+        <AdminOfferList
+          offers={offers}
+          expandedId={expandedId}
+          onToggle={setExpandedId}
+          onDelete={(o) => setPendingDelete({ kind: 'offer', id: o.id, name: o.title })}
+        />
+      )}
+      {pendingDelete && (
+        <ConfirmDialog
+          title={pendingDelete.kind === 'user' ? 'Benutzer löschen' : 'Angebot löschen'}
+          message={`«${pendingDelete.name}» wirklich dauerhaft löschen?`}
+          confirmLabel="Löschen"
+          danger
+          onConfirm={confirmDelete}
+          onCancel={() => setPendingDelete(null)}
+        />
       )}
     </PageWrapper>
   )

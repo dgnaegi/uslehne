@@ -82,6 +82,7 @@ export const offerApi = {
     body: {
       title?: string
       description?: string
+      type?: string
       category?: string
       image?: string
       status?: string

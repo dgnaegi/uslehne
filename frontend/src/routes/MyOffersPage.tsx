@@ -12,12 +12,14 @@ import {
   TopBar,
 } from './MyOffersPage.styled'
 import { SwipeToDelete } from '../components/SwipeToDelete'
+import { ConfirmDialog } from '../components/ConfirmDialog'
 
 export function MyOffersPage() {
   const { t } = useTranslation(['offers', 'common'])
   const navigate = useNavigate()
   const [offers, setOffers] = useState<Offer[]>([])
   const [loading, setLoading] = useState(true)
+  const [pendingDelete, setPendingDelete] = useState<Offer | null>(null)
 
   useEffect(() => {
     offerApi
@@ -26,8 +28,8 @@ export function MyOffersPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  async function deleteOffer(id: string, title: string) {
-    if (!confirm(`Angebot «${title}» wirklich löschen?`)) return
+  async function deleteOffer(id: string) {
+    setPendingDelete(null)
     await offerApi.delete(id)
     setOffers((prev) => prev.filter((o) => o.id !== id))
   }
@@ -47,7 +49,7 @@ export function MyOffersPage() {
           <SwipeToDelete
             key={offer.id}
             disabled={offer.status !== 'AVAILABLE'}
-            onDelete={() => deleteOffer(offer.id, offer.title)}
+            onDelete={() => setPendingDelete(offer)}
           >
             <OfferRow>
               <OfferRowTitle>{offer.title}</OfferRowTitle>
@@ -63,6 +65,16 @@ export function MyOffersPage() {
             </OfferRow>
           </SwipeToDelete>
         ))
+      )}
+      {pendingDelete && (
+        <ConfirmDialog
+          title={t('offers:deleteTitle')}
+          message={t('offers:deleteConfirmNamed', { title: pendingDelete.title })}
+          confirmLabel={t('common:actions.delete')}
+          danger
+          onConfirm={() => deleteOffer(pendingDelete.id)}
+          onCancel={() => setPendingDelete(null)}
+        />
       )}
     </PageWrapper>
   )
