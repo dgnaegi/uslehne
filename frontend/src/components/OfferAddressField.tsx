@@ -31,7 +31,7 @@ export function OfferAddressField({
       <Label>{t('address')}</Label>
       {showInlineCreateOnly ? (
         <>
-          <Input {...zipProps} placeholder="3005" maxLength={4} inputMode="numeric" />
+          <Input {...zipProps} placeholder="8004" maxLength={4} inputMode="numeric" />
           {zipError && <ErrorMsg>{zipError}</ErrorMsg>}
         </>
       ) : (

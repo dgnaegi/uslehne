@@ -38,7 +38,7 @@ export function AddressInlineCreate({ onCreated }: Props) {
         <Input
           value={zip}
           onChange={(e) => setZip(e.target.value)}
-          placeholder="3005"
+          placeholder="8004"
           maxLength={4}
           inputMode="numeric"
         />
