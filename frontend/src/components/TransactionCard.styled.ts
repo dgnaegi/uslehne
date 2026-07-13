@@ -58,22 +58,6 @@ export const TxContactBoxLabel = styled.p`
   margin-bottom: ${({ theme }) => theme.spacing.xs};
 `
 
-export const TxContactLink = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 1rem;
-  font-weight: 800;
-  color: ${({ theme }) => theme.colors.text};
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  letter-spacing: 0.02em;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.textMuted};
-  }
-`
-
 export const TxContactAction = styled.a`
   display: inline-flex;
   align-items: center;

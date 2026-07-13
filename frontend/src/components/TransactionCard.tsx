@@ -2,7 +2,14 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { IconMail, IconMessageSquare, IconSmartphone, IconShield, IconPhone } from '../icons'
+import {
+  IconMail,
+  IconMessageSquare,
+  IconSmartphone,
+  IconShield,
+  IconPhone,
+  IconSend,
+} from '../icons'
 import type { Transaction } from '../api/types'
 import { transactionApi } from '../api/endpoints'
 import { ProcessTimeline } from './ProcessTimeline'
@@ -10,6 +17,7 @@ import { getActiveTimelineStep } from '../utils/processTimeline'
 import { buildContactUrl } from '../utils/contactUrl'
 import { Button } from './Layout.styled'
 import { StarRating } from './StarRating'
+import { ContactLink } from './ContactLink'
 import {
   TxCard,
   TxTitle,
@@ -17,7 +25,6 @@ import {
   TxContact,
   TxContactBox,
   TxContactBoxLabel,
-  TxContactLink,
   TxContactAction,
   TxActions,
   RateRow,
@@ -30,6 +37,8 @@ const CONTACT_ICON: Record<string, ReactNode> = {
   SMS: <IconMessageSquare size={14} />,
   WHATSAPP: <IconSmartphone size={14} />,
   SIGNAL: <IconShield size={14} />,
+  SIGNAL_USERNAME: <IconShield size={14} />,
+  TELEGRAM: <IconSend size={14} />,
 }
 
 interface TransactionCardProps {
@@ -80,38 +89,36 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
         (tx.status === 'ACCEPTED' ? (
           <TxContactBox>
             <TxContactBoxLabel>{t('transactions:contactNowLabel')}</TxContactBoxLabel>
-            <TxContactLink
-              href={buildContactUrl(tx.contactType, tx.contactValue)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
-            </TxContactLink>
+            <ContactLink
+              type={tx.contactType}
+              value={tx.contactValue}
+              icon={CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />}
+            />
             {tx.message && (
               <TxContact $mt>
                 {t('transactions:messageLabel')}: {tx.message}
               </TxContact>
             )}
-            <TxContactAction
-              href={buildContactUrl(tx.contactType, tx.contactValue)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />}
-              {t('transactions:contactNowButton')}
-            </TxContactAction>
+            {buildContactUrl(tx.contactType, tx.contactValue) && (
+              <TxContactAction
+                href={buildContactUrl(tx.contactType, tx.contactValue)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />}
+                {t('transactions:contactNowButton')}
+              </TxContactAction>
+            )}
           </TxContactBox>
         ) : (
           <>
             <TxContact>
               {t('transactions:contactLabel')}:{' '}
-              <TxContactLink
-                href={buildContactUrl(tx.contactType, tx.contactValue)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />} {tx.contactValue}
-              </TxContactLink>
+              <ContactLink
+                type={tx.contactType}
+                value={tx.contactValue}
+                icon={CONTACT_ICON[tx.contactType] ?? <IconPhone size={14} />}
+              />
             </TxContact>
             {tx.message && (
               <TxContact>

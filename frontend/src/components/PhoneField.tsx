@@ -10,8 +10,16 @@ const CONTACT_TYPE_OPTIONS: { type: ContactType; label: string }[] = [
   { type: 'SMS', label: 'SMS' },
   { type: 'WHATSAPP', label: 'WhatsApp' },
   { type: 'SIGNAL', label: 'Signal' },
+  { type: 'SIGNAL_USERNAME', label: 'Signal (Benutzername)' },
+  { type: 'TELEGRAM', label: 'Telegram' },
   { type: 'EMAIL', label: 'E-Mail' },
 ]
+
+const USERNAME_TYPES: ContactType[] = ['SIGNAL_USERNAME', 'TELEGRAM']
+
+function typeLabel(type: ContactType): string {
+  return CONTACT_TYPE_OPTIONS.find((o) => o.type === type)?.label ?? type
+}
 
 interface Props {
   userId: string
@@ -29,6 +37,7 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
   // With no saved contacts the fields feed the request form directly;
   // the contact is persisted only when the request is submitted.
   const inlineMode = contacts.length === 0
+  const isUsernameType = USERNAME_TYPES.includes(newType)
 
   const selectedId =
     contacts.find((c) => c.type === selectedType && c.value === selectedValue)?.id ?? ''
@@ -76,12 +85,18 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
         </TypeButtons>
       </FormGroup>
       <FormGroup>
-        <Label>Nummer / Adresse</Label>
+        <Label>Nummer / Adresse / Benutzername</Label>
         <Input
           value={newValue}
           onChange={(e) => handleValueChange(e.target.value)}
-          type={newType !== 'EMAIL' ? 'tel' : 'email'}
-          placeholder={newType !== 'EMAIL' ? '+41 79 000 00 00' : 'name@beispiel.ch'}
+          type={newType === 'EMAIL' ? 'email' : isUsernameType ? 'text' : 'tel'}
+          placeholder={
+            newType === 'EMAIL'
+              ? 'name@beispiel.ch'
+              : isUsernameType
+                ? 'Benutzername'
+                : '+41 79 000 00 00'
+          }
           autoFocus
           onKeyDown={
             inlineMode
@@ -116,7 +131,7 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
           </option>
           {contacts.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.value} ({c.type})
+              {c.value} ({typeLabel(c.type)})
             </option>
           ))}
         </Select>

@@ -13,13 +13,8 @@ export const OFFER_CATEGORIES = [
 export type OfferCategory = (typeof OFFER_CATEGORIES)[number]
 export type OfferStatus = 'AVAILABLE' | 'LENT' | 'GIVEN' | 'ARCHIVED'
 export type TransactionStatus =
-  | 'PENDING'
-  | 'ACCEPTED'
-  | 'DECLINED'
-  | 'CANCELLED'
-  | 'RETURNED'
-  | 'COMPLETED'
-export type ContactType = 'SMS' | 'WHATSAPP' | 'SIGNAL' | 'EMAIL'
+  'PENDING' | 'ACCEPTED' | 'DECLINED' | 'CANCELLED' | 'RETURNED' | 'COMPLETED'
+export type ContactType = 'SMS' | 'WHATSAPP' | 'SIGNAL' | 'SIGNAL_USERNAME' | 'TELEGRAM' | 'EMAIL'
 export type LedgerReason =
   | 'INVITE_BONUS'
   | 'INVITE_REWARD'

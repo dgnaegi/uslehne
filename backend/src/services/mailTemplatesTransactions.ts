@@ -1,20 +1,14 @@
-import { APP_URL, FONT, BLACK, MUTED, layout, ctaButton } from './mailTemplates'
+import { APP_URL, FONT, BLACK, MUTED, layout, ctaButton, esc } from './mailTemplates'
 
 const TRANSACTIONS_URL = `${APP_URL}/transactions`
-
-function esc(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
 
 function contactLabel(type: string): string {
   const map: Record<string, string> = {
     SMS: 'SMS',
     WHATSAPP: 'WhatsApp',
     SIGNAL: 'Signal',
+    SIGNAL_USERNAME: 'Signal',
+    TELEGRAM: 'Telegram',
     EMAIL: 'E-Mail',
   }
   return map[type] ?? type

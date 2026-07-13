@@ -6,7 +6,10 @@ import { imageStorage } from './imageStorage'
 export async function cleanupImage(ref: string): Promise<void> {
   try {
     const used = await db.offer.findFirst({ where: { imageRef: ref } })
-    if (!used) await imageStorage.delete(ref)
+    if (!used) {
+      await imageStorage.delete(ref)
+      await db.uploadedImage.deleteMany({ where: { ref } })
+    }
   } catch (err) {
     console.error('Bild-Cleanup fehlgeschlagen:', ref, err)
   }

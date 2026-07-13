@@ -3,7 +3,9 @@ import path from 'path'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import compression from 'compression'
+import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
+import { imageStorage } from './storage/imageStorage'
 import healthRouter from './routes/health'
 import authRouter from './routes/auth'
 import authSessionRouter from './routes/authSession'
@@ -25,20 +27,47 @@ const app = express()
 const port = process.env.PORT || 3001
 
 app.set('trust proxy', 1)
+app.disable('x-powered-by')
 app.use(compression())
 
-const globalLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200 })
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20 })
+// Angebotsbilder liegen auf dem öffentlichen S3-Bucket.
+const imageOrigin = new URL(imageStorage.toUrl('x')).origin
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        // styled-components injiziert Styles inline, daher unsafe-inline.
+        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+        imgSrc: ["'self'", 'data:', imageOrigin],
+        connectSrc: ["'self'"],
+        frameAncestors: ["'none'"],
+      },
+    },
+  }),
+)
+
+const WINDOW_MS = 15 * 60 * 1000
+const globalLimiter = rateLimit({ windowMs: WINDOW_MS, max: 200 })
+// Eine Instanz pro Endpoint: Fehlversuche werden je API separat gezählt.
+// Erfolgreiche Requests zählen nicht ans Limit, nur 4xx/5xx (Brute-Force-Schutz
+// ohne legitime Nutzer auszubremsen).
+const failLimiter = () => rateLimit({ windowMs: WINDOW_MS, max: 20, skipSuccessfulRequests: true })
+// check-email und forgot-password antworten bewusst immer 200, dort muss
+// jeder Request zählen (Enumeration- bzw. Mail-Spam-Schutz).
+const everyRequestLimiter = (max: number) => rateLimit({ windowMs: WINDOW_MS, max })
 
 // Kein CORS: Frontend und API laufen same-origin (in dev über den Vite-Proxy).
 // Cross-Origin-Zugriff auf die Cookie-Auth soll explizit nicht möglich sein.
 app.use(cookieParser())
 app.use(express.json({ limit: '3mb' }))
 app.use('/api/', globalLimiter)
-app.use('/api/v1/auth/login', authLimiter)
-app.use('/api/v1/auth/register', authLimiter)
-app.use('/api/v1/auth/forgot-password', authLimiter)
-app.use('/api/v1/auth/reset-password', authLimiter)
+app.use('/api/v1/auth/login', failLimiter())
+app.use('/api/v1/auth/register', failLimiter())
+app.use('/api/v1/auth/reset-password', failLimiter())
+app.use('/api/v1/auth/forgot-password', everyRequestLimiter(10))
+app.use('/api/v1/auth/check-email', everyRequestLimiter(20))
 
 app.use('/api/v1', healthRouter)
 app.use('/api/v1', authRouter)
