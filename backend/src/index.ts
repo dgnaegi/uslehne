@@ -40,7 +40,8 @@ app.use(
         // styled-components injiziert Styles inline, daher unsafe-inline.
         styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
         fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-        imgSrc: ["'self'", 'data:', imageOrigin],
+        // blob: braucht die Bildvorschau/-verkleinerung beim Upload (createObjectURL).
+        imgSrc: ["'self'", 'data:', 'blob:', imageOrigin],
         connectSrc: ["'self'"],
         frameAncestors: ["'none'"],
       },

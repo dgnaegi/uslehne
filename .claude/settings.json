@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(scalingo --region osc-fr1 --app uslehne logs -n 300)",
+      "Bash(scalingo --region osc-fr1 --app uslehne logs -n 1000)",
+      "Bash(scalingo --region osc-fr1 --app uslehne logs -n 400)",
+      "Bash(kill %1)",
+      "Bash(xargs kill)"
+    ]
+  }
+}
