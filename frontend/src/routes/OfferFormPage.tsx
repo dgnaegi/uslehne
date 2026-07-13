@@ -3,20 +3,12 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Address, OfferCategory } from '../api/types'
-import { OFFER_CATEGORIES } from '../api/types'
 import { offerApi, addressApi } from '../api/endpoints'
 import { OfferAddressField } from '../components/OfferAddressField'
 import { OfferImageField } from '../components/OfferImageField'
+import { OfferTypeCategoryFields } from '../components/OfferTypeCategoryFields'
 import { PageWrapper, PageTitle, Button } from '../components/Layout.styled'
-import {
-  FormGroup,
-  FormActions,
-  Label,
-  Input,
-  Textarea,
-  Select,
-  ErrorMsg,
-} from '../components/Form.styled'
+import { FormGroup, FormActions, Label, Input, Textarea, ErrorMsg } from '../components/Form.styled'
 
 interface FormValues {
   title: string
@@ -24,6 +16,7 @@ interface FormValues {
   type: 'LEND' | 'GIVE'
   category: OfferCategory
   addressId: string
+  zip: string
 }
 
 export function OfferFormPage() {
@@ -74,14 +67,20 @@ export function OfferFormPage() {
 
   async function onSubmit(values: FormValues) {
     try {
+      if (!isEdit && !imageDataUrl) {
+        setError('root', { message: 'Bitte Bild auswählen.' })
+        return
+      }
+      let addressId = values.addressId
+      if (!addressId && values.zip) {
+        const { address } = await addressApi.create({ zip: values.zip.trim() })
+        handleAddressCreated(address)
+        addressId = address.id
+      }
       if (isEdit && id) {
         await offerApi.update(id, { ...values, image: imageDataUrl || undefined })
       } else {
-        if (!imageDataUrl) {
-          setError('root', { message: 'Bitte Bild auswählen.' })
-          return
-        }
-        await offerApi.create({ ...values, image: imageDataUrl })
+        await offerApi.create({ ...values, addressId, image: imageDataUrl })
       }
       navigate('/my-offers')
     } catch (err: unknown) {
@@ -107,35 +106,22 @@ export function OfferFormPage() {
           <Textarea {...register('description', { required: true, maxLength: 2000 })} />
           {errors.description && <ErrorMsg>{errors.description.message}</ErrorMsg>}
         </FormGroup>
-        <FormGroup>
-          <Label>{t('offers:type')}</Label>
-          <Select {...register('type', { required: true })}>
-            <option value="">{t('offers:selectType')}</option>
-            <option value="LEND">{t('common:offerType.LEND')}</option>
-            <option value="GIVE">{t('common:offerType.GIVE')}</option>
-          </Select>
-        </FormGroup>
-        <FormGroup>
-          <Label>{t('offers:category')}</Label>
-          <Select {...register('category', { required: true })}>
-            <option value="">{t('offers:selectCategory')}</option>
-            {OFFER_CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {t(`offers:categories.${c}`)}
-              </option>
-            ))}
-          </Select>
-        </FormGroup>
+        <OfferTypeCategoryFields
+          typeProps={register('type', { required: true })}
+          categoryProps={register('category', { required: true })}
+        />
         <OfferAddressField
           addresses={addresses}
           showInlineCreateOnly={!hasAddresses}
-          selectProps={register('addressId', { required: true })}
+          selectProps={register('addressId', { required: hasAddresses })}
+          zipProps={register('zip', { required: !hasAddresses && !isEdit })}
+          zipError={Boolean(errors.zip)}
           onAddressCreated={handleAddressCreated}
         />
         <OfferImageField value={imageDataUrl} onChange={setImageDataUrl} />
         {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
         <FormActions>
-          <Button type="submit" disabled={isSubmitting || (!hasAddresses && !isEdit)}>
+          <Button type="submit" disabled={isSubmitting}>
             {isEdit ? t('common:actions.save') : t('offers:createOffer')}
           </Button>
           <Button $variant="secondary" type="button" onClick={() => navigate(-1)}>

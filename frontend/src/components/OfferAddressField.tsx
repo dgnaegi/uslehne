@@ -3,13 +3,15 @@ import type { UseFormRegisterReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import type { Address } from '../api/types'
 import { AddressInlineCreate } from './AddressInlineCreate'
-import { FormGroup, Label, Select, SelectRow, AddIconButton } from './Form.styled'
+import { FormGroup, Label, Input, Select, SelectRow, AddIconButton, ErrorMsg } from './Form.styled'
 import { IconPlus } from '../icons'
 
 interface OfferAddressFieldProps {
   addresses: Address[]
   showInlineCreateOnly: boolean
   selectProps: UseFormRegisterReturn
+  zipProps: UseFormRegisterReturn
+  zipError: boolean
   onAddressCreated: (address: Address) => void
 }
 
@@ -17,6 +19,8 @@ export function OfferAddressField({
   addresses,
   showInlineCreateOnly,
   selectProps,
+  zipProps,
+  zipError,
   onAddressCreated,
 }: OfferAddressFieldProps) {
   const { t } = useTranslation('offers')
@@ -26,7 +30,10 @@ export function OfferAddressField({
     <FormGroup>
       <Label>{t('address')}</Label>
       {showInlineCreateOnly ? (
-        <AddressInlineCreate onCreated={(addr) => onAddressCreated(addr)} />
+        <>
+          <Input {...zipProps} placeholder="3005" maxLength={10} />
+          {zipError && <ErrorMsg>{t('zipRequired')}</ErrorMsg>}
+        </>
       ) : (
         <>
           <SelectRow>

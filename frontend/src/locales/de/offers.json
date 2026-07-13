@@ -42,6 +42,7 @@
   "uploadImage": "Bild auswählen",
   "changeImage": "Bild ändern",
   "noAddresses": "Noch keine Adresse hinterlegt.",
+  "zipRequired": "Bitte PLZ eingeben.",
   "searchPlaceholder": "Angebote suchen…",
   "noSearchResults": "Keine Treffer für «{{q}}». Versuch ein anderes Stichwort."
 }
