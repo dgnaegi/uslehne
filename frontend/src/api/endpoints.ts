@@ -35,6 +35,11 @@ export const addressApi = {
   delete: (id: string) => api.delete<void>(`/addresses/${id}`),
 }
 
+export const imageApi = {
+  upload: (image: string) => api.post<{ filename: string; url: string }>('/images', { image }),
+  delete: (filename: string) => api.delete<void>(`/images/${filename}`),
+}
+
 export const offerApi = {
   list: (params?: {
     type?: 'LEND' | 'GIVE'

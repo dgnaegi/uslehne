@@ -137,6 +137,8 @@ scalingo --region osc-fr1 --app uslehne run npm run db:migrate
 | PATCH  | /api/v1/offers/:id             | Update offer                       |
 | DELETE | /api/v1/offers/:id             | Delete offer                       |
 | POST   | /api/v1/offers/:id/request     | Request an offer                   |
+| POST   | /api/v1/images                 | Upload offer image (data URL → S3) |
+| DELETE | /api/v1/images/:filename       | Delete unused image from S3        |
 | GET    | /api/v1/transactions           | List transactions (role=incoming/outgoing) |
 | POST   | /api/v1/transactions/:id/accept  | Accept request                   |
 | POST   | /api/v1/transactions/:id/decline | Decline request                  |

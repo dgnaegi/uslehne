@@ -11,7 +11,7 @@ interface OfferAddressFieldProps {
   showInlineCreateOnly: boolean
   selectProps: UseFormRegisterReturn
   zipProps: UseFormRegisterReturn
-  zipError: boolean
+  zipError: string
   onAddressCreated: (address: Address) => void
 }
 
@@ -31,8 +31,8 @@ export function OfferAddressField({
       <Label>{t('address')}</Label>
       {showInlineCreateOnly ? (
         <>
-          <Input {...zipProps} placeholder="3005" maxLength={10} />
-          {zipError && <ErrorMsg>{t('zipRequired')}</ErrorMsg>}
+          <Input {...zipProps} placeholder="3005" maxLength={4} inputMode="numeric" />
+          {zipError && <ErrorMsg>{zipError}</ErrorMsg>}
         </>
       ) : (
         <>

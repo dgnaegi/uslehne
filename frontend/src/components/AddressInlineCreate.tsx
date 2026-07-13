@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { Address } from '../api/types'
 import { addressApi } from '../api/endpoints'
 import { Button } from './Layout.styled'
@@ -9,13 +10,14 @@ interface Props {
 }
 
 export function AddressInlineCreate({ onCreated }: Props) {
+  const { t } = useTranslation('offers')
   const [zip, setZip] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
   async function handleSave() {
-    if (!zip.trim()) {
-      setError('Bitte PLZ eingeben.')
+    if (!/^\d{4}$/.test(zip.trim())) {
+      setError(t('zipInvalid'))
       return
     }
     setSaving(true)
@@ -36,7 +38,8 @@ export function AddressInlineCreate({ onCreated }: Props) {
           value={zip}
           onChange={(e) => setZip(e.target.value)}
           placeholder="3005"
-          maxLength={10}
+          maxLength={4}
+          inputMode="numeric"
         />
       </FormGroup>
       {error && <ErrorMsg>{error}</ErrorMsg>}

@@ -34,3 +34,20 @@ export const ReplaceImageButton = styled.button`
     background: rgba(0, 0, 0, 0.75);
   }
 `
+
+export const DeleteImageButton = styled(ReplaceImageButton)`
+  right: ${({ theme }) => `calc(32px + ${theme.spacing.xs} + ${theme.spacing.xs})`};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.danger};
+  }
+`
+
+export const UploadOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
+`

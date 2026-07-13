@@ -9,6 +9,7 @@ import authRouter from './routes/auth'
 import invitesRouter from './routes/invites'
 import addressesRouter from './routes/addresses'
 import { offersRouter } from './routes/offers'
+import { imagesRouter } from './routes/images'
 import { offersMutateRouter } from './routes/offersMutate'
 import { transactionsRouter } from './routes/transactions'
 import { transactionActionsRouter } from './routes/transactionActions'
@@ -41,6 +42,7 @@ app.use('/api/v1', authRouter)
 app.use('/api/v1', invitesRouter)
 app.use('/api/v1', addressesRouter)
 app.use('/api/v1', offersRouter)
+app.use('/api/v1', imagesRouter)
 app.use('/api/v1', offersMutateRouter)
 app.use('/api/v1', transactionsRouter)
 app.use('/api/v1', transactionActionsRouter)

@@ -41,8 +41,10 @@
   "selectType": "Typ auswählen",
   "uploadImage": "Bild auswählen",
   "changeImage": "Bild ändern",
+  "deleteImage": "Bild löschen",
+  "uploadError": "Bild konnte nicht hochgeladen werden. Versuch es nochmal.",
   "noAddresses": "Noch keine Adresse hinterlegt.",
-  "zipRequired": "Bitte PLZ eingeben.",
+  "zipInvalid": "Die PLZ besteht aus 4 Ziffern.",
   "searchPlaceholder": "Angebote suchen…",
   "noSearchResults": "Keine Treffer für «{{q}}». Versuch ein anderes Stichwort."
 }

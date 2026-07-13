@@ -25,7 +25,8 @@ export function OfferFormPage() {
   const { t } = useTranslation(['offers', 'common'])
   const navigate = useNavigate()
   const [addresses, setAddresses] = useState<Address[]>([])
-  const [imageDataUrl, setImageDataUrl] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  const [imageUploading, setImageUploading] = useState(false)
   const [pendingAddressId, setPendingAddressId] = useState<string | null>(null)
   const {
     register,
@@ -47,7 +48,7 @@ export function OfferFormPage() {
           category: offer.category,
           addressId: offer.addressId,
         })
-        setImageDataUrl(offer.imageRef)
+        setImageUrl(offer.imageRef)
       })
     }
   }, [id, isEdit, reset])
@@ -67,7 +68,7 @@ export function OfferFormPage() {
 
   async function onSubmit(values: FormValues) {
     try {
-      if (!isEdit && !imageDataUrl) {
+      if (!isEdit && !imageUrl) {
         setError('root', { message: 'Bitte Bild auswählen.' })
         return
       }
@@ -78,9 +79,9 @@ export function OfferFormPage() {
         addressId = address.id
       }
       if (isEdit && id) {
-        await offerApi.update(id, { ...values, image: imageDataUrl || undefined })
+        await offerApi.update(id, { ...values, image: imageUrl || undefined })
       } else {
-        await offerApi.create({ ...values, addressId, image: imageDataUrl })
+        await offerApi.create({ ...values, addressId, image: imageUrl })
       }
       navigate('/my-offers')
     } catch (err: unknown) {
@@ -114,14 +115,22 @@ export function OfferFormPage() {
           addresses={addresses}
           showInlineCreateOnly={!hasAddresses}
           selectProps={register('addressId', { required: hasAddresses })}
-          zipProps={register('zip', { required: !hasAddresses && !isEdit })}
-          zipError={Boolean(errors.zip)}
+          zipProps={register('zip', {
+            required: !hasAddresses && !isEdit,
+            pattern: /^\d{4}$/,
+          })}
+          zipError={errors.zip ? t('offers:zipInvalid') : ''}
           onAddressCreated={handleAddressCreated}
         />
-        <OfferImageField value={imageDataUrl} onChange={setImageDataUrl} />
+        <OfferImageField
+          value={imageUrl}
+          onChange={setImageUrl}
+          uploading={imageUploading}
+          onUploadingChange={setImageUploading}
+        />
         {errors.root && <ErrorMsg>{errors.root.message}</ErrorMsg>}
         <FormActions>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting || imageUploading}>
             {isEdit ? t('common:actions.save') : t('offers:createOffer')}
           </Button>
           <Button $variant="secondary" type="button" onClick={() => navigate(-1)}>

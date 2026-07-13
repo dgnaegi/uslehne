@@ -9,7 +9,7 @@ import { AppError, ErrorCode, assertFound, assertOwns } from '../errors'
 const router = Router()
 
 const createAddressSchema = z.object({
-  zip: z.string().min(1),
+  zip: z.string().regex(/^\d{4}$/, 'Die PLZ besteht aus 4 Ziffern.'),
   city: z.string().optional(),
   label: z.string().optional(),
 })

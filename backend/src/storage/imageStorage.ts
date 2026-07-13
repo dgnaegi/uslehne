@@ -1,8 +1,10 @@
 import { randomUUID } from 'crypto'
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import { AppError, ErrorCode } from '../errors'
 
 export interface ImageStorage {
   save(input: string): Promise<string>
+  delete(ref: string): Promise<void>
   toUrl(ref: string): string
 }
 
@@ -17,16 +19,20 @@ const EXT_BY_MIME: Record<string, string> = {
 
 function parseDataUrl(input: string): { mime: string; buffer: Buffer } {
   const match = input.match(/^data:([^;]+);base64,(.+)$/)
-  if (!match) throw new Error('Ungültiges Bildformat.')
+  if (!match) throw new AppError(ErrorCode.VALIDATION_ERROR, 400, 'Ungültiges Bildformat.')
 
   const [, mime, data] = match
   if (!ALLOWED_MIMES.includes(mime)) {
-    throw new Error(`Ungültiger Bildtyp. Erlaubt: ${ALLOWED_MIMES.join(', ')}.`)
+    throw new AppError(
+      ErrorCode.VALIDATION_ERROR,
+      400,
+      `Ungültiger Bildtyp. Erlaubt: ${ALLOWED_MIMES.join(', ')}.`,
+    )
   }
 
   const buffer = Buffer.from(data, 'base64')
   if (buffer.byteLength > MAX_BYTES) {
-    throw new Error('Bild ist zu gross (max. 2 MB).')
+    throw new AppError(ErrorCode.VALIDATION_ERROR, 400, 'Bild ist zu gross (max. 2 MB).')
   }
 
   return { mime, buffer }
@@ -77,6 +83,10 @@ class S3ImageStorage implements ImageStorage {
       }),
     )
     return key
+  }
+
+  async delete(ref: string): Promise<void> {
+    await this.client.send(new DeleteObjectCommand({ Bucket: this.bucket, Key: ref }))
   }
 
   toUrl(ref: string): string {
