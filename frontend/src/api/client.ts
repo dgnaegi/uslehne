@@ -1,18 +1,18 @@
 const BASE = '/api/v1'
 
-function getToken(): string | null {
-  return localStorage.getItem('token')
-}
-
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const token = getToken()
+  // Auth läuft über ein httpOnly-Cookie. Der Content-Type ist auch bei
+  // Requests ohne Body nötig: das Backend verlangt ihn als CSRF-Schutz.
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string>),
   }
-  if (token) headers['Authorization'] = `Bearer ${token}`
 
-  const res = await fetch(`${BASE}${path}`, { ...options, headers })
+  const res = await fetch(`${BASE}${path}`, {
+    ...options,
+    headers,
+    credentials: 'same-origin',
+  })
 
   if (!res.ok) {
     const body = (await res.json().catch(() => ({}))) as {
@@ -39,8 +39,8 @@ export function apiMsg(err: unknown, fallback: string): string {
 
 export const api = {
   get: <T>(path: string) => request<T>(path),
-  post: <T>(path: string, body: unknown) =>
-    request<T>(path, { method: 'POST', body: JSON.stringify(body) }),
+  post: <T>(path: string, body: unknown, headers?: Record<string, string>) =>
+    request<T>(path, { method: 'POST', body: JSON.stringify(body), headers }),
   patch: <T>(path: string, body: unknown) =>
     request<T>(path, { method: 'PATCH', body: JSON.stringify(body) }),
   delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),

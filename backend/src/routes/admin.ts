@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express'
 import { db } from '../db'
 import { requireAuth, requireAdmin } from '../middleware/requireAuth'
 import { AppError, ErrorCode } from '../errors'
+import { cleanupImage } from '../storage/imageCleanup'
 
 const router = Router()
 
@@ -38,9 +39,11 @@ router.delete(
       const { id } = req.params
       if (id === req.user!.id) throw new AppError(ErrorCode.FORBIDDEN, 403)
 
-      const offerIds = (
-        await db.offer.findMany({ where: { ownerId: id }, select: { id: true } })
-      ).map((o) => o.id)
+      const offers = await db.offer.findMany({
+        where: { ownerId: id },
+        select: { id: true, imageRef: true },
+      })
+      const offerIds = offers.map((o) => o.id)
 
       const requesterTxIds = (
         await db.transaction.findMany({ where: { requesterId: id }, select: { id: true } })
@@ -74,6 +77,10 @@ router.delete(
         db.address.deleteMany({ where: { userId: id } }),
         db.user.delete({ where: { id } }),
       ])
+
+      for (const offer of offers) {
+        await cleanupImage(offer.imageRef)
+      }
 
       res.json({ ok: true })
     } catch (err) {
@@ -125,6 +132,8 @@ router.delete(
         db.transaction.deleteMany({ where: { offerId: offer.id } }),
         db.offer.delete({ where: { id: offer.id } }),
       ])
+
+      await cleanupImage(offer.imageRef)
 
       res.json({ ok: true })
     } catch (err) {

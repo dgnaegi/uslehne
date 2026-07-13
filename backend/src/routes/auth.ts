@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client'
 import { db } from '../db'
 import { hashPassword, verifyPassword } from '../auth/password'
 import { signToken } from '../auth/jwt'
+import { setAuthCookie } from '../auth/cookie'
 import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode } from '../errors'
@@ -105,10 +106,12 @@ router.post(
       })
 
       const token = signToken({ sub: user.id, role: user.role, tv: user.tokenVersion })
+      setAuthCookie(res, token)
 
       const { subject, html } = welcomeMail({ username: user.username })
       sendMailSilent({ to: user.email, subject, html })
 
+      // token im Body nur noch für alte, gecachte Frontend-Versionen (Übergang).
       res.status(201).json({
         token,
         user: {
@@ -137,6 +140,7 @@ router.post(
       const valid = await verifyPassword(password, user.passwordHash)
       if (!valid) throw new AppError(ErrorCode.INVALID_CREDENTIALS, 401)
       const token = signToken({ sub: user.id, role: user.role, tv: user.tokenVersion })
+      setAuthCookie(res, token)
       res.json({
         token,
         user: {

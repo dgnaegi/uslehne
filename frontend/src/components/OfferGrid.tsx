@@ -3,7 +3,8 @@ import type { Offer } from '../api/types'
 import { useAuth } from '../auth/AuthContext'
 import { OfferCard } from './OfferCard'
 import { RequestDialog } from './RequestDialog'
-import { Feed, Empty, CenteredSpinner } from './OfferGrid.styled'
+import { Feed, Empty, SpinnerCenter } from './OfferGrid.styled'
+import { Spinner } from './Spinner'
 
 interface Props {
   offers: Offer[]
@@ -49,7 +50,9 @@ export function OfferGrid({ offers, emptyMessage, loadMore, hasMore, loading }: 
   if (loading && offers.length === 0) {
     return (
       <Feed ref={feedRef}>
-        <CenteredSpinner />
+        <SpinnerCenter>
+          <Spinner size={40} />
+        </SpinnerCenter>
       </Feed>
     )
   }

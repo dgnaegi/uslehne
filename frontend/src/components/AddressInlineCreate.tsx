@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Address } from '../api/types'
 import { addressApi } from '../api/endpoints'
+import { ZIP_RE } from '../utils/validation'
 import { Button } from './Layout.styled'
 import { FormGroup, Label, Input, ErrorMsg } from './Form.styled'
 
@@ -16,7 +17,7 @@ export function AddressInlineCreate({ onCreated }: Props) {
   const [error, setError] = useState('')
 
   async function handleSave() {
-    if (!/^\d{4}$/.test(zip.trim())) {
+    if (!ZIP_RE.test(zip.trim())) {
       setError(t('zipInvalid'))
       return
     }

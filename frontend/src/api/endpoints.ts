@@ -22,6 +22,12 @@ export const authApi = {
 
   me: () => api.get<{ user: User }>('/auth/me'),
 
+  logout: () => api.post<{ ok: boolean }>('/auth/logout', {}),
+
+  // Übergang: tauscht einen alten localStorage-Token gegen ein httpOnly-Cookie.
+  migrateSession: (legacyToken: string) =>
+    api.post<{ ok: boolean }>('/auth/session', {}, { Authorization: `Bearer ${legacyToken}` }),
+
   forgotPassword: (email: string) => api.post<{ ok: boolean }>('/auth/forgot-password', { email }),
 
   resetPassword: (token: string, password: string) =>

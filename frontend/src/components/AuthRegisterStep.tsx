@@ -35,8 +35,8 @@ export function AuthRegisterStep({
     setError('')
     setLoading(true)
     try {
-      const { token, user } = await authApi.register({ email, username, password, inviteCode })
-      login(token, user)
+      const { user } = await authApi.register({ email, username, password, inviteCode })
+      login(user)
       closeAuthModal()
     } catch (err) {
       setError(apiMsg(err, 'Registrierung fehlgeschlagen. Bitte Einladungscode prüfen.'))

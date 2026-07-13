@@ -4,8 +4,7 @@ import { authApi } from '../api/endpoints'
 
 interface AuthContextValue {
   user: User | null
-  token: string | null
-  login: (token: string, user: Pick<User, 'id' | 'username' | 'email' | 'karmaBalance'>) => void
+  login: (user: Pick<User, 'id' | 'username' | 'email' | 'karmaBalance'>) => void
   logout: () => void
   refreshUser: () => Promise<void>
   isLoading: boolean
@@ -16,48 +15,55 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
+// Übergang von localStorage-Token auf httpOnly-Cookie: einen noch
+// vorhandenen Token einmalig gegen ein Cookie tauschen.
+async function migrateLegacyToken(): Promise<void> {
+  const legacyToken = localStorage.getItem('token')
+  if (!legacyToken) return
+  try {
+    await authApi.migrateSession(legacyToken)
+    localStorage.removeItem('token')
+  } catch (err) {
+    // Nur bei 401 ist der Token wirklich ungültig. Bei Netzwerkfehlern oder
+    // 5xx (z.B. während eines Deploys) bleibt er für den nächsten Versuch.
+    if ((err as { status?: number }).status === 401) {
+      localStorage.removeItem('token')
+    }
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'))
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   useEffect(() => {
-    if (!token) {
-      setIsLoading(false)
-      return
+    async function init() {
+      await migrateLegacyToken()
+      try {
+        const { user: u } = await authApi.me()
+        setUser(u)
+      } catch {
+        // 401 = nicht eingeloggt, alles andere = vorübergehend nicht erreichbar.
+        // In beiden Fällen bleibt das Cookie unangetastet.
+      } finally {
+        setIsLoading(false)
+      }
     }
-    authApi
-      .me()
-      .then(({ user: u }) => setUser(u))
-      .catch((err: unknown) => {
-        // Nur bei 401 ist der Token wirklich ungültig. Netzwerkfehler oder
-        // 5xx (z.B. während eines Deploys) dürfen die Session nicht beenden.
-        if ((err as { status?: number }).status === 401) {
-          localStorage.removeItem('token')
-          setToken(null)
-        }
-      })
-      .finally(() => setIsLoading(false))
-  }, [token])
+    void init()
+  }, [])
 
-  function login(
-    newToken: string,
-    newUser: Pick<User, 'id' | 'username' | 'email' | 'karmaBalance'>,
-  ) {
-    localStorage.setItem('token', newToken)
-    setToken(newToken)
+  function login(newUser: Pick<User, 'id' | 'username' | 'email' | 'karmaBalance'>) {
     setUser(newUser as User)
   }
 
   function logout() {
-    localStorage.removeItem('token')
-    setToken(null)
+    void authApi.logout().catch(() => {})
     setUser(null)
   }
 
   async function refreshUser() {
-    if (!token) return
+    if (!user) return
     const { user: u } = await authApi.me()
     setUser(u)
   }
@@ -66,7 +72,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
-        token,
         login,
         logout,
         refreshUser,

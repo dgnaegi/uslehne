@@ -1,11 +1,12 @@
 import 'dotenv/config'
 import path from 'path'
 import express from 'express'
-import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import compression from 'compression'
 import rateLimit from 'express-rate-limit'
 import healthRouter from './routes/health'
 import authRouter from './routes/auth'
+import authSessionRouter from './routes/authSession'
 import invitesRouter from './routes/invites'
 import addressesRouter from './routes/addresses'
 import { offersRouter } from './routes/offers'
@@ -29,7 +30,9 @@ app.use(compression())
 const globalLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200 })
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20 })
 
-app.use(cors())
+// Kein CORS: Frontend und API laufen same-origin (in dev über den Vite-Proxy).
+// Cross-Origin-Zugriff auf die Cookie-Auth soll explizit nicht möglich sein.
+app.use(cookieParser())
 app.use(express.json({ limit: '3mb' }))
 app.use('/api/', globalLimiter)
 app.use('/api/v1/auth/login', authLimiter)
@@ -39,6 +42,7 @@ app.use('/api/v1/auth/reset-password', authLimiter)
 
 app.use('/api/v1', healthRouter)
 app.use('/api/v1', authRouter)
+app.use('/api/v1', authSessionRouter)
 app.use('/api/v1', invitesRouter)
 app.use('/api/v1', addressesRouter)
 app.use('/api/v1', offersRouter)

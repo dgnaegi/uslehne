@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 export const Feed = styled.div<{ $loading?: boolean }>`
   position: fixed;
@@ -23,19 +23,9 @@ export const Empty = styled.p`
   font-size: 1.1rem;
 `
 
-const spin = keyframes`
-  to { transform: rotate(360deg); }
-`
-
-export const CenteredSpinner = styled.div`
+export const SpinnerCenter = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 40px;
-  height: 40px;
-  border: 3px solid ${({ theme }) => theme.colors.border};
-  border-top-color: ${({ theme }) => theme.colors.accent};
-  border-radius: 50%;
-  animation: ${spin} 0.7s linear infinite;
 `

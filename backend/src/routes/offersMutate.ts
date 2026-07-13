@@ -5,6 +5,7 @@ import { requireAuth } from '../middleware/requireAuth'
 import { validate } from '../middleware/validate'
 import { AppError, ErrorCode, assertFound, assertOwns } from '../errors'
 import { imageStorage, withImageUrl } from '../storage/imageStorage'
+import { cleanupImage } from '../storage/imageCleanup'
 import { patchOfferSchema, offerPublicSelect } from './offerSchemas'
 
 const router = Router()
@@ -32,6 +33,9 @@ router.patch(
         },
         select: offerPublicSelect,
       })
+      if (imageRef !== undefined && imageRef !== existing.imageRef) {
+        await cleanupImage(existing.imageRef)
+      }
       res.json({ offer: withImageUrl(offer) })
     } catch (err) {
       next(err)
@@ -57,6 +61,7 @@ router.delete(
         await tx.transaction.deleteMany({ where: { offerId: req.params.id } })
         await tx.offer.delete({ where: { id: req.params.id } })
       })
+      await cleanupImage(existing.imageRef)
       res.status(204).end()
     } catch (err) {
       next(err)

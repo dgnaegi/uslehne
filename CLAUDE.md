@@ -153,8 +153,10 @@ scalingo --region osc-fr1 --app uslehne run npm run db:migrate
 | GET    | /api/v1/addresses              | List own addresses                 |
 | POST   | /api/v1/addresses              | Create address                     |
 | DELETE | /api/v1/addresses/:id          | Delete address                     |
-| POST   | /api/v1/auth/register          | Register with invite               |
-| POST   | /api/v1/auth/login             | Login                              |
+| POST   | /api/v1/auth/register          | Register with invite (sets auth cookie) |
+| POST   | /api/v1/auth/login             | Login (sets auth cookie)           |
+| POST   | /api/v1/auth/logout            | Logout (clears auth cookie)        |
+| POST   | /api/v1/auth/session           | Exchange legacy Bearer token for cookie |
 | GET    | /api/v1/auth/me                | Current user                       |
 
 ## Skills

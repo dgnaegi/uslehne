@@ -27,8 +27,8 @@ export function AuthLoginStep({ email, onBack }: AuthLoginStepProps) {
     setError('')
     setLoading(true)
     try {
-      const { token, user } = await authApi.login({ login: email, password })
-      login(token, user)
+      const { user } = await authApi.login({ login: email, password })
+      login(user)
       closeAuthModal()
     } catch (err) {
       setError(apiMsg(err, 'Anmeldung fehlgeschlagen. Bitte E-Mail und Passwort prüfen.'))

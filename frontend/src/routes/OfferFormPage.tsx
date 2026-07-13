@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Address, OfferCategory } from '../api/types'
 import { offerApi, addressApi } from '../api/endpoints'
+import { ZIP_RE } from '../utils/validation'
 import { OfferAddressField } from '../components/OfferAddressField'
 import { OfferImageField } from '../components/OfferImageField'
 import { OfferTypeCategoryFields } from '../components/OfferTypeCategoryFields'
@@ -117,7 +118,7 @@ export function OfferFormPage() {
           selectProps={register('addressId', { required: hasAddresses })}
           zipProps={register('zip', {
             required: !hasAddresses && !isEdit,
-            pattern: /^\d{4}$/,
+            pattern: ZIP_RE,
           })}
           zipError={errors.zip ? t('offers:zipInvalid') : ''}
           onAddressCreated={handleAddressCreated}
