@@ -14,9 +14,16 @@ const CONTACT_TYPE_OPTIONS: { type: ContactType; label: string }[] = [
 ]
 
 const USERNAME_TYPES: ContactType[] = ['TELEGRAM']
+const TELEGRAM_USERNAME_RE = /^@?[a-zA-Z0-9_.]{3,32}$/
 
 function typeLabel(type: ContactType): string {
   return CONTACT_TYPE_OPTIONS.find((o) => o.type === type)?.label ?? type
+}
+
+function inputLabel(type: ContactType): string {
+  if (type === 'EMAIL') return 'E-Mail-Adresse'
+  if (type === 'TELEGRAM') return 'Telegram-Benutzername'
+  return 'Telefonnummer'
 }
 
 interface Props {
@@ -34,14 +41,17 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
 
   // With no saved contacts the fields feed the request form directly;
   // the contact is persisted only when the request is submitted.
-  const inlineMode = contacts.length === 0
+  const validContacts = contacts.filter(
+    (c) => c.type !== 'TELEGRAM' || TELEGRAM_USERNAME_RE.test(c.value),
+  )
+  const inlineMode = validContacts.length === 0
   const isUsernameType = USERNAME_TYPES.includes(newType)
 
   const selectedId =
-    contacts.find((c) => c.type === selectedType && c.value === selectedValue)?.id ?? ''
+    validContacts.find((c) => c.type === selectedType && c.value === selectedValue)?.id ?? ''
 
   function handleSelect(id: string) {
-    const c = contacts.find((c) => c.id === id)
+    const c = validContacts.find((c) => c.id === id)
     if (c) onSelect(c.type, c.value)
   }
 
@@ -83,7 +93,7 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
         </TypeButtons>
       </FormGroup>
       <FormGroup>
-        <Label>Nummer / Adresse / Benutzername</Label>
+        <Label>{inputLabel(newType)}</Label>
         <Input
           value={newValue}
           onChange={(e) => handleValueChange(e.target.value)}
@@ -92,7 +102,7 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
             newType === 'EMAIL'
               ? 'name@beispiel.ch'
               : isUsernameType
-                ? 'Benutzername'
+                ? '@benutzername'
                 : '+41 79 000 00 00'
           }
           autoFocus
@@ -127,7 +137,7 @@ export function PhoneField({ userId, selectedType, selectedValue, onSelect }: Pr
           <option value="" disabled>
             Kontakt wählen…
           </option>
-          {contacts.map((c) => (
+          {validContacts.map((c) => (
             <option key={c.id} value={c.id}>
               {c.value} ({typeLabel(c.type)})
             </option>

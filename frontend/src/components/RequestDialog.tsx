@@ -89,7 +89,21 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
             <input type="hidden" {...register('contactType', { required: true })} />
-            <input type="hidden" {...register('contactValue', { required: true })} />
+            <input
+              type="hidden"
+              {...register('contactValue', {
+                required: true,
+                validate: (value) => {
+                  if (
+                    contactType === 'TELEGRAM' &&
+                    !/^@?[a-zA-Z0-9_.]{3,32}$/.test(value)
+                  ) {
+                    return t('errors:CONTACT_INVALID', { ns: 'errors' })
+                  }
+                  return true
+                },
+              })}
+            />
             <FormGroup>
               <Label>{t('transactions:requestDialog.contactType')}</Label>
               <PhoneField
@@ -102,7 +116,9 @@ export function RequestDialog({ offerId, offerType, onClose }: Props) {
                 }}
               />
               {errors.contactValue && (
-                <ErrorMsg>{t('transactions:requestDialog.contactRequired')}</ErrorMsg>
+                <ErrorMsg>
+                  {errors.contactValue.message ?? t('transactions:requestDialog.contactRequired')}
+                </ErrorMsg>
               )}
             </FormGroup>
             <FormGroup>
