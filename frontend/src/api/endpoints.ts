@@ -101,7 +101,8 @@ export const transactionApi = {
   list: (role: 'incoming' | 'outgoing' | 'open' | 'closed') =>
     api.get<{ transactions: Transaction[] }>(`/transactions?role=${role}`),
   accept: (id: string) => api.post<void>(`/transactions/${id}/accept`, {}),
-  decline: (id: string) => api.post<void>(`/transactions/${id}/decline`, {}),
+  decline: (id: string, message?: string) =>
+    api.post<void>(`/transactions/${id}/decline`, message ? { message } : {}),
   cancel: (id: string) => api.post<void>(`/transactions/${id}/cancel`, {}),
   rate: (id: string, stars: number) =>
     api.post<{ rating: Rating }>(`/transactions/${id}/rate`, { stars }),

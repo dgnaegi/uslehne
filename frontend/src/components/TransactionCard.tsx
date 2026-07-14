@@ -27,6 +27,10 @@ import {
   TxContactAction,
   TxActions,
   RateRow,
+  DeclineBox,
+  DeclineLabel,
+  DeclineTextarea,
+  DeclineActions,
 } from './TransactionCard.styled'
 
 const RATEABLE = new Set<Transaction['status']>(['COMPLETED', 'RETURNED'])
@@ -47,6 +51,8 @@ interface TransactionCardProps {
 export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps) {
   const { t } = useTranslation(['transactions', 'common'])
   const [pendingStars, setPendingStars] = useState<number | null>(null)
+  const [showDecline, setShowDecline] = useState(false)
+  const [declineMessage, setDeclineMessage] = useState('')
 
   const myConfirmed = amOwner ? tx.ownerConfirmed : tx.requesterConfirmed
   const myId = amOwner ? tx.ownerId : tx.requesterId
@@ -156,16 +162,50 @@ export function TransactionCard({ tx, amOwner, onAction }: TransactionCardProps)
           )}
         </RateRow>
       )}
+      {amOwner && tx.status === 'PENDING' && showDecline && (
+        <DeclineBox>
+          <DeclineLabel htmlFor={`decline-msg-${tx.id}`}>
+            {t('transactions:declineMessageLabel')}
+          </DeclineLabel>
+          <DeclineTextarea
+            id={`decline-msg-${tx.id}`}
+            value={declineMessage}
+            onChange={(e) => setDeclineMessage(e.target.value)}
+            maxLength={500}
+            placeholder={t('transactions:declineMessagePlaceholder')}
+          />
+          <DeclineActions>
+            <Button
+              $variant="secondary"
+              onClick={() => {
+                void onAction(() =>
+                  transactionApi.decline(tx.id, declineMessage.trim() || undefined),
+                )
+                setShowDecline(false)
+                setDeclineMessage('')
+              }}
+            >
+              {t('transactions:declineButton')}
+            </Button>
+            <Button
+              $variant="secondary"
+              onClick={() => {
+                setShowDecline(false)
+                setDeclineMessage('')
+              }}
+            >
+              {t('transactions:declineCancel')}
+            </Button>
+          </DeclineActions>
+        </DeclineBox>
+      )}
       <TxActions>
-        {amOwner && tx.status === 'PENDING' && (
+        {amOwner && tx.status === 'PENDING' && !showDecline && (
           <>
             <Button onClick={() => onAction(() => transactionApi.accept(tx.id))}>
               {t('transactions:acceptButton')}
             </Button>
-            <Button
-              $variant="secondary"
-              onClick={() => onAction(() => transactionApi.decline(tx.id))}
-            >
+            <Button $variant="secondary" onClick={() => setShowDecline(true)}>
               {t('transactions:declineButton')}
             </Button>
           </>

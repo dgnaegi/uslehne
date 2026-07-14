@@ -85,9 +85,14 @@ router.post(
         await db.offer.update({ where: { id: tx.offerId }, data: { status: 'AVAILABLE' } })
       }
 
+      const rawMessage = req.body?.message
+      const declineMessage =
+        typeof rawMessage === 'string' ? rawMessage.trim().slice(0, 500) || undefined : undefined
+
       const { subject, html } = offerDeclinedMail({
         requesterUsername: tx.requester.username,
         offerTitle: tx.offer.title,
+        message: declineMessage,
       })
       sendMailSilent({ to: tx.requester.email, subject, html })
 

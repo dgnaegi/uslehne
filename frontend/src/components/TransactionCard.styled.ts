@@ -102,3 +102,40 @@ export const TxActions = styled.div`
   margin-top: ${({ theme }) => theme.spacing.sm};
   flex-wrap: wrap;
 `
+
+export const DeclineBox = styled.div`
+  margin-top: ${({ theme }) => theme.spacing.sm};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.sm};
+`
+
+export const DeclineLabel = styled.label`
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.textMuted};
+`
+
+export const DeclineTextarea = styled.textarea`
+  width: 100%;
+  min-height: 80px;
+  padding: ${({ theme }) => theme.spacing.sm};
+  border: ${({ theme }) => theme.border};
+  background: ${({ theme }) => theme.colors.background};
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: -2px;
+  }
+`
+
+export const DeclineActions = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.sm};
+`

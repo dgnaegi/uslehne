@@ -63,11 +63,16 @@ export function offerAcceptedMail(opts: {
   }
 }
 
-export function offerDeclinedMail(opts: { requesterUsername: string; offerTitle: string }) {
+export function offerDeclinedMail(opts: {
+  requesterUsername: string
+  offerTitle: string
+  message?: string
+}) {
   const body = `
     ${h1('Anfrage abgelehnt')}
     ${p(`Hallo ${esc(opts.requesterUsername)},`)}
     ${p(`Leider wurde deine Anfrage für <strong>«${esc(opts.offerTitle)}»</strong> abgelehnt.`)}
+    ${opts.message ? p(`Begründung: <em>${esc(opts.message)}</em>`) : ''}
     ${p('Vielleicht findest du ein anderes passendes Angebot.')}
     ${ctaButton(APP_URL, 'Angebote entdecken')}`
 
