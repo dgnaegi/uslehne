@@ -62,21 +62,6 @@ export function ZipFilter({
   return (
     <FilterBar $compact={compact}>
       <MainRow>
-        {showInput ? (
-          <ZipInput
-            ref={inputRef}
-            value={inputVal}
-            onChange={(e) => setInputVal(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onBlur={commit}
-            placeholder="PLZ…"
-            autoFocus
-          />
-        ) : (
-          <AddButton onClick={() => setShowInput(true)}>
-            <IconPlus size={13} /> PLZ
-          </AddButton>
-        )}
         <TypeFilterGroup>
           <Dropdown
             label={t('category')}
@@ -92,6 +77,21 @@ export function ZipFilter({
             schenken
           </TypeBtn>
         </TypeFilterGroup>
+        {showInput ? (
+          <ZipInput
+            ref={inputRef}
+            value={inputVal}
+            onChange={(e) => setInputVal(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={commit}
+            placeholder="PLZ…"
+            autoFocus
+          />
+        ) : (
+          <AddButton onClick={() => setShowInput(true)}>
+            <IconPlus size={13} /> PLZ
+          </AddButton>
+        )}
       </MainRow>
       {zips.length > 0 && (
         <ChipsRow>

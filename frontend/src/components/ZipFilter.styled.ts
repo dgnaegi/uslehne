@@ -16,6 +16,7 @@ export const FilterBar = styled.div<{ $compact?: boolean }>`
 export const MainRow = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing.xs};
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
 `
@@ -112,7 +113,6 @@ export const TypeFilterGroup = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};
-  margin-left: auto;
   flex-shrink: 0;
 `
 

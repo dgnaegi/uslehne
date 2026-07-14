@@ -5,7 +5,13 @@
       "Bash(scalingo --region osc-fr1 --app uslehne logs -n 1000)",
       "Bash(scalingo --region osc-fr1 --app uslehne logs -n 400)",
       "Bash(kill %1)",
-      "Bash(xargs kill)"
+      "Bash(xargs kill)",
+      "Bash(xargs cat)",
+      "Bash(scalingo --region osc-fr1 --app uslehne logs --lines 500)",
+      "Bash(scalingo --region osc-fr1 --app uslehne logs --lines 1000)",
+      "Bash(scalingo --region osc-fr1 --app uslehne logs --lines 2000)",
+      "Bash(scalingo --region osc-fr1 --app uslehne ps)",
+      "Bash(git -C /Users/danielgnagi/Documents/uslehne diff frontend/src/components/StarRating.styled.ts frontend/src/components/ZipFilter.styled.ts frontend/src/components/ZipFilter.tsx)"
     ]
   }
 }

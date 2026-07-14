@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 const starPop = keyframes`
   0%   { transform: scale(1); }
@@ -30,10 +30,13 @@ export const Star = styled.button<{ $filled: boolean; $interactive: boolean }>`
     fill: ${({ $filled }) => ($filled ? 'currentColor' : 'none')};
   }
 
-  &:hover {
-    animation: ${({ $interactive }) =>
-      $interactive ? `${starPop} 0.22s ease-out forwards` : 'none'};
-  }
+  ${({ $interactive }) =>
+    $interactive &&
+    css`
+      &:hover {
+        animation: ${starPop} 0.22s ease-out forwards;
+      }
+    `}
 
   &:active {
     transform: ${({ $interactive }) => ($interactive ? 'scale(0.88)' : 'none')};
