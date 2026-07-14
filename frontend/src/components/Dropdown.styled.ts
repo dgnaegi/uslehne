@@ -19,14 +19,15 @@ export const Trigger = styled.button<{ $active: boolean; $open: boolean }>`
   }
 `
 
-export const Menu = styled.div`
+export const Menu = styled.div<{ $align: 'left' | 'right' }>`
   position: absolute;
   top: calc(100% + ${({ theme }) => theme.spacing.xs});
-  right: 0;
+  ${({ $align }) => ($align === 'right' ? 'right: 0;' : 'left: 0;')}
   z-index: ${({ theme }) => theme.zIndex.dropdown};
   display: flex;
   flex-direction: column;
   width: max-content;
+  max-width: calc(100vw - 16px);
   min-width: 100%;
   background: ${({ theme }) => theme.colors.background};
   border: ${({ theme }) => theme.border};

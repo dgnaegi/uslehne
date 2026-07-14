@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { IconChevronDown } from '../icons'
 import { Wrapper, Trigger, Menu, OptionBtn } from './Dropdown.styled'
 
@@ -17,7 +17,9 @@ interface Props {
 
 export function Dropdown({ label, options, value, onChange, clearLabel }: Props) {
   const [open, setOpen] = useState(false)
+  const [menuAlign, setMenuAlign] = useState<'left' | 'right'>('right')
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!open) return
@@ -35,6 +37,16 @@ export function Dropdown({ label, options, value, onChange, clearLabel }: Props)
       document.removeEventListener('touchstart', handlePointerDown)
       document.removeEventListener('keydown', handleKeyDown)
     }
+  }, [open])
+
+  useLayoutEffect(() => {
+    if (!open) {
+      setMenuAlign('right')
+      return
+    }
+    if (!menuRef.current) return
+    const rect = menuRef.current.getBoundingClientRect()
+    if (rect.left < 0) setMenuAlign('left')
   }, [open])
 
   function select(v: string | null) {
@@ -56,7 +68,7 @@ export function Dropdown({ label, options, value, onChange, clearLabel }: Props)
         <IconChevronDown size={12} />
       </Trigger>
       {open && (
-        <Menu role="listbox">
+        <Menu ref={menuRef} role="listbox" $align={menuAlign}>
           {clearLabel && (
             <OptionBtn
               type="button"
